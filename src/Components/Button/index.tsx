@@ -15,27 +15,15 @@ export enum ButtonTypes {
 type Props = {
 	type: ButtonTypes,
 	text: string,
-}
-
-export default ({
-	type,
-	text,
-}: Props) => {
-	const buttonStyle = type === ButtonTypes.Primary ? s.primary : s.secondary;
-	return (
-		<TouchableOpacity style={{...s.common, ...buttonStyle}}>
-			<Text>{text}</Text>
-		</TouchableOpacity>
-	);
+	onPress?: () => void;
 }
 
 const s = StyleSheet.create({
 	common: {
-		// padding: Metrics.PaddingSM,
 		height: Metrics.BtnHeight,
 		justifyContent: 'center',
 		alignItems: 'center',
-		color: 'white'
+		borderRadius: Metrics.BorderRadiusSM,
 	},
   primary: {
     backgroundColor: Colors.PrimaryBtn,
@@ -44,3 +32,19 @@ const s = StyleSheet.create({
     backgroundColor: Colors.Background,
   },
 });
+
+export default ({
+	type,
+	text,
+	onPress,
+}: Props) => {
+	const buttonStyle = type === ButtonTypes.Primary ? s.primary : s.secondary;
+	return (
+		<TouchableOpacity
+			style={{...s.common, ...buttonStyle}}
+			onPress={onPress}
+		>
+			<Text>{text}</Text>
+		</TouchableOpacity>
+	);
+}

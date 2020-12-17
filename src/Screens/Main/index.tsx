@@ -2,35 +2,46 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Text,
 } from 'react-native';
 
 import { Colors } from '../../Styles/enums';
-import Button, {ButtonTypes} from '../../Components/Button';
-
-export default () => (
-	<View style={s.container}>
-		<Text>Main screen</Text>
-    <Button type={ButtonTypes.Primary} text="DDDDD" />
-	</View>
-);
+import Button, { ButtonTypes } from '../../Components/Button';
+import OutputLog from '../../Components/OutputLog';
+import useStore from '../../Store';
 
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    padding: 10,
     backgroundColor: Colors.Background,
   },
-  title: {
-    marginTop: 16,
-    paddingVertical: 8,
-    borderWidth: 4,
-    borderColor: "#20232a",
-    borderRadius: 6,
-    backgroundColor: "#61dafb",
-    color: "#20232a",
-    textAlign: "center",
-    fontSize: 30,
-    fontWeight: "bold"
+  row: {
+    flexDirection: 'row',
+    height: '50%'
+  },
+  output: {
+    flex: 4,
+    marginRight: 8,
+  },
+  buttons: {
+    flex: 2,
   }
 });
+
+export default () => {
+  const log = useStore(s => s.log);
+  const writeLog = useStore(s => s.writeLog);
+
+  return (
+    <View style={s.container}>
+      <View style={s.row}>
+        <View style={s.output}>
+          <OutputLog data={log} />
+        </View>
+        <View style={s.buttons}>
+          <Button type={ButtonTypes.Primary} text="Scan network" />
+        </View>
+      </View>
+    </View>
+  );
+}
