@@ -17,15 +17,16 @@ export default StyleSheet.create({
     marginBottom: Metrics.PaddingXSM,
   },
   [LogEntryTypes.Trace]: {
-    color: Colors.Grey,
+    color: Colors.DarkGrey,
   },
   [LogEntryTypes.Info]: {
     color: Colors.Grey,
   },
   [LogEntryTypes.Warn]: {
-    color: Colors.Grey,
+    color: Colors.Orange,
   },
   [LogEntryTypes.Error]: {
-    color: Colors.Grey,
+    color: Colors.Red,
+    fontWeight: '800',
   },
 });

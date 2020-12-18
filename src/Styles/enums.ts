@@ -5,6 +5,9 @@ export enum Colors {
 	PrimaryLight = '#0B334C',
 
 	Grey = '#D6D6D6',
+	DarkGrey = '#686564',
+	Orange = '#C47631',
+	Red = '#C1451F',
 }
 
 export enum Metrics {

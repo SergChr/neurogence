@@ -11,7 +11,7 @@ export interface LogEntry {
   type: LogEntryTypes;
 }
 
-export interface State extends Record<string, any> {
+export interface LogStore extends Record<string, any> {
   log: LogEntry[];
   writeLog: (text: string, type?: LogEntryTypes) => void;
 }

@@ -7,7 +7,7 @@ import {
 import { Colors } from '../../Styles/enums';
 import Button, { ButtonTypes } from '../../Components/Button';
 import OutputLog from '../../Components/OutputLog';
-import useStore from '../../Store';
+import {logStore} from '../../Store';
 
 const s = StyleSheet.create({
   container: {
@@ -29,8 +29,8 @@ const s = StyleSheet.create({
 });
 
 export default () => {
-  const log = useStore(s => s.log);
-  const writeLog = useStore(s => s.writeLog);
+  const log = logStore(s => s.log);
+  const writeLog = logStore(s => s.writeLog);
 
   return (
     <View style={s.container}>
@@ -39,7 +39,11 @@ export default () => {
           <OutputLog data={log} />
         </View>
         <View style={s.buttons}>
-          <Button type={ButtonTypes.Primary} text="Scan network" />
+          <Button
+            type={ButtonTypes.Primary}
+            text="Scan network"
+            onPress={() => writeLog(`${Math.random()}`)}
+          />
         </View>
       </View>
     </View>
