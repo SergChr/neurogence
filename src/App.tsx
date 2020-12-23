@@ -5,6 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import MainScreen from './Screens/Main';
+import Game from './Services/game';
+
+Game.run();
 
 const Stack = createStackNavigator();
 

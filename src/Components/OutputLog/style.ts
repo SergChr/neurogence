@@ -15,6 +15,7 @@ export default StyleSheet.create({
   log: {
     marginLeft: Metrics.PaddingXSM,
     marginBottom: Metrics.PaddingXSM,
+    fontSize: Metrics.FontSizeSM,
   },
   [LogEntryTypes.Trace]: {
     color: Colors.DarkGrey,

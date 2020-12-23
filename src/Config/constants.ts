@@ -17,13 +17,4 @@ export default {
     },
   },
 
-  // MAIL_SERVER: {
-  //   CPU: {
-  //     CORES: 1,
-  //     FREQUENCY: 1,
-
-  //   },
-  // },
-
-
 };

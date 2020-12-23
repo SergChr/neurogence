@@ -3,6 +3,8 @@ export enum Colors {
 	SidebarBackground = '#003F5C',
 	PrimaryBtn = '#0567A3',
 	PrimaryLight = '#0B334C',
+	Primary = '#0C91CF',
+	PrimaryDark1 = '#062236',
 
 	Grey = '#D6D6D6',
 	DarkGrey = '#686564',
@@ -20,4 +22,7 @@ export enum Metrics {
 	BtnHeight = 44,
 
 	BorderRadiusSM = 6,
+
+	FontSizeSM = 14,
+	FontSizeM = 24,
 }
