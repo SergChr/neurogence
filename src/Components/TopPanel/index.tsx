@@ -41,12 +41,13 @@ const s = StyleSheet.create({
 
 type Props = {
   text: string;
+  goBack: () => void;
 }
 
-export default ({ text }: Props) => {
+export default ({ text, goBack }: Props) => {
   return (
     <View style={s.container}>
-      <TouchableOpacity style={s.goBack} onPress={() => 'go back'}>
+      <TouchableOpacity style={s.goBack} onPress={goBack}>
         <Image style={s.icon} source={require('../../assets/images/arrow-left.png')} />
       </TouchableOpacity>
 
