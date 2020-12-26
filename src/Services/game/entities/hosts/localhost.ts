@@ -1,8 +1,8 @@
 import constants from '../../../../Config/constants';
-import BasicHost from './basic';
+import BasicHost, { File } from './basic';
 import { HostTypes } from './enums';
 
-enum SkillNames {
+export enum SkillNames {
   ImageVideoProcessing = 'imageVideoProcessing',
   NLP = 'NLP', // natural language processing
   Physics = 'physics',
@@ -11,7 +11,7 @@ enum SkillNames {
   Math = 'math',
 }
 
-export interface Skills extends Record<SkillNames, number> {}
+export interface Skills extends Partial<Record<SkillNames, number>> {}
 
 const startingSkills: Skills = {
   [SkillNames.ImageVideoProcessing]: constants.STARTING_OPTS.SKILLS.IMG_VIDEO_PROCESS,
@@ -23,7 +23,7 @@ const startingSkills: Skills = {
 };
 
 export default class Localhost extends BasicHost {
-  constructor() {
+  constructor(files: File[]) {
     super({
       name: 'localhost',
       type: HostTypes.Localhost,
@@ -32,6 +32,7 @@ export default class Localhost extends BasicHost {
         frequency: constants.STARTING_OPTS.LOCALHOST_CPU_FREQUENCY,
         ops: constants.STARTING_OPTS.LOCALHOST_CPU_OPS,
       },
+      files,
     });
   }
 
@@ -46,6 +47,7 @@ export default class Localhost extends BasicHost {
   // TODO: calc this by the VALUES the file provides, like
   // Math skill will add 0.01, then time is (SOME_CONST * 0.01) / FLOPS
   public calcProcessingFileTime(fileValues: Skills): number {
+    // TODO: remove this fn. completely
     return 0;
   }
 }

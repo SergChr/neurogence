@@ -26,7 +26,7 @@ const s = StyleSheet.create({
 		borderRadius: Metrics.BorderRadiusSM,
 	},
   primary: {
-    backgroundColor: Colors.PrimaryBtn,
+    backgroundColor: Colors.Primary,
 	},
 	secondary: {
     backgroundColor: Colors.Background,

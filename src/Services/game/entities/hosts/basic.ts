@@ -22,13 +22,13 @@ type Constructor = {
   name: string;
   type: HostTypes;
   cpu: CPU;
+  files?: File[];
 }
 
 export interface File {
   name: string;
   content: string;
   values: Skills;
-  onRead?: Function;
 }
 
 interface Filesystem {
@@ -40,6 +40,9 @@ export default class Host {
     this.name = p.name;
     this.type = p.type;
     this.cpu = p.cpu;
+    if (p.files) {
+      this.fs.files = p.files;
+    }
   }
 
   public readonly name: string;
@@ -51,7 +54,7 @@ export default class Host {
   };
 
   // 0 indicates there is no security patches, the host should be updated.
-  // Otherwise, it can be enslaved without any effort.
+  // If not updated, it can be enslaved without any effort.
   // The greater the number, the harder to enslave the host.
   public securityPatch: number = 0;
 

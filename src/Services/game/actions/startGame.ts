@@ -1,6 +1,7 @@
 import { GameStore, LogStore } from '../../../Store/interfaces';
 import sleep from '../../../utils/sleep';
-import Localhost from '../entities/hosts/localhost';
+import Localhost, { SkillNames } from '../entities/hosts/localhost';
+import { File } from '../entities/hosts/basic';
 
 export default async (game: GameStore, output: LogStore) => {
   output.reset();
@@ -20,6 +21,10 @@ export default async (game: GameStore, output: LogStore) => {
 }
 
 function createLocalhost(game: GameStore) {
-  const localhost = new Localhost;
+  // TODO: create files for localhost
+  const files: File[] = [
+    { name: 'README', content: 'Pizdec ya ohuel', values: { [SkillNames.NLP]: 0.01 } }
+  ];
+  const localhost = new Localhost(files);
   game.addHost(localhost);
 }
