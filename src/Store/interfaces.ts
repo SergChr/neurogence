@@ -18,9 +18,12 @@ interface Store extends Record<string, any> {}
 export interface LogStore extends Store {
   log: LogEntry[];
   writeLog: (text: string, type?: LogEntryTypes) => void;
+  reset: () => void;
 }
 
 export interface GameStore extends Store {
   progress: number;
+  setProgress: (n: number) => void;
   hosts: BasicHost[];
+  addHost: (h: BasicHost) => void;
 }

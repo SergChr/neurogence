@@ -12,6 +12,7 @@ import BasicHost from '../../Services/game/entities/hosts/basic';
 
 type Props = {
   data: BasicHost[];
+  navigation: any;
 }
 
 const s = StyleSheet.create({
@@ -25,6 +26,7 @@ const s = StyleSheet.create({
     backgroundColor: Colors.PrimaryDark1,
     padding: Metrics.PaddingXSM,
     borderRadius: Metrics.BorderRadiusSM,
+    marginBottom: 3,
   },
   icon: {
     height: 16,
@@ -39,15 +41,20 @@ const s = StyleSheet.create({
 
 export default ({
   data,
+  navigation,
 }: Props) => {
 	return (
-		<TouchableOpacity style={s.main}>
+		<View style={s.main}>
       {data.map((host: BasicHost) => (
-        <View style={s.host}>
+        <TouchableOpacity
+          style={s.host}
+          onPress={() => navigation.navigate('Host', { hostName: host.name })}
+          key={host.name}
+        >
            <Image style={s.icon} source={require('../../assets/images/server.png')} />
            <Text style={s.text}>{host.name}</Text>
-        </View>
+        </TouchableOpacity>
       ))}
-    </TouchableOpacity>
+    </View>
 	);
 }

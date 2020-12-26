@@ -2,7 +2,6 @@ import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import BasicHost from '../Services/game/entities/hosts/basic';
 import {
   GameStore,
 } from './interfaces';
@@ -10,15 +9,14 @@ import {
 const useStore = create<GameStore>(persist(
   (set, get) => ({
     progress: 0,
-    setProgress(n: number) {
+    setProgress(n) {
       set({ progress: n });
     },
 
     hosts: [],
-    addHost(h: BasicHost) {
-      set({ hosts: [...this.hosts, h] });
+    addHost(host) {
+      set({ hosts: [...this.hosts, host] });
     },
-
   }),
   {
     name: 'game',

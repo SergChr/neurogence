@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import MainScreen from './Screens/Main';
+import HostScreen from './Screens/Host';
 import Game from './Services/game';
 
 Game.run();
@@ -21,7 +22,10 @@ const App = () => {
         <Stack.Screen
           name="Home"
           component={MainScreen}
-          // options={{ header: undefined }}
+        />
+        <Stack.Screen
+          name="Host"
+          component={HostScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

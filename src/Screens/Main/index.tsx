@@ -34,7 +34,7 @@ const s = StyleSheet.create({
   },
 });
 
-export default () => {
+export default ({ navigation }: any) => {
   const log = logStore(s => s.log);
   const hosts = gameStore(s => s.hosts);
 
@@ -46,7 +46,7 @@ export default () => {
         </View>
 
         <View style={s.hosts}>
-          <Hosts data={hosts} />
+          <Hosts data={hosts} navigation={navigation} />
         </View>
       </View>
       <View style={s.buttons}>
