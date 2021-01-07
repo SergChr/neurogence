@@ -29,6 +29,7 @@ export interface File {
   name: string;
   content: string;
   values: Skills;
+  read?: boolean; // is already read?
 }
 
 interface Filesystem {

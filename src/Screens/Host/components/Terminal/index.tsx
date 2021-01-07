@@ -7,22 +7,7 @@ import {
 } from 'react-native';
 
 import { Colors, Metrics } from '../../../../Styles/enums';
-
-interface Option {
-  value: string;
-  description: string;
-}
-
-export enum MessageTypes {
-  Regular,
-  Info,
-}
-
-interface LogItem {
-  text: string;
-  options?: Option[];
-  type?: MessageTypes,
-}
+import { MessageTypes, LogItem } from '../../../../Services/game/entities/hostTerminal/interfaces';
 
 type Props = {
   items?: LogItem[];
@@ -51,7 +36,7 @@ const s = StyleSheet.create({
   },
 });
 
-const ITEM_HEIGHT = 100;
+const ITEM_HEIGHT = 155;
 
 const getStyleForText = (t: MessageTypes): object => {
   if (t === MessageTypes.Regular) {
@@ -61,21 +46,29 @@ const getStyleForText = (t: MessageTypes): object => {
   return s.infoText;
 }
 
+const getLayoutOffset = (h: number[], i: number) => {
+  const offset = h.slice(0, i + 1).reduce((a, c) => a + c, 0);
+  return offset;
+}
+
 export default ({
   items = [],
 }: Props) => {
 	let logElement: FlatList<LogItem>;
-  useEffect(() => {
-    logElement.scrollToEnd();
-  });
+  const itemHeights: number[] = [];
 
 	return (
     <FlatList
       ref={(e) => { logElement = e! }}
       style={s.box}
       data={items}
-      renderItem={({ item: { text, options = [], type = MessageTypes.Regular } }) => (
-        <View key={new Date() + text} style={s.item}>
+      renderItem={({ item: { text, options = [], type = MessageTypes.Regular }, index }) => (
+        <View
+          key={new Date() + text} style={s.item}
+          onLayout={object => {
+            itemHeights[index] = object.nativeEvent.layout.height;
+          }}
+        >
           <Text style={getStyleForText(type)}>
             {text}
           </Text>
@@ -86,11 +79,15 @@ export default ({
           ))}
         </View>
       )}
-      keyExtractor={i => i.text + new Date()}
-      getItemLayout={(data, index) => (
-        {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
-      )}
+      keyExtractor={i => i.text + Math.random()}
+      getItemLayout={(data, index) => {
+        if (itemHeights.length < 1) {
+          return { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index };
+        }
+        return { length: itemHeights[index], offset: getLayoutOffset(itemHeights, index), index };
+      }}
       ListFooterComponent={<View style={{ marginBottom: Metrics.PaddingXSM }} />}
+      onContentSizeChange={() => logElement.scrollToEnd()}
     >
     </FlatList>
 	);
