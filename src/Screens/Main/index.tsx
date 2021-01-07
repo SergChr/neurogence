@@ -9,6 +9,7 @@ import Button, { ButtonTypes } from '../../Components/Button';
 import Hosts from '../../Components/Hosts';
 import OutputLog from '../../Components/OutputLog';
 import { logStore, gameStore } from '../../Store';
+import game from 'Services/game';
 
 const s = StyleSheet.create({
   container: {
@@ -37,7 +38,8 @@ const s = StyleSheet.create({
 export default ({ navigation }: any) => {
   const log = logStore(s => s.log);
   const hosts = gameStore(s => s.hosts);
-
+  const gameProgress = gameStore(s => s.progress);
+  // console.log('progress')
   return (
     <View style={s.container}>
       <View style={s.col}>
@@ -50,10 +52,12 @@ export default ({ navigation }: any) => {
         </View>
       </View>
       <View style={s.buttons}>
-          <Button
-            type={ButtonTypes.Primary}
-            text="Scan network"
-          />
+          {gameProgress >= 2 &&
+            <Button
+              type={ButtonTypes.Primary}
+              text="Scan network"
+            />
+          }
         </View>
     </View>
   );

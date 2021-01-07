@@ -1,5 +1,6 @@
 import constants from '../../../../Config/constants';
-import BasicHost, { File } from './basic';
+import BasicHost from './basic';
+import { File } from '../file';
 import { HostTypes } from './enums';
 
 export enum SkillNames {

@@ -1,6 +1,6 @@
 import chunk from 'lodash.chunk';
 
-import Host from '../hosts/basic';
+import Localhost, { SkillNames } from '../hosts/localhost';
 import { Cursor } from './interfaces';
 
 const CURSOR = {
@@ -10,14 +10,13 @@ const CURSOR = {
 };
 
 export default class LocalhostCursorController {
-  constructor(host: Host) {
+  constructor(host: Localhost) {
     this.host = host;
   }
 
-  host: Host;
+  host: Localhost;
 
   getCursor(cursor: string[] = [CURSOR.menu], page: number = 1): Cursor {
-    console.log('cursor getOptions', cursor, page)
     switch (cursor[0].toLowerCase()) {
       case CURSOR.menu: {
         return {
@@ -28,12 +27,16 @@ export default class LocalhostCursorController {
       case CURSOR.files: {
         const allFiles = this.host.fs.files;
         const filesByPage = chunk(allFiles, 9);
+
         // a specific file is requested
         if (cursor[1]) {
           const fileName = cursor[1].toLowerCase();
           const file = allFiles.find(({ name }) => name.toLowerCase() === fileName);
-          // Show the file content and improve your skills if any available
-          // TODO: write code to improve skills
+          file?.onRead && file.onRead();
+          Object.entries(file!.values).forEach(([key, value]) => {
+            console.log('Improving skill', key, value);
+            this.host.setSkill(key as SkillNames, value);
+          });
           return {
             name: cursor[1],
             text: file!.content,

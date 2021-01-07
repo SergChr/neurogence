@@ -1,6 +1,6 @@
 import constants from '../../../../Config/constants';
+import { File } from '../file';
 import { HostTypes } from './enums';
-import { Skills } from './localhost';
 
 export interface CPU {
   cores: number;
@@ -23,13 +23,6 @@ type Constructor = {
   type: HostTypes;
   cpu: CPU;
   files?: File[];
-}
-
-export interface File {
-  name: string;
-  content: string;
-  values: Skills;
-  read?: boolean; // is already read?
 }
 
 interface Filesystem {

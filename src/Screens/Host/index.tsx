@@ -97,7 +97,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
 
   onAnswer = (v: string) => {
     const { cursors, output } = this.state;
-    const cursor = cursors[cursors.length - 1];
+    const cursor = cursors[cursors.length - 1]; // last cursor
     const pickedOption = output[output.length - 1].options.find(({ value }) => value === v)?.description;
     if (!pickedOption) {
       return;
