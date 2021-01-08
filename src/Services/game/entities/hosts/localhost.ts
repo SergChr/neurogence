@@ -44,11 +44,4 @@ export default class Localhost extends BasicHost {
   public getSkill(name: SkillNames) {
     return this.skills[name];
   }
-
-  // TODO: calc this by the VALUES the file provides, like
-  // Math skill will add 0.01, then time is (SOME_CONST * 0.01) / FLOPS
-  public calcProcessingFileTime(fileValues: Skills): number {
-    // TODO: remove this fn. completely
-    return 0;
-  }
 }

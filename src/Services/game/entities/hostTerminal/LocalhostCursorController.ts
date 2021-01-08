@@ -31,7 +31,7 @@ export default class LocalhostCursorController {
         // a specific file is requested
         if (cursor[1]) {
           const fileName = cursor[1].toLowerCase();
-          const file = allFiles.find(({ name }) => name.toLowerCase() === fileName);
+          const file = allFiles.find((f) => f.name.toLowerCase() + f.extension === fileName);
           file?.onRead && file.onRead();
           Object.entries(file!.values).forEach(([key, value]) => {
             console.log('Improving skill', key, value);
@@ -46,7 +46,7 @@ export default class LocalhostCursorController {
         const requestedFiles = filesByPage[page - 1];
         return {
           name: CURSOR.files,
-          items: requestedFiles.map(f => f.name),
+          items: requestedFiles.map(f => f.name + f.extension),
           page,
           totalPages: Math.ceil(allFiles.length / 9), // if this field exists, then next passed cursor will be the same
         };

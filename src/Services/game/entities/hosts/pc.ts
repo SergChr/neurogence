@@ -1,4 +1,5 @@
-import BasicHost, { CPU, File } from './basic';
+import BasicHost, { CPU } from './basic';
+import { File } from '../file';
 import { HostTypes } from './enums';
 
 interface ConstructorArgs {

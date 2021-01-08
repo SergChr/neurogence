@@ -14,7 +14,7 @@ const useStore = create<LogStore>(
   (set, get) => ({
     log: [],
     reset: () => set({ log: [] }),
-    writeLog: (text: string, type: LogEntryTypes = LogEntryTypes.Info) => {
+    write: (text: string, type: LogEntryTypes = LogEntryTypes.Info) => {
       const items = get().log;
       const newEntry = { text, createdAt: new Date(), type };
       set({ log: [...items.slice(items.length - MAX_LOG_ITEMS), newEntry] });

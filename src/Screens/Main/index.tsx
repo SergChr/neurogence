@@ -9,7 +9,7 @@ import Button, { ButtonTypes } from '../../Components/Button';
 import Hosts from '../../Components/Hosts';
 import OutputLog from '../../Components/OutputLog';
 import { logStore, gameStore } from '../../Store';
-import game from 'Services/game';
+import scanNetwork from '../../Services/game/actions/scanNetwork';
 
 const s = StyleSheet.create({
   container: {
@@ -28,6 +28,7 @@ const s = StyleSheet.create({
   },
   buttons: {
     flex: 2,
+    paddingLeft: 8,
   },
   hosts: {
     marginTop: 6,
@@ -39,7 +40,7 @@ export default ({ navigation }: any) => {
   const log = logStore(s => s.log);
   const hosts = gameStore(s => s.hosts);
   const gameProgress = gameStore(s => s.progress);
-  // console.log('progress')
+
   return (
     <View style={s.container}>
       <View style={s.col}>
@@ -56,6 +57,7 @@ export default ({ navigation }: any) => {
             <Button
               type={ButtonTypes.Primary}
               text="Scan network"
+              onPress={() => scanNetwork()}
             />
           }
         </View>

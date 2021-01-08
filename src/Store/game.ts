@@ -6,7 +6,9 @@ import {
   GameStore,
 } from './interfaces';
 
-const useStore = create<GameStore>(persist(
+// TODO: add persist()
+// const useStore = create<GameStore>(persist(
+const useStore = create<GameStore>(
   (set, get) => ({
     progress: 0,
     setProgress(n) {
@@ -15,13 +17,8 @@ const useStore = create<GameStore>(persist(
 
     hosts: [],
     addHost(host) {
-      set({ hosts: [...this.hosts, host] });
+      set({ hosts: [...get().hosts, host] });
     },
-  }),
-  {
-    name: 'game',
-    storage: AsyncStorage,
-  }
-));
+  }));
 
 export default useStore;

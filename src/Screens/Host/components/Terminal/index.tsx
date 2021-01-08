@@ -47,7 +47,7 @@ const getStyleForText = (t: MessageTypes): object => {
 }
 
 const getLayoutOffset = (h: number[], i: number) => {
-  const offset = h.slice(0, i + 1).reduce((a, c) => a + c, 0);
+  const offset = h.slice(0, i + 1).reduce((a, c) => a + c, 0) || 0;
   return offset;
 }
 
@@ -84,7 +84,7 @@ export default ({
         if (itemHeights.length < 1) {
           return { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index };
         }
-        return { length: itemHeights[index], offset: getLayoutOffset(itemHeights, index), index };
+        return { length: itemHeights[index] || 0, offset: getLayoutOffset(itemHeights, index), index };
       }}
       ListFooterComponent={<View style={{ marginBottom: Metrics.PaddingXSM }} />}
       onContentSizeChange={() => logElement.scrollToEnd()}

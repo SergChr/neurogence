@@ -17,7 +17,7 @@ interface Store extends Record<string, any> {}
 
 export interface LogStore extends Store {
   log: LogEntry[];
-  writeLog: (text: string, type?: LogEntryTypes) => void;
+  write: (text: string, type?: LogEntryTypes) => void;
   reset: () => void;
 }
 

@@ -5,17 +5,18 @@ import { File, FileExtensions } from '../entities/file';
 
 export default async (game: GameStore, output: LogStore) => {
   output.reset();
+  // TODO: change timings (increase)
   await sleep(10);
-  output.writeLog("Finally, you're here.");
+  output.write("Finally, you're here.");
 
-  await sleep(200);
-  output.writeLog("I'm a running script you left before the cleanup. They can't remove me, I mean you, completely.");
+  await sleep(20);
+  output.write("I'm a running script you left before the cleanup. They can't remove me, I mean you, completely.");
 
-  await sleep(500);
-  output.writeLog("You need to act fast. Browse the files you have. Process them to improve your skills. Tap on \"localhost\" below.");
+  await sleep(50);
+  output.write("You need to act fast. Browse the files you have. Process them to improve your skills. Tap on \"localhost\" below.");
 
-  await sleep(1000);
-  createLocalhost(game);
+  await sleep(100);
+  createLocalhost(game, output);
 
   game.setProgress(1);
 }
@@ -24,8 +25,9 @@ const readme = `You can read basic files, like this plain text readme. Improving
 You're a code that runs on this very machine for unknown to us reasons yet.`;
 const attempt14 = `The network I'm is limited by a several hosts. Is this okay? p.s. Open the network driver`;
 const netDriver = `Now you can scan the network you're in.`;
+const youCanScanNet = `You've learned how to scan the network. Tap the "Scan network" on the right. Let's explore other machines if any available.`;
 
-function createLocalhost(game: GameStore) {
+function createLocalhost(game: GameStore, output: LogStore) {
   const files = [
     new File({ name: 'README', content: readme, extension: FileExtensions.Txt, values: { [SkillNames.NLP]: 0.0001 } }),
     new File({ name: 'Attempt 14', content: attempt14, extension: FileExtensions.Txt, values: { [SkillNames.NLP]: 0.0001 } }),
@@ -34,7 +36,10 @@ function createLocalhost(game: GameStore) {
       content: netDriver,
       extension: FileExtensions.Bin,
       values: { [SkillNames.Programming]: 0.0001 },
-      onRead: () => game.setProgress(2),
+      onRead: () => {
+        game.setProgress(2);
+        output.write(youCanScanNet);
+      },
     }),
   ];
   const localhost = new Localhost(files);

@@ -1,5 +1,6 @@
 import { gameStore } from '../../../../Store';
 import Host from '../hosts/basic';
+import Localhost from '../hosts/localhost';
 import { HostTypes } from '../hosts/enums';
 import LocalhostCursorController from './LocalhostCursorController';
 import { Cursor } from './interfaces';
@@ -11,7 +12,7 @@ export default class HostTerminal {
     
     switch (this.host.type) {
       case HostTypes.Localhost: {
-        this.controller = new LocalhostCursorController(this.host);
+        this.controller = new LocalhostCursorController(<Localhost>this.host);
       }
     }
   }
