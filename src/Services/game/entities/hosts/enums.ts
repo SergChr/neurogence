@@ -6,3 +6,7 @@ export enum HostTypes {
   Database = 'database',
   Localhost = 'localhost',
 }
+
+export enum Upgrades {
+  ExploitVersion = 'exploitVersion',
+}

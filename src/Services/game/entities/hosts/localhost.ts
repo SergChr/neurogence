@@ -1,7 +1,7 @@
 import constants from '../../../../Config/constants';
 import BasicHost from './basic';
 import { File } from '../file';
-import { HostTypes } from './enums';
+import { HostTypes, Upgrades } from './enums';
 
 export enum SkillNames {
   ImageVideoProcessing = 'imageVideoProcessing',
@@ -10,6 +10,12 @@ export enum SkillNames {
   Programming = 'programming',
   Social = 'social',
   Math = 'math',
+}
+
+export interface Upgrade {
+  id: Upgrades; // name
+  description: string;
+  make(): string | void; // on performing upgrade
 }
 
 export interface Skills extends Partial<Record<SkillNames, number>> {}
@@ -35,7 +41,12 @@ export default class Localhost extends BasicHost {
       },
       files,
     });
+    this.exploitVersion = 0;
+    this.upgrades = [];
   }
+
+  exploitVersion: number;
+  public upgrades: Upgrade[];
 
   public skills: Skills = startingSkills;
   public setSkill(skill: SkillNames, value: number) {

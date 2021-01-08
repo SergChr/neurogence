@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   StyleSheet,
 	Text,
@@ -73,8 +73,8 @@ export default ({
             {text}
           </Text>
           {options.map((o) => (
-            <Text style={s.option} key={o.value}>
-              {o.value}) {o.description}
+            <Text style={s.option} key={o.index}>
+              {o.index}) {o.description}
             </Text>
           ))}
         </View>

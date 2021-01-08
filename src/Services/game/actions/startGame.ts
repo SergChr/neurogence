@@ -2,6 +2,7 @@ import { GameStore, LogStore } from '../../../Store/interfaces';
 import sleep from '../../../utils/sleep';
 import Localhost, { SkillNames } from '../entities/hosts/localhost';
 import { File, FileExtensions } from '../entities/file';
+import { Upgrades } from '../entities/hosts/enums';
 
 export default async (game: GameStore, output: LogStore) => {
   output.reset();
@@ -26,8 +27,10 @@ You're a code that runs on this very machine for unknown to us reasons yet.`;
 const attempt14 = `The network I'm is limited by a several hosts. Is this okay? p.s. Open the network driver`;
 const netDriver = `Now you can scan the network you're in.`;
 const youCanScanNet = `You've learned how to scan the network. Tap the "Scan network" on the right. Let's explore other machines if any available.`;
+const exploits = `It gave me a basic understanding of how to use exploits on different OS. It should be helpful when discovering other hosts.`;
 
 function createLocalhost(game: GameStore, output: LogStore) {
+  const localhost = new Localhost([]);
   const files = [
     new File({ name: 'README', content: readme, extension: FileExtensions.Txt, values: { [SkillNames.NLP]: 0.0001 } }),
     new File({ name: 'Attempt 14', content: attempt14, extension: FileExtensions.Txt, values: { [SkillNames.NLP]: 0.0001 } }),
@@ -41,7 +44,24 @@ function createLocalhost(game: GameStore, output: LogStore) {
         output.write(youCanScanNet);
       },
     }),
+    new File({
+      name: 'BasicOSExploits',
+      content: exploits,
+      extension: FileExtensions.Txt,
+      values: { [SkillNames.Programming]: 0.0001, [SkillNames.NLP]: 0.0001 },
+      onRead: () => {
+        localhost.upgrades.push({
+          id: Upgrades.ExploitVersion,
+          description: 'Improve applying exploits skill',
+          make: () => {
+            localhost.exploitVersion += 2;
+            return `Your exploit script version is upgraded to ${localhost.exploitVersion}`;
+          },
+        })
+      },
+    }),
   ];
-  const localhost = new Localhost(files);
+  localhost.fs.files = files;
+  console.log(localhost)
   game.addHost(localhost);
 }

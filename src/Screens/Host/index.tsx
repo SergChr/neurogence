@@ -8,7 +8,7 @@ import TopPanel from '../../Components/TopPanel';
 import commonStyle from '../../Styles/common';
 import HostTerminal from '../../Services/game/entities/hostTerminal';
 import s from './styles';
-import { LogItem, Cursor } from 'Services/game/entities/hostTerminal/interfaces';
+import { LogItem, Cursor, CursorItem } from 'Services/game/entities/hostTerminal/interfaces';
 
 type Props = {
   route: any;
@@ -21,12 +21,12 @@ type State = {
 }
 
 const backButton = {
-  value: '<',
+  index: '<',
   description: 'Back',
 };
 
 const nextButton = {
-  value: '>',
+  index: '>',
   description: 'Next',
 };
 
@@ -71,10 +71,20 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   convertCursorToLogItem(c: Cursor): LogItem {
     const log: LogItem = {
       text: c.text || c.name,
-      options: c.items.map((s: string, i: number) => ({
-        value: (i + 1).toString(),
-        description: s,
-      })),
+      options: (c.items as Array<string|CursorItem>).map((s: string | CursorItem, i: number) => {
+        let value = undefined, description;
+        if ((s as CursorItem).value) {
+          value = (s as CursorItem).value;
+          description = (s as CursorItem).description;
+        } else {
+          description = s as string;
+        }
+        return {
+          index: (i + 1).toString(),
+          value,
+          description,
+        }
+      }),
       type: c.messageType,
     };
     if (c.totalPages && c.totalPages > 1) {
@@ -89,16 +99,17 @@ export default class HostScreen extends React.PureComponent<Props, State> {
       log.options.push(backButton);
     }
     if (!/menu/i.test(c.name)) {
-      log.options.push({ value: '0', description: 'Main menu' });
+      log.options.push({ index: '0', description: 'Main menu' });
     }
     
     return log;
   }
 
-  onAnswer = (v: string) => {
+  onAnswer = (ind: string) => {
     const { cursors, output } = this.state;
     const cursor = cursors[cursors.length - 1]; // last cursor
-    const pickedOption = output[output.length - 1].options.find(({ value }) => value === v)?.description;
+    const target = output[output.length - 1].options.find(({ index }) => index === ind)!;
+    const pickedOption = target.value || target.description;
     if (!pickedOption) {
       return;
     }

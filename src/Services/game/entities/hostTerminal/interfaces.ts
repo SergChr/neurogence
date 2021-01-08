@@ -1,6 +1,11 @@
+export interface CursorItem {
+  value: string;
+  description: string;
+}
+
 export interface Cursor {
   name: string;
-  items: string[];
+  items: string[] | CursorItem[];
   text?: string;
   page?: number;
   totalPages?: number;
@@ -14,8 +19,9 @@ export enum MessageTypes {
 }
 
 interface Option {
-  value: string;
+  value?: string;
   description: string;
+  index: string;
 }
 
 export interface LogItem {

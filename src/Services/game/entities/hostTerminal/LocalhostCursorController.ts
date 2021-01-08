@@ -31,7 +31,7 @@ export default class LocalhostCursorController {
         // a specific file is requested
         if (cursor[1]) {
           const fileName = cursor[1].toLowerCase();
-          const file = allFiles.find((f) => f.name.toLowerCase() + f.extension === fileName);
+          const file = allFiles.find((f) => f.name.toLowerCase() + f.extension === fileName)!;
           file?.onRead && file.onRead();
           Object.entries(file!.values).forEach(([key, value]) => {
             console.log('Improving skill', key, value);
@@ -39,7 +39,7 @@ export default class LocalhostCursorController {
           });
           return {
             name: cursor[1],
-            text: file!.content,
+            text: file.content,
             items: [],
           };
         }
@@ -50,6 +50,42 @@ export default class LocalhostCursorController {
           page,
           totalPages: Math.ceil(allFiles.length / 9), // if this field exists, then next passed cursor will be the same
         };
+      }
+      case CURSOR.upgrades: {
+        const upgrades = this.host.upgrades;
+        if (upgrades.length < 1) {
+          return {
+            name: CURSOR.upgrades,
+            items: [],
+          }
+        }
+        const byPage = chunk(upgrades, 9);
+
+        // a specific upgrade requested
+        if (cursor[1]) {
+          const upgradeName = cursor[1].toLowerCase();
+          const i = this.host.upgrades.findIndex(({ id }) => id.toLowerCase() === upgradeName);
+          const target = upgrades[i];
+          const result = target.make();
+          // Delete the upgrade
+          this.host.upgrades.splice(i, 1);
+          return {
+            name: cursor[1],
+            text: result || 'Upgrade is done.',
+            items: [],
+          };
+        }
+
+        const requestedUpgrades = byPage[page - 1].map(u => ({
+          value: u.id,
+          description: u.description,
+        }));
+        return {
+          name: CURSOR.upgrades,
+          items: requestedUpgrades,
+          page,
+          totalPages: Math.ceil(upgrades.length / 9),
+        }
       }
       default: {
         return {
