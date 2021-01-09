@@ -25,7 +25,7 @@ export default class PCCursorController {
 
   getPasswords(): CursorItem[] {
     return [
-      { value: ' ', description: 'Blank' },
+      { value: ' ', description: 'Blank password' },
       { value: '123', description: '123' },
     ];
   }
@@ -35,7 +35,6 @@ export default class PCCursorController {
   }
 
   getCursor(cursor: string[] = [CURSOR.notConnectedMenu], page: number = 1): Cursor {
-    console.log('\nCursor in getCursor', cursor);
     const menu = this.getMenuCursor();
     const game = gameStore.getState();
     switch (cursor[0]) {
@@ -45,7 +44,6 @@ export default class PCCursorController {
           case CURSOR.notConnectedMenu: {
             const opts = [CURSOR.connect];
             const localhost = game.getLocalhost();
-            console.log('\nEnslaving', localhost.exploitVersion)
             if (this.host.canBeEnslavedViaSecurityProblem(localhost.exploitVersion)) {
               opts.push(CURSOR.enslaveViaSecurity);
             }

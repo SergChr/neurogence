@@ -9,6 +9,7 @@ import {
 
 import { Colors, Metrics } from '../../Styles/enums';
 import BasicHost from '../../Services/game/entities/hosts/basic';
+import FlatList from '../../Components/FlatList';
 
 type Props = {
   data: BasicHost[];
@@ -44,7 +45,7 @@ export default ({
   navigation,
 }: Props) => {
 	return (
-		<View style={s.main}>
+		<FlatList style={s.main}>
       {data.map((host: BasicHost) => (
         <TouchableOpacity
           style={s.host}
@@ -55,6 +56,6 @@ export default ({
            <Text style={s.text}>{host.name}</Text>
         </TouchableOpacity>
       ))}
-    </View>
+    </FlatList>
 	);
 }

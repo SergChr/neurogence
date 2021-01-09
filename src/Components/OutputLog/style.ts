@@ -11,9 +11,11 @@ export default StyleSheet.create({
     backgroundColor: Colors.PrimaryLight,
     paddingTop: Metrics.PaddingXSM,
     paddingBottom: Metrics.PaddingXSM,
+    borderRadius: Metrics.BorderRadiusSM,
   },
   log: {
-    marginLeft: Metrics.PaddingXSM,
+    paddingLeft: Metrics.PaddingXSM,
+    paddingRight: Metrics.PaddingXSM,
     marginBottom: Metrics.PaddingXSM,
     fontSize: Metrics.FontSizeSM,
   },
