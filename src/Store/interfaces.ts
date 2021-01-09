@@ -14,6 +14,8 @@ export interface LogEntry {
   type: LogEntryTypes;
 }
 
+interface GameUpgrades extends Record<string, boolean> {}
+
 interface Store extends Record<string, any> {}
 
 export interface LogStore extends Store {
@@ -31,4 +33,6 @@ export interface GameStore extends Store {
   updateLocalhost: (payload: Partial<Localhost>) => Localhost;
   setLocalSkill(skill: SkillNames, value: number): void;
   getLocalhost(): Localhost;
+  upgrades: GameUpgrades;
+  setUpgrade(s: string, v: boolean): void;
 }

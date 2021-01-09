@@ -9,4 +9,5 @@ export enum HostTypes {
 
 export enum Upgrades {
   ExploitVersion = 'exploitVersion',
+  MetricsPanel = 'metricsPanel',
 }

@@ -8,14 +8,19 @@ import { Colors } from '../../Styles/enums';
 import Button, { ButtonTypes } from '../../Components/Button';
 import Hosts from '../../Components/Hosts';
 import OutputLog from '../../Components/OutputLog';
+import Sidebar from '../../Components/Sidebar';
 import { logStore, gameStore } from '../../Store';
 import scanNetwork from '../../Services/game/actions/scanNetwork';
 
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
     backgroundColor: Colors.Background,
+    flexDirection: 'row',
+  },
+  innerContainer: {
+    padding: 10,
+    flex: 1,
     flexDirection: 'row',
   },
   col: {
@@ -40,27 +45,33 @@ export default ({ navigation }: any) => {
   const log = logStore(s => s.log);
   const hosts = gameStore(s => s.hosts);
   const gameProgress = gameStore(s => s.progress);
+  const upgrades = gameStore(s => s.upgrades);
 
   return (
     <View style={s.container}>
-      <View style={s.col}>
-        <View style={s.output}>
-          <OutputLog data={log} />
-        </View>
+      {upgrades.dashboard && <Sidebar navigation={navigation} availableItems={2} />}
 
-        <View style={s.hosts}>
-          <Hosts data={hosts} navigation={navigation} />
+      <View style={s.innerContainer}>
+        <View style={s.col}>
+          <View style={s.output}>
+            <OutputLog data={log} />
+          </View>
+
+          <View style={s.hosts}>
+            <Hosts data={hosts} navigation={navigation} />
+          </View>
         </View>
-      </View>
-      <View style={s.buttons}>
+        <View style={s.buttons}>
           {gameProgress >= 2 &&
             <Button
+              disabled={gameProgress !== 2}
               type={ButtonTypes.Primary}
               text="Scan network"
               onPress={() => scanNetwork()}
             />
           }
         </View>
+      </View>
     </View>
   );
 }

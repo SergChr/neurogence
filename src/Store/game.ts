@@ -27,7 +27,9 @@ const useStore = create<GameStore>(
       const hosts = [...get().hosts];
       const hostIndex = this.getLocalhostIndex(hosts);
       if (payload.upgrades) {
-        (<Localhost>hosts[hostIndex]).setUpgrades(payload.upgrades);
+        payload.upgrades.forEach(upgrade => {
+          (<Localhost>hosts[hostIndex]).addUpgrade(upgrade);
+        });
       }
       set({ hosts });
       return <Localhost>hosts[hostIndex];
@@ -41,6 +43,11 @@ const useStore = create<GameStore>(
     getLocalhost() {
       return <Localhost>get().hosts.find((h) => h.name === 'localhost')!;
     },
+
+    upgrades: {},
+    setUpgrade(s, v) {
+      this.upgrades[s] = v;
+    }
   }));
 
 export default useStore;

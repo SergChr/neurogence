@@ -17,6 +17,7 @@ export default async (game: GameStore, output: LogStore) => {
   output.write("You need to act fast. Browse the files you have. Process them to improve your skills. Tap on \"localhost\" below.");
 
   await sleep(100);
+  output.write(`Don't forget to look at this log, sometimes I'll be talking to you.`);
   createLocalhost(game, output);
 
   game.setProgress(1);
@@ -52,10 +53,10 @@ function createLocalhost(game: GameStore, output: LogStore) {
       onRead: () => {
         localhost.upgrades.push({
           id: Upgrades.ExploitVersion,
-          description: 'Improve applying exploits skill',
+          description: 'Make use of OS exploits',
           make: () => {
             localhost.exploitVersion += 2;
-            return `Your exploit script version is upgraded to ${localhost.exploitVersion}`;
+            return `You can now search for vulnerabilities in machines. Current exploit script version is ${localhost.exploitVersion}.`;
           },
         })
       },

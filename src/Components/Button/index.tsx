@@ -16,6 +16,7 @@ type Props = {
 	type: ButtonTypes,
 	text: string,
 	onPress?: () => void;
+	disabled?: boolean;
 }
 
 const s = StyleSheet.create({
@@ -37,12 +38,14 @@ export default ({
 	type,
 	text,
 	onPress,
+	disabled = false,
 }: Props) => {
 	const buttonStyle = type === ButtonTypes.Primary ? s.primary : s.secondary;
 	return (
 		<TouchableOpacity
 			style={{...s.common, ...buttonStyle}}
 			onPress={onPress}
+			disabled={disabled}
 		>
 			<Text>{text}</Text>
 		</TouchableOpacity>

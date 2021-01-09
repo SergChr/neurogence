@@ -56,7 +56,7 @@ export default class Localhost extends BasicHost {
     return this.skills[name];
   }
 
-  setUpgrades(upgrades: Upgrade[]) {
-    this.upgrades = upgrades;
+  addUpgrade(upgrade: Upgrade) {
+    this.upgrades.push(upgrade);
   }
 }
