@@ -99,7 +99,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
       log.options.push(backButton);
     }
     if (!/menu/i.test(c.name)) {
-      log.options.push({ index: '0', description: 'Main menu' });
+      log.options.push({ index: '0', description: 'Menu' });
     }
     
     return log;

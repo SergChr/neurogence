@@ -1,3 +1,4 @@
+import Localhost, { SkillNames } from 'Services/game/entities/hosts/localhost';
 import BasicHost from '../Services/game/entities/hosts/basic';
 
 export enum LogEntryTypes {
@@ -26,4 +27,8 @@ export interface GameStore extends Store {
   setProgress: (n: number) => void;
   hosts: BasicHost[];
   addHost: (h: BasicHost) => void;
+  getLocalhostIndex(hosts: BasicHost[]): number;
+  updateLocalhost: (payload: Partial<Localhost>) => Localhost;
+  setLocalSkill(skill: SkillNames, value: number): void;
+  getLocalhost(): Localhost;
 }

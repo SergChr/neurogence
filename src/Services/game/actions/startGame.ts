@@ -62,6 +62,5 @@ function createLocalhost(game: GameStore, output: LogStore) {
     }),
   ];
   localhost.fs.files = files;
-  console.log(localhost)
   game.addHost(localhost);
 }

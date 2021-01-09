@@ -37,6 +37,7 @@ export default class Host {
     if (p.files) {
       this.fs.files = p.files;
     }
+    this.password = ' ';
   }
 
   public readonly name: string;
@@ -46,6 +47,10 @@ export default class Host {
   public readonly fs: Filesystem = {
     files: [],
   };
+  enslavedViaVulnerability = false;
+  enslavedViaTranscendence = false;
+  connected = false;
+  password: string;
 
   // 0 indicates there is no security patches, the host should be updated.
   // If not updated, it can be enslaved without any effort.
@@ -66,5 +71,9 @@ export default class Host {
 
   public canBeEnslavedViaComputingTranscendence(flops: number) {
     return flops > (constants.COMP_TRANSCENDENCE_COEF * this.FLOPS);
+  }
+
+  setPassword(p: string) {
+    this.password = p;
   }
 }

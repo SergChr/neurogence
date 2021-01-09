@@ -55,4 +55,8 @@ export default class Localhost extends BasicHost {
   public getSkill(name: SkillNames) {
     return this.skills[name];
   }
+
+  setUpgrades(upgrades: Upgrade[]) {
+    this.upgrades = upgrades;
+  }
 }

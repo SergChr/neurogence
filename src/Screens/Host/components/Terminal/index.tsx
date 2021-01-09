@@ -24,6 +24,9 @@ const s = StyleSheet.create({
     color: Colors.Grey,
     fontSize: 14,
   },
+  errorText: {
+    color: Colors.Red,
+  },
   option: {
     color: Colors.Grey,
     fontSize: 12,
@@ -39,11 +42,11 @@ const s = StyleSheet.create({
 const ITEM_HEIGHT = 155;
 
 const getStyleForText = (t: MessageTypes): object => {
-  if (t === MessageTypes.Regular) {
-    return s.title;
+  switch (t) {
+    case MessageTypes.Regular: return s.title;
+    case MessageTypes.Error: return s.errorText;
+    default: return s.infoText;
   }
-
-  return s.infoText;
 }
 
 const getLayoutOffset = (h: number[], i: number) => {

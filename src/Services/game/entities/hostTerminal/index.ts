@@ -28,6 +28,9 @@ export default class HostTerminal {
   controller?: LocalhostCursorController | PCCursorController;
 
   getCursor(cursorNames?: string[], page?: number): Cursor {
+    if (this.host.type !== HostTypes.Localhost) {
+      return this.controller!.getCursor(cursorNames, page);
+    }
     const newCursor = this.controller!.getCursor(cursorNames, page);
     return newCursor;
   }

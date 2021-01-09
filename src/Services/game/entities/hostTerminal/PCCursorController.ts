@@ -1,13 +1,20 @@
 import chunk from 'lodash.chunk';
 
+import { gameStore } from '../../../../Store';
 import { SkillNames } from '../hosts/localhost';
 import PC from '../hosts/pc';
-import { Cursor } from './interfaces';
+import { Cursor, CursorItem, MessageTypes } from './interfaces';
 
 const CURSOR = {
-  menu: 'menu',
+  menu: 'Menu',
+  notConnectedMenu: 'Menu',
+  connect: 'Connect via SSH',
+  password: 'Password?',
+  enslaveViaSecurity: 'Enslave via security vulnerability',
   files: 'files',
 };
+
+const menuItems = [CURSOR.files];
 
 export default class PCCursorController {
   constructor(host: PC) {
@@ -16,13 +23,70 @@ export default class PCCursorController {
 
   host: PC;
 
-  getCursor(cursor: string[] = [CURSOR.menu], page: number = 1): Cursor {
-    switch (cursor[0].toLowerCase()) {
+  getPasswords(): CursorItem[] {
+    return [
+      { value: ' ', description: 'Blank' },
+      { value: '123', description: '123' },
+    ];
+  }
+
+  getMenuCursor() {
+    return this.host.connected ? CURSOR.menu : CURSOR.notConnectedMenu;
+  }
+
+  getCursor(cursor: string[] = [CURSOR.notConnectedMenu], page: number = 1): Cursor {
+    console.log('\nCursor in getCursor', cursor);
+    const menu = this.getMenuCursor();
+    const game = gameStore.getState();
+    switch (cursor[0]) {
       case CURSOR.menu: {
+        // Tricky: it can be notConnectedMenu or menu
+        switch (menu) {
+          case CURSOR.notConnectedMenu: {
+            const opts = [CURSOR.connect];
+            const localhost = game.getLocalhost();
+            console.log('\nEnslaving', localhost.exploitVersion)
+            if (this.host.canBeEnslavedViaSecurityProblem(localhost.exploitVersion)) {
+              opts.push(CURSOR.enslaveViaSecurity);
+            }
+    
+            return {
+              name: CURSOR.notConnectedMenu,
+              items: opts,
+            };
+          }
+          default: {
+            return {
+              name: CURSOR.menu,
+              items: menuItems,
+            };
+          }
+        }
+      }
+      case CURSOR.connect: {
+        if (cursor[1]) {
+          const arePasswordsMatched = this.host.password === cursor[1];
+          if (!arePasswordsMatched) {
+            return {
+              name: cursor[1],
+              text: 'Failed: this password is invalid.',
+              items: [],
+              messageType: MessageTypes.Error,
+            };
+          } else {
+            this.host.connected = true;
+            return {
+              name: CURSOR.menu,
+              items: [CURSOR.files],
+            };
+          }
+        }
         return {
-          name: CURSOR.menu,
-          items: ['Files'],
-        };
+          name: CURSOR.connect,
+          text: 'Password?',
+          items: this.getPasswords(),
+          totalPages: Math.ceil(this.getPasswords().length / 9),
+        }
       }
       case CURSOR.files: {
         const allFiles = this.host.fs.files;
@@ -34,7 +98,7 @@ export default class PCCursorController {
           const file = allFiles.find((f) => f.name.toLowerCase() + f.extension === fileName);
           file?.onRead && file.onRead();
           Object.entries(file!.values).forEach(([key, value]) => {
-            this.host.setSkill(key as SkillNames, value);
+            gameStore.getState().setLocalSkill(key as SkillNames, value);
           });
           return {
             name: cursor[1],
@@ -51,9 +115,10 @@ export default class PCCursorController {
         };
       }
       default: {
+        // TODO: change maybe
         return {
           name: CURSOR.menu,
-          items: ['Files'],
+          items: menuItems,
         };
       }
     }

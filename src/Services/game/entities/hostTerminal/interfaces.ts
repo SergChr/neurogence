@@ -16,6 +16,7 @@ export enum MessageTypes {
   Regular,
   Verbose,
   Warn,
+  Error,
 }
 
 interface Option {
