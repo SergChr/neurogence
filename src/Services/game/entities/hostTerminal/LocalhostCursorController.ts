@@ -5,9 +5,9 @@ import { gameStore } from '../../../../Store';
 import { Cursor } from './interfaces';
 
 const CURSOR = {
-  menu: 'menu',
-  files: 'files',
-  upgrades: 'upgrades',
+  menu: 'Menu',
+  files: 'Files',
+  upgrades: 'Upgrades',
 };
 
 export default class LocalhostCursorController {
@@ -18,11 +18,11 @@ export default class LocalhostCursorController {
   host: Localhost;
 
   getCursor(cursor: string[] = [CURSOR.menu], page: number = 1): Cursor {
-    switch (cursor[0].toLowerCase()) {
+    switch (cursor[0]) {
       case CURSOR.menu: {
         return {
           name: CURSOR.menu,
-          items: ['Files', 'Upgrades'],
+          items: [CURSOR.files, CURSOR.upgrades],
         };
       }
       case CURSOR.files: {
@@ -92,7 +92,7 @@ export default class LocalhostCursorController {
       default: {
         return {
           name: CURSOR.menu,
-          items: ['Files', 'Upgrades'],
+          items: [CURSOR.files, CURSOR.upgrades],
         };
       }
     }

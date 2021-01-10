@@ -19,7 +19,7 @@ export default {
 
   COMPANY: 'Neurocord',
   FONT_FAMILY: {
-    REGULAR: 'Arya-Regular',
+    REGULAR: 'Baumans-Regular',
     BOLD: 'Arya-Bold',
   },
 };

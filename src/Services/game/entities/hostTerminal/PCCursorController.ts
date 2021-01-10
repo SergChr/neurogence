@@ -25,6 +25,7 @@ export default class PCCursorController {
 
   getPasswords(): CursorItem[] {
     return [
+      // TODO: not for the all hosts these options will be the same
       { value: ' ', description: 'Blank password' },
       { value: '123', description: '123' },
     ];
@@ -113,7 +114,6 @@ export default class PCCursorController {
         };
       }
       default: {
-        // TODO: change maybe
         return {
           name: CURSOR.menu,
           items: menuItems,
