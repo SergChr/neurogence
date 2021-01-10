@@ -11,7 +11,7 @@ const CURSOR = {
   connect: 'Connect via SSH',
   password: 'Password?',
   enslaveViaSecurity: 'Enslave via security vulnerability',
-  files: 'files',
+  files: 'Files',
 };
 
 const menuItems = [CURSOR.files];
@@ -33,6 +33,9 @@ export default class PCCursorController {
 
   getCursor(cursor: string[] = [CURSOR.notConnectedMenu], page: number = 1): Cursor {
     const game = gameStore.getState();
+    if (this.host.enslaved) {
+      this.host.connected = true;
+    }
     switch (cursor[0]) {
       case CURSOR.menu: {
         switch (this.host.connected) {
@@ -107,6 +110,15 @@ export default class PCCursorController {
           page,
           totalPages: Math.ceil(allFiles.length / 9), // if this field exists, then next passed cursor will be the same
         };
+      }
+      case CURSOR.enslaveViaSecurity: {
+        game.updateHost(this.host.name, { enslaved: true });
+        game.updateLocalhost({ cpu: this.host.cpu });
+        return {
+          name: CURSOR.enslaveViaSecurity,
+          text: `${this.host.name} is under your control now. You got its computing power.`,
+          items: [],
+        }
       }
       default: {
         return {

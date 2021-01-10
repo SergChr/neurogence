@@ -31,6 +31,9 @@ const useStore = create<GameStore>(
           (<Localhost>hosts[hostIndex]).addUpgrade(upgrade);
         });
       }
+      if (payload.cpu) {
+        hosts[hostIndex].addCPUPower(payload.cpu);
+      }
       set({ hosts });
       return <Localhost>hosts[hostIndex];
     },
@@ -42,6 +45,14 @@ const useStore = create<GameStore>(
     },
     getLocalhost() {
       return <Localhost>get().hosts.find((h) => h.name === 'localhost')!;
+    },
+    updateHost(name, payload) {
+      const hosts = [...get().hosts];
+      const hostIndex = hosts.findIndex((h) => h.name === name);
+      if (payload.enslaved) {
+        hosts[hostIndex]?.enslave();
+      }
+      set({ hosts });
     },
 
     upgrades: {},

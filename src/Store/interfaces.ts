@@ -33,6 +33,7 @@ export interface GameStore extends Store {
   updateLocalhost: (payload: Partial<Localhost>) => Localhost;
   setLocalSkill(skill: SkillNames, value: number): void;
   getLocalhost(): Localhost;
+  updateHost(name: string, payload: Partial<BasicHost>): void;
   upgrades: GameUpgrades;
   setUpgrade(s: string, v: boolean): void;
 }

@@ -42,13 +42,12 @@ export default class Host {
 
   public readonly name: string;
   public readonly type: HostTypes;
-  public readonly cpu: CPU;
+  public cpu: CPU;
   public ports: Port[] = [];
   public readonly fs: Filesystem = {
     files: [],
   };
-  enslavedViaVulnerability = false;
-  enslavedViaTranscendence = false;
+  enslaved = false;
   connected = false;
   password: string;
 
@@ -75,5 +74,15 @@ export default class Host {
 
   setPassword(p: string) {
     this.password = p;
+  }
+
+  enslave() {
+    this.enslaved = true;
+  }
+
+  addCPUPower({ cores, frequency, ops }: CPU) {
+    this.cpu.cores += cores;
+    this.cpu.frequency += frequency;
+    this.cpu.ops += ops;
   }
 }

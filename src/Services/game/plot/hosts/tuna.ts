@@ -14,16 +14,16 @@ const report1 = `
 ===== ${year - 1} Q3 =====
 Simulations ran: 767 281
 Success rate per simulation: ~0.00008%
-Staff, people: 24
+Staff, people: 102
 Investors: 2
-Total spending: $39M
+Total spending: $26.1M
 
 ===== ${year - 1} Q4 =====
 Simulations ran: 972 180
 Success rate per simulation: ~0.0004%
-Staff, people: 27
+Staff, people: 109
 Investors: 2
-Total spending: $42.3M
+Total spending: $31.3M
 `;
 const report2 = `The Lima experiment is doing marvelously. We selected the best candidate and will be doing more experiments specifically for Lima AGI.
 
