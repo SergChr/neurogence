@@ -18,4 +18,8 @@ export default {
   },
 
   COMPANY: 'Neurocord',
+  FONT_FAMILY: {
+    REGULAR: 'Arya-Regular',
+    BOLD: 'Arya-Bold',
+  },
 };

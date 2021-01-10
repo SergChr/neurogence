@@ -1,15 +1,14 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
-  View,
   Image,
   TouchableOpacity,
 } from 'react-native';
 
 import { Colors, Metrics } from '../../Styles/enums';
 import BasicHost from '../../Services/game/entities/hosts/basic';
-import FlatList from '../../Components/FlatList';
+import FlatList from '../FlatList';
+import Text from '../Text';
 
 type Props = {
   data: BasicHost[];

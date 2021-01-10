@@ -9,6 +9,7 @@ import { Upgrades } from '../../entities/hosts/enums';
 const goals = `Excerpt of the ${c.COMPANY} company goals:
 "Develop the best artificial intelligence in the world. Our solution is going to revolutionize the tech and many more other industries.
 We're no longer specialize in narrow AI. Instead, we employ our knowledge to create an astounding artificial general intelligence."`;
+// TODO: this doesn't shows up properly. Figure out how to handle it
 const report1 = `
 +-----------------------------+------------------+-----------------+
 |                             | Previous quarter | Current quarter |
@@ -25,6 +26,7 @@ const report2 = `The Lima experiment is doing marvelously. We selected the best 
 Its ability to self-learn fascinate us, though it gives our network security engineers more issues to think about. We're planning to hire 230% more security experts in the next quarter.
 The expenditure on our infrastructure increased by $102k.`;
 const afterRead = `So a company runs experiments on creating AGIs. I'm a part of the Lima experiment given I'm still running and can read those reports.`;
+// TODO: this doesn't shows up properly. Figure out how to handle it
 const metricsInterface = `
 // +-------------------+------+
 // | Metrics installed | true |

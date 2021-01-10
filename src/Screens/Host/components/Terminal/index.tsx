@@ -1,13 +1,13 @@
 import React from 'react';
 import {
   StyleSheet,
-	Text,
   View,
   FlatList,
 } from 'react-native';
 
 import { Colors, Metrics } from '../../../../Styles/enums';
 import { MessageTypes, LogItem } from '../../../../Services/game/entities/hostTerminal/interfaces';
+import Text from '../../../../Components/Text';
 
 type Props = {
   items?: LogItem[];
@@ -41,7 +41,7 @@ const s = StyleSheet.create({
 
 const ITEM_HEIGHT = 155;
 
-const getStyleForText = (t: MessageTypes): object => {
+const getStyleForText = (t: MessageTypes): Record<string, string|number> => {
   switch (t) {
     case MessageTypes.Regular: return s.title;
     case MessageTypes.Error: return s.errorText;

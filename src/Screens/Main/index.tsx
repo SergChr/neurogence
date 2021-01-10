@@ -4,7 +4,7 @@ import {
   View,
 } from 'react-native';
 
-import { Colors } from '../../Styles/enums';
+import commonStyle from '../../Styles/common';;
 import Button, { ButtonTypes } from '../../Components/Button';
 import Hosts from '../../Components/Hosts';
 import OutputLog from '../../Components/OutputLog';
@@ -14,8 +14,6 @@ import scanNetwork from '../../Services/game/actions/scanNetwork';
 
 const s = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: Colors.Background,
     flexDirection: 'row',
   },
   innerContainer: {
@@ -48,7 +46,7 @@ export default ({ navigation }: any) => {
   const upgrades = gameStore(s => s.upgrades);
 
   return (
-    <View style={s.container}>
+    <View style={{...s.container, ...commonStyle.screen}}>
       {upgrades.dashboard && <Sidebar navigation={navigation} availableItems={2} />}
 
       <View style={s.innerContainer}>

@@ -2,17 +2,17 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   Image,
   TouchableOpacity,
 } from 'react-native';
 
 import { Colors } from '../../Styles/enums';
+import Text from '../Text';
 
 const s = StyleSheet.create({
   container: {
     height: 44,
-    backgroundColor: Colors.SidebarBackground,
+    backgroundColor: Colors.Secondary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-  Text,
   FlatList,
   View,
 } from 'react-native';
 
 import { Metrics } from '../../Styles/enums';
 import { LogEntry, LogEntryTypes } from '../../Store/interfaces';
+import Text from '../Text';
 import s from './style';
 
 type Props = {

@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   StyleSheet,
-	Text,
 	TouchableOpacity,
 } from 'react-native';
 
 import { Colors, Metrics } from '../../../../Styles/enums';
+import Text from '../../../../Components/Text';
 
 type Props = {
   text: string;
