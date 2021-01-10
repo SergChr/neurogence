@@ -31,7 +31,15 @@ const s = StyleSheet.create({
 	},
 	secondary: {
     backgroundColor: Colors.Background,
-  },
+	},
+	disabled: {
+		backgroundColor: Colors.Background,
+		borderColor: Colors.Secondary,
+		borderWidth: 2,
+	},
+	disabledText: {
+		color: Colors.Secondary,
+	},
 });
 
 export default ({
@@ -43,11 +51,11 @@ export default ({
 	const buttonStyle = type === ButtonTypes.Primary ? s.primary : s.secondary;
 	return (
 		<TouchableOpacity
-			style={{...s.common, ...buttonStyle}}
+			style={{...s.common, ...buttonStyle, ...(disabled && s.disabled)}}
 			onPress={onPress}
 			disabled={disabled}
 		>
-			<Text>{text}</Text>
+			<Text style={disabled && s.disabledText || {}}>{text}</Text>
 		</TouchableOpacity>
 	);
 }

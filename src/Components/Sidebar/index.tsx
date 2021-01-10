@@ -21,14 +21,14 @@ const s = StyleSheet.create({
     backgroundColor: Colors.Secondary,
   },
   menuItem: {
-    padding: 12,
+    padding: 20,
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 8,
   },
   icon: {
-    height: 26,
-    width: 26,
+    height: 18,
+    width: 18,
   },
   activeLink: {
     backgroundColor: Colors.SecondaryDark,

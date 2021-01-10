@@ -31,18 +31,12 @@ export default class PCCursorController {
     ];
   }
 
-  getMenuCursor() {
-    return this.host.connected ? CURSOR.menu : CURSOR.notConnectedMenu;
-  }
-
   getCursor(cursor: string[] = [CURSOR.notConnectedMenu], page: number = 1): Cursor {
-    const menu = this.getMenuCursor();
     const game = gameStore.getState();
     switch (cursor[0]) {
       case CURSOR.menu: {
-        // Tricky: it can be notConnectedMenu or menu
-        switch (menu) {
-          case CURSOR.notConnectedMenu: {
+        switch (this.host.connected) {
+          case false: {
             const opts = [CURSOR.connect];
             const localhost = game.getLocalhost();
             if (this.host.canBeEnslavedViaSecurityProblem(localhost.exploitVersion)) {
@@ -76,6 +70,7 @@ export default class PCCursorController {
             this.host.connected = true;
             return {
               name: CURSOR.menu,
+              text: 'Menu (connected)',
               items: [CURSOR.files],
             };
           }

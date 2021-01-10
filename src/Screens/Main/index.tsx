@@ -65,7 +65,7 @@ export default ({ navigation }: any) => {
               disabled={gameProgress !== 2}
               type={ButtonTypes.Primary}
               text="Scan network"
-              onPress={() => scanNetwork()}
+              onPress={scanNetwork}
             />
           }
         </View>
