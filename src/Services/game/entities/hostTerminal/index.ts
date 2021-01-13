@@ -5,7 +5,9 @@ import PC from '../hosts/pc';
 import { HostTypes } from '../hosts/enums';
 import PCCursorController from './PCCursorController';
 import LocalhostCursorController from './LocalhostCursorController';
+import MailServerCursorController from './MailServerCursorController';
 import { Cursor } from './interfaces';
+import MailServer from '../hosts/mailServer';
 
 export default class HostTerminal {
   constructor(hostName: string) {
@@ -21,11 +23,17 @@ export default class HostTerminal {
         this.controller = new PCCursorController(<PC>this.host);
         break;
       }
+      case HostTypes.MailServer: {
+        this.controller = new MailServerCursorController(<MailServer>this.host);
+        break;
+      }
     }
   }
 
   host: Host;
-  controller?: LocalhostCursorController | PCCursorController;
+  controller?: LocalhostCursorController
+    | PCCursorController
+    | MailServerCursorController;
 
   getCursor(cursorNames?: string[], page?: number): Cursor {
     if (this.host.type !== HostTypes.Localhost) {

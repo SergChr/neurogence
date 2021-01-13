@@ -1,20 +1,25 @@
 import BasicHost, { CPU } from './basic';
 import { HostTypes } from './enums';
-import { Skills } from './localhost';
 
 interface ConstructorArgs {
   name: string;
   securityPatch: number;
   cpu: CPU;
-  mails?: Mail[];
+  users?: User[];
+  password: string;
+  passwordSuggestions: string[];
 }
 
-interface Mail {
-  from: string;
+interface User {
+  fullName: string;
+  emails: Email[];
+}
+
+export interface Email {
   to: string;
   content: string;
-  values: Skills;
   onRead?: Function;
+  comment?: string;
 }
 
 export default class MailServer extends BasicHost {
@@ -23,13 +28,12 @@ export default class MailServer extends BasicHost {
       name: p.name,
       type: HostTypes.MailServer,
       cpu: p.cpu,
+      passwordSuggestions: p.passwordSuggestions,
+      password: p.password,
     });
     this.securityPatch = p.securityPatch;
-    this.mails = p.mails || [];
+    this.users = p.users || [];
   }
 
-  mails: Mail[];
-  public addMail(m: Mail) {
-    this.mails.push(m);
-  }
+  users: User[];
 }

@@ -9,7 +9,9 @@ import { Upgrades } from '../../entities/hosts/enums';
 const year = new Date().getFullYear();
 const goals = `Excerpt of the ${c.COMPANY} company goals:
 "Develop the best artificial intelligence in the world. Our solution is going to revolutionize the tech and many more other industries.
-We're no longer specialize in narrow AI. Instead, we employ our knowledge to create an astounding artificial general intelligence."`;
+We're no longer specialize in narrow AI. Instead, we employ our knowledge to create an astounding artificial general intelligence."
+
+"We're ambitious since 2013"`;
 const report1 = `
 ===== ${year - 1} Q3 =====
 Simulations ran: 767 281
@@ -38,9 +40,11 @@ export default new PC({
   name: 'Tuna',
   cpu: {
     cores: 1,
-    frequency: 1000,
-    ops: 5200000,
+    frequency: 7500000000,
+    ops: 4,
   },
+  passwordSuggestions: ['123', 'admin'],
+  password: '123',
   securityPatch: 1,
   files: [
     new File({

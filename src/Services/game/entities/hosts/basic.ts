@@ -5,7 +5,7 @@ import { HostTypes } from './enums';
 export interface CPU {
   cores: number;
   frequency: number;
-  ops: number; // operations per second
+  ops: number; // operations per cycle
 }
 
 enum PortStates {
@@ -23,6 +23,8 @@ type Constructor = {
   type: HostTypes;
   cpu: CPU;
   files?: File[];
+  passwordSuggestions?: string[];
+  password?: string;
 }
 
 interface Filesystem {
@@ -37,7 +39,8 @@ export default class Host {
     if (p.files) {
       this.fs.files = p.files;
     }
-    this.password = ' ';
+    this.password = p.password || ' ';
+    this.passwordSuggestions = p.passwordSuggestions || [];
   }
 
   public readonly name: string;
@@ -50,6 +53,7 @@ export default class Host {
   enslaved = false;
   connected = false;
   password: string;
+  passwordSuggestions: string[] = [];
 
   // 0 indicates there is no security patches, the host should be updated.
   // If not updated, it can be enslaved without any effort.

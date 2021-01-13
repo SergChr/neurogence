@@ -5,6 +5,7 @@ export enum FileExtensions {
   Txt = '.txt',
   Bin = '.bin',
   C = '.c',
+  Email = '.eml',
 }
 
 const calcFileSize = (s: string): number => {

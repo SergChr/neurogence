@@ -37,6 +37,9 @@ const s = StyleSheet.create({
   item: {
     marginBottom: 5,
   },
+  helper: {
+    color: Colors.DarkGrey,
+  },
 });
 
 const ITEM_HEIGHT = 155;
@@ -53,6 +56,8 @@ const getLayoutOffset = (h: number[], i: number) => {
   const offset = h.slice(0, i + 1).reduce((a, c) => a + c, 0) || 0;
   return offset;
 }
+
+const isHelperBtn = (i: string) => i === '>' || i === '<' || i === '0';
 
 export default ({
   items = [],
@@ -76,7 +81,7 @@ export default ({
             {text}
           </Text>
           {options.map((o) => (
-            <Text style={s.option} key={o.index}>
+            <Text style={{...s.option, ...(isHelperBtn(o.index) ? s.helper : {})}} key={o.index}>
               {o.index}) {o.description}
             </Text>
           ))}

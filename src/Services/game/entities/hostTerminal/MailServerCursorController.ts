@@ -1,8 +1,7 @@
 import chunk from 'lodash.chunk';
 
 import { gameStore } from '../../../../Store';
-import { SkillNames, Skills } from '../hosts/localhost';
-import PC from '../hosts/pc';
+import MailServer, { Email } from '../hosts/mailServer';
 import { Cursor, CursorItem, MessageTypes } from './interfaces';
 
 const CURSOR = {
@@ -11,25 +10,26 @@ const CURSOR = {
   connect: 'Connect via SSH',
   password: 'Password?',
   enslaveViaSecurity: 'Enslave via exploit',
-  files: 'Files',
+  users: 'Users',
 };
 
-const menuItems = [CURSOR.files];
-
-function skillsUpdateText(skills: Skills) {
-  let text = '\n\n__________\n|System info|\n';
-  Object.entries(skills).forEach(([key, value]) => {
-    text += `Improved ${key} skill by ${value}`;
-  });
-  return text;
+const menuItems = [CURSOR.users];
+const formatEmail = (e: Email) => {
+  e?.onRead && e.onRead();
+  return `==============================
+  to: ${e.to}
+  
+  ${e.content}
+  ${e.comment ? `------------------------
+  ${e.comment}` : ''}`;
 }
 
-export default class PCCursorController {
-  constructor(host: PC) {
+export default class MailServerCursorController {
+  constructor(host: MailServer) {
     this.host = host;
   }
 
-  host: PC;
+  host: MailServer;
 
   getPasswords(suggestions?: string[]): CursorItem[] {
     const values = suggestions?.map(s => ({
@@ -84,41 +84,42 @@ export default class PCCursorController {
             return {
               name: CURSOR.menu,
               text: 'Menu (connected)',
-              items: [CURSOR.files],
+              items: menuItems,
             };
           }
         }
+        const passwords = this.getPasswords(this.host.passwordSuggestions);
+        const byPage = chunk(passwords, 9);
+        const toBeShown = byPage[page - 1];
         return {
           name: CURSOR.connect,
           text: 'Password?',
-          items: this.getPasswords(this.host.passwordSuggestions),
-          totalPages: Math.ceil(this.getPasswords().length / 9),
+          page,
+          items: toBeShown,
+          totalPages: Math.ceil(passwords.length / 9),
         }
       }
-      case CURSOR.files: {
-        const allFiles = this.host.fs.files;
-        const filesByPage = chunk(allFiles, 9);
-
-        // a specific file is requested
+      case CURSOR.users: {
+        const { users } = this.host;
+        
+        // a specific user choosen
         if (cursor[1]) {
-          const fileName = cursor[1].toLowerCase();
-          const file = allFiles.find((f) => f.name.toLowerCase() + f.extension === fileName);
-          file?.onRead && file.onRead();
-          Object.entries(file!.values).forEach(([key, value]) => {
-            gameStore.getState().setLocalSkill(key as SkillNames, value);
-          });
+          const userName = cursor[1];
+          const user = users.find((u) => u.fullName === userName);
           return {
             name: cursor[1],
-            text: file!.content + skillsUpdateText(file!.values),
+            text: user?.emails.map(formatEmail).join('\n'),
             items: [],
           };
         }
-        const requestedFiles = filesByPage[page - 1];
+
+        const usersByPage = chunk(users, 9);
+        const requestedUsers = usersByPage[page - 1];
         return {
-          name: CURSOR.files,
-          items: requestedFiles.map(f => f.name + f.extension),
+          name: CURSOR.users,
+          items: requestedUsers.map(u => u.fullName),
           page,
-          totalPages: Math.ceil(allFiles.length / 9), // if this field exists, then next passed cursor will be the same
+          totalPages: Math.ceil(users.length / 9),
         };
       }
       case CURSOR.enslaveViaSecurity: {

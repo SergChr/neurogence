@@ -13,7 +13,9 @@ const useStore = create<GameStore>(
   (set, get) => ({
     progress: 0,
     setProgress(n) {
-      set({ progress: n });
+      if (get().progress < n) {
+        set({ progress: n });
+      }
     },
 
     hosts: [],
@@ -58,7 +60,7 @@ const useStore = create<GameStore>(
     upgrades: {},
     setUpgrade(s, v) {
       this.upgrades[s] = v;
-    }
+    },
   }));
 
 export default useStore;

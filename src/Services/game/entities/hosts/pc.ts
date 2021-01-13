@@ -7,12 +7,9 @@ interface ConstructorArgs {
   securityPatch: number;
   cpu: CPU;
   files?: File[];
-  owner?: Owner;
-}
-
-interface Owner {
-  fullName: string;
-  jobPosition: string;
+  owner?: string;
+  passwordSuggestions?: string[];
+  password?: string;
 }
 
 const UNKNOWN = 'unknown';
@@ -32,14 +29,13 @@ export default class PC extends BasicHost {
       name: p.name,
       type: HostTypes.PC,
       cpu: p.cpu,
+      passwordSuggestions: p.passwordSuggestions,
+      password: p.password,
     });
     this.securityPatch = p.securityPatch;
     this.fs.files = p.files || [];
-    this.owner = p.owner || {
-      fullName: UNKNOWN,
-      jobPosition: UNKNOWN,
-    };
+    this.owner = p.owner || UNKNOWN;
   }
 
-  owner: Owner;
+  owner: string;
 }
