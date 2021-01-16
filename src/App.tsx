@@ -12,6 +12,9 @@ Game.run();
 
 const Stack = createStackNavigator();
 
+// TODO: remove
+// Current gameplay (as for 13 January 2021) estimation time: 5.5 mins
+
 const App = () => {
 	useEffect(() => {
 		StatusBar.setHidden(true);

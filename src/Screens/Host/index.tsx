@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import Button from './components/Button';
 import Terminal from './components/Terminal';
 import TopPanel from '../../Components/TopPanel';
-// import { gameStore } from '../../Store';
+import { gameStore } from '../../Store';
 import commonStyle from '../../Styles/common';
 import HostTerminal from '../../Services/game/entities/hostTerminal';
 import s from './styles';
@@ -47,7 +47,14 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    console.log('MOUNTED')
     const { hostName } = this.props.route.params;
+    const game = gameStore.getState();
+    const host = game.hosts.find(h => h.name === hostName);
+    if (host) {
+      game.updateHost(hostName, { connected: false });
+      console.log(gameStore.getState().hosts.find(h => h.name === hostName))
+    }
     this.terminal = new HostTerminal(hostName);
     const c = this.terminal.getCursor();
     this.updateCursor(c);

@@ -88,11 +88,15 @@ export default class PCCursorController {
             };
           }
         }
+        const passwords = this.getPasswords(this.host.passwordSuggestions);
+        const byPage = chunk(passwords, 9);
+        const toBeShown = byPage[page - 1];
         return {
           name: CURSOR.connect,
           text: 'Password?',
-          items: this.getPasswords(this.host.passwordSuggestions),
-          totalPages: Math.ceil(this.getPasswords().length / 9),
+          page,
+          items: toBeShown,
+          totalPages: Math.ceil(passwords.length / 9),
         }
       }
       case CURSOR.files: {

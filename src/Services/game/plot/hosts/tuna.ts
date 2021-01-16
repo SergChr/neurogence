@@ -69,7 +69,7 @@ export default new PC({
       }
     }),
     new File({
-      name: `lima_enable_metrics_panel`,
+      name: `lima_improve_metrics_panel`,
       content: metricsInterface,
       extension: FileExtensions.C,
       values: { [SkillNames.Programming]: 0.0001 },
@@ -81,11 +81,11 @@ export default new PC({
         game.updateLocalhost({
           upgrades: [{
             id: Upgrades.MetricsPanel,
-            description: 'Enable the metrics panel',
+            description: 'Improve the metrics panel',
             make() {
               game.setUpgrade('dashboard', true);
               game.setLocalSkill(SkillNames.Programming, 0.0001);
-              return 'Enabled. You can now see some of the machine metrics such as computing power.'
+              return 'Enabled. You can now see the machine\'s skills.'
             },
           }],
         });

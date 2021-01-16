@@ -2,8 +2,6 @@ import PC from '../../entities/hosts/pc';
 import { File, FileExtensions } from '../../entities/file';
 import c from '../../../../Config/constants';
 import { SkillNames } from '../../entities/hosts/localhost';
-import { LogEntryTypes } from '../../../../Store/interfaces';
-import { Upgrades } from '../../entities/hosts/enums';
 
 const dialogEmail = `
 From: Alisson Parks

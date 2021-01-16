@@ -52,7 +52,11 @@ const useStore = create<GameStore>(
       const hosts = [...get().hosts];
       const hostIndex = hosts.findIndex((h) => h.name === name);
       if (payload.enslaved) {
-        hosts[hostIndex]?.enslave();
+        hosts[hostIndex].enslave();
+      }
+      if (payload.connected !== undefined) {
+        hosts[hostIndex].connected = payload.connected;
+        console.log(hosts[hostIndex].connected)
       }
       set({ hosts });
     },

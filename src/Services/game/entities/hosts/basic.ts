@@ -64,6 +64,10 @@ export default class Host {
     return this.cpu.cores * this.cpu.frequency * this.cpu.ops;
   }
 
+  public get TFLOPS() {
+    return (this.cpu.cores * this.cpu.frequency * this.cpu.ops) / 1000000000000;
+  }
+
   public addFile(file: File) {
     this.fs.files.push(file);
   }
