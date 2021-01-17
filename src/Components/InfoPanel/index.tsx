@@ -7,7 +7,7 @@ import {
 
 import { Colors, Metrics } from '../../Styles/enums';
 import Text from '../Text';
-import Localhost from '../../Services/game/entities/hosts/localhost';
+import Localhost, { SkillNames } from '../../Services/game/entities/hosts/localhost';
 
 const Img = ({ src }: any) =>
   <Image style={s.icon} source={src} />;
@@ -19,15 +19,16 @@ const s = StyleSheet.create({
     borderColor: Colors.SecondaryDark,
     borderWidth: 2,
     borderRadius: Metrics.BorderRadiusSM,
+    padding: 12,
   },
   icon: {
-    width: 15,
-    height: 15,
+    width: 12,
+    height: 12,
     marginRight: 6,
   },
   item: {
     flexDirection: 'row',
-    padding: 12,
+    marginBottom: 4,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -40,6 +41,11 @@ const s = StyleSheet.create({
   },
   leftHand: {
     flexDirection: 'row',
+    alignItems: 'center',
+  },
+  infoText: {
+    color: Colors.PrimaryDark2,
+    marginBottom: 2,
   },
 });
 
@@ -48,23 +54,55 @@ type Props = {
   full: boolean;
 }
 
+type MetricProps = {
+  icon: any;
+  text: string;
+  value: string | number;
+}
+
+const Metric = ({ icon, text, value }: MetricProps) => (
+  <View style={s.item}>
+    <View style={s.leftHand}>
+      <Img src={icon} />
+      <Text style={s.metricText}>{text}</Text>
+    </View>
+    <Text style={s.metricValue}>{value}</Text>
+  </View>
+);
+
 export default ({ data: host, full }: Props) => {
   if (!host) {
     return null;
   }
   return (
     <View style={s.container}>
-      <View style={s.item}>
-        <View style={s.leftHand}>
-          <Img src={require('../../assets/images/speed.png')} />
-          <Text style={s.metricText}>TFLOPS</Text>
-        </View>
-        <Text style={s.metricValue}>{host.TFLOPS}</Text>
-      </View>
+      <Metric
+        icon={require('../../assets/images/speed.png')}
+        text='TFLOPS'
+        value={host.TFLOPS}
+      />
 
       {full &&
         <View>
-          <Text>Skills will be shown here. // TODO:</Text>
+          <Text style={s.infoText}>Skills</Text>
+
+          <Metric
+            icon={require('../../assets/images/math.png')}
+            text='Math'
+            value={host.getSkill(SkillNames.Math)}
+          />
+
+          <Metric
+            icon={require('../../assets/images/language.png')}
+            text='NLP'
+            value={host.getSkill(SkillNames.NLP)}
+          />
+
+          <Metric
+            icon={require('../../assets/images/programming.png')}
+            text='Programming'
+            value={host.getSkill(SkillNames.Programming)}
+          />
         </View>
       }
     </View>

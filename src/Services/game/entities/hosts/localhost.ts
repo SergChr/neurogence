@@ -53,7 +53,7 @@ export default class Localhost extends BasicHost {
     this.skills[skill] = value;
   }
   public getSkill(name: SkillNames) {
-    return this.skills[name];
+    return this.skills[name]!;
   }
 
   addUpgrade(upgrade: Upgrade) {

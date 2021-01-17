@@ -9,7 +9,7 @@ export default {
     LOCALHOST_CPU_OPS: 4,
     SKILLS: {
       IMG_VIDEO_PROCESS: 0,
-      NLP: 0,
+      NLP: 0.0001,
       MATH: 0,
       PHYSICS: 0,
       PROGRAMMING: 0,
