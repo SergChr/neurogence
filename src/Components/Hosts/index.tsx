@@ -29,8 +29,8 @@ const s = StyleSheet.create({
     marginBottom: 3,
   },
   icon: {
-    height: 16,
-    width: 16,
+    height: 14,
+    width: 14,
   },
   text: {
     color: Colors.Primary,

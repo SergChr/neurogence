@@ -11,3 +11,15 @@ export enum Upgrades {
   ExploitVersion = 'exploitVersion',
   MetricsPanel = 'metricsPanel',
 }
+
+export enum OS {
+  Windows = 'Windows',
+  MacOS = 'macOS',
+  Ubuntu = 'Ubuntu',
+  Fedora = 'Fedora',
+  CentOS = 'CentOS',
+  ChromeOS = 'ChromeOS',
+  FreeBSD = 'FreeBSD',
+  Debian = 'Debian',
+  Solaris = 'Solaris',
+}

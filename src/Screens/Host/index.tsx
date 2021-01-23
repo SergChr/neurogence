@@ -47,7 +47,6 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    console.log('MOUNTED')
     const { hostName } = this.props.route.params;
     const game = gameStore.getState();
     const host = game.hosts.find(h => h.name === hostName);

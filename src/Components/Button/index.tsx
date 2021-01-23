@@ -25,6 +25,8 @@ const s = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		borderRadius: Metrics.BorderRadiusSM,
+		paddingRight: 12,
+		paddingLeft: 12,
 	},
   primary: {
     backgroundColor: Colors.Primary,

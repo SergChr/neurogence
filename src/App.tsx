@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import MainScreen from './Screens/Main';
 import HostScreen from './Screens/Host';
+import BotsScreen from './Screens/Bots';
 import Game from './Services/game';
 
 Game.run();
@@ -29,6 +30,10 @@ const App = () => {
         <Stack.Screen
           name="Host"
           component={HostScreen}
+        />
+        <Stack.Screen
+          name="Bots"
+          component={BotsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

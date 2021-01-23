@@ -26,6 +26,12 @@ export enum Metrics {
 
 	BorderRadiusSM = 6,
 
+	FontSizeXXSM = 8,
+	FontSizeXSM = 11,
 	FontSizeSM = 14,
+	FontSizeSM1 = 16,
+	FontSizeSM2 = 18,
+	FontSizeSM3 = 20,
+	FontSizeM0 = 22,
 	FontSizeM = 24,
 }

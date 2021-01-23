@@ -10,7 +10,7 @@ import {
 import { Colors } from '../../Styles/enums';
 
 type Props = {
-  availableItems?: number;
+  botsAvailable?: boolean;
   navigation: any;
 }
 
@@ -39,7 +39,7 @@ const Img = ({ src }: any) =>
   <Image style={s.icon} source={src} />;
 
 export default ({
-  availableItems = 1,
+  botsAvailable,
   navigation,
 }: Props) => {
   const MenuItem = ({ to, icon }: any) => {
@@ -65,10 +65,12 @@ export default ({
         icon={require('../../assets/images/terminal.png')}
       />
 
+    {botsAvailable &&
       <MenuItem
-        to='Dashboard'
-        icon={require('../../assets/images/gauge.png')}
+        to='Bots'
+        icon={require('../../assets/images/lab.png')}
       />
+    }
     </View>
   )
 }

@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import { View } from 'react-native';
 
 import commonStyle from '../../Styles/common';;
 import Button, { ButtonTypes } from '../../Components/Button';
@@ -12,45 +9,7 @@ import Sidebar from '../../Components/Sidebar';
 import InfoPanel from '../../Components/InfoPanel';
 import { logStore, gameStore } from '../../Store';
 import scanNetwork from '../../Services/game/actions/scanNetwork';
-import { Metrics } from '../../Styles/enums';
-
-const s = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-  innerContainer: {
-    padding: 10,
-    flex: 1,
-    flexDirection: 'row',
-  },
-  col: {
-    flexDirection: 'column',
-    flex: 1,
-    height: '100%',
-  },
-  output: {
-    flex: 2,
-  },
-  buttons: {
-    flex: 1,
-    marginLeft: 6,
-    marginTop: 6,
-  },
-  hosts: {
-    marginTop: 6,
-    flex: 2,
-  },
-  infoPanel: {
-    flex: 1,
-    marginLeft: 6,
-  },
-  widthSM: {
-    flex: 1,
-  },
-  widthM: {
-    flex: 2,
-  },
-});
+import s from './styles';
 
 export default ({ navigation }: any) => {
   const log = logStore(s => s.log);
@@ -61,7 +20,10 @@ export default ({ navigation }: any) => {
 
   return (
     <View style={{...s.container, ...commonStyle.screen}}>
-      {/* <Sidebar navigation={navigation} availableItems={2} />} */}
+      <Sidebar
+        navigation={navigation}
+        botsAvailable
+      />
 
       <View style={s.innerContainer}>
         <View style={{...s.col, ...s.widthM}}>
