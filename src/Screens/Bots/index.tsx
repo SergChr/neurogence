@@ -45,6 +45,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
           <FlatList>
             {items.map(i => (
               <BotListItem
+                key={i.name}
                 name={i.name}
                 all={i.all}
                 online={i.online}

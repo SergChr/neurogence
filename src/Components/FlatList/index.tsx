@@ -9,9 +9,9 @@ import { Metrics } from '../../Styles/enums';
 type Props = {
   children: Element[];
   style?: Record<string, string | number>;
+  horizontal?: boolean;
+  separator?: any;
 }
-
-const ITEM_HEIGHT = 155;
 
 const getLayoutOffset = (h: number[], i: number) => {
   const offset = h.slice(0, i + 1).reduce((a, c) => a + c, 0) || 0;
@@ -21,9 +21,12 @@ const getLayoutOffset = (h: number[], i: number) => {
 export default ({
   children = [],
   style,
+  horizontal = false,
+  separator,
 }: Props) => {
 	let elem: FlatList<Element>;
-  const itemHeights: number[] = [];
+  const itemSizes: number[] = [];
+  const ITEM_SIZE = horizontal ? 600 : 155;
 
 	return (
     <FlatList
@@ -34,7 +37,11 @@ export default ({
         <View
           key={index}
           onLayout={object => {
-            itemHeights[index] = object.nativeEvent.layout.height;
+            if (horizontal) {
+              itemSizes[index] = object.nativeEvent.layout.width;
+            } else {
+              itemSizes[index] = object.nativeEvent.layout.height;
+            }
           }}
         >
           {item}
@@ -42,13 +49,16 @@ export default ({
       )}
       keyExtractor={(el, i) => i.toString()}
       getItemLayout={(data, index) => {
-        if (itemHeights.length < 1) {
-          return { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index };
+        if (itemSizes.length < 1) {
+          return { length: ITEM_SIZE, offset: ITEM_SIZE * index, index };
         }
-        return { length: itemHeights[index] || 0, offset: getLayoutOffset(itemHeights, index), index };
+        return { length: itemSizes[index] || 0, offset: getLayoutOffset(itemSizes, index), index };
       }}
       ListFooterComponent={<View style={{ marginBottom: Metrics.PaddingXSM }} />}
-      onContentSizeChange={() => elem.scrollToEnd()}
+      onContentSizeChange={() => !horizontal && elem.scrollToEnd()}
+      horizontal={horizontal}
+      showsHorizontalScrollIndicator={false}
+      ItemSeparatorComponent={separator}
     >
     </FlatList>
 	);

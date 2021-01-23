@@ -8,8 +8,9 @@ import { Colors, Metrics } from '../../Styles/enums';
 import Text from '../Text';
 
 export enum ButtonTypes {
-	Primary = "primary",
-	Secondary = "secondary",
+	Primary = 'primary',
+	Secondary = 'secondary',
+	Helper = 'helper',
 }
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 	text: string,
 	onPress?: () => void;
 	disabled?: boolean;
+	style?: Record<string, string | number>;
 }
 
 const s = StyleSheet.create({
@@ -42,6 +44,10 @@ const s = StyleSheet.create({
 	disabledText: {
 		color: Colors.Secondary,
 	},
+	helper: {
+		minWidth: 40,
+		backgroundColor: Colors.Primary,
+	},
 });
 
 export default ({
@@ -49,11 +55,12 @@ export default ({
 	text,
 	onPress,
 	disabled = false,
+	style = {},
 }: Props) => {
-	const buttonStyle = type === ButtonTypes.Primary ? s.primary : s.secondary;
+	const buttonStyle = s[type];
 	return (
 		<TouchableOpacity
-			style={{...s.common, ...buttonStyle, ...(disabled && s.disabled)}}
+			style={{...s.common, ...buttonStyle, ...(disabled && s.disabled), ...style}}
 			onPress={onPress}
 			disabled={disabled}
 		>

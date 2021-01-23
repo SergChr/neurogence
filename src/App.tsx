@@ -2,16 +2,21 @@ import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 import MainScreen from './Screens/Main';
 import HostScreen from './Screens/Host';
 import BotsScreen from './Screens/Bots';
+import BotDetailsScreen from './Screens/BotDetails';
 import Game from './Services/game';
 
 Game.run();
 
 const Stack = createStackNavigator();
+
+const TransitionScreenOptions = {
+  ...TransitionPresets.RevealFromBottomAndroid,
+};
 
 // TODO: remove
 // Current gameplay (as for 13 January 2021) estimation time: 5.5 mins
@@ -22,7 +27,7 @@ const App = () => {
 	});
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode="none">
+      <Stack.Navigator screenOptions={TransitionScreenOptions} headerMode="none">
         <Stack.Screen
           name="Home"
           component={MainScreen}
@@ -34,6 +39,10 @@ const App = () => {
         <Stack.Screen
           name="Bots"
           component={BotsScreen}
+        />
+        <Stack.Screen
+          name="BotDetails"
+          component={BotDetailsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
