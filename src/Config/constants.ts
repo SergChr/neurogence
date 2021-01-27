@@ -22,4 +22,6 @@ export default {
     REGULAR: 'Baumans-Regular',
     BOLD: 'Arya-Bold',
   },
+
+  POLLING_INTERVAL: 2000,
 };

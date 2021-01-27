@@ -56,11 +56,19 @@ type Props = {
   mainText: string;
   secondaryText: string;
   short?: boolean;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-export default ({ mainText, secondaryText, short = false }: Props) => (
+export default ({
+  mainText,
+  secondaryText,
+  short = false,
+  onEdit,
+  onDelete,
+}: Props) => (
   <View style={{...s.item, ...(short && s.short)}}>
-    <TouchableOpacity style={s.left}>
+    <TouchableOpacity style={s.left} onPress={onEdit}>
       <View style={s.row}>
         <Text style={s.mainText}>{mainText}</Text>
         <Image style={s.editIcon} source={require('../../../../assets/images/pencil.png')} />
@@ -68,7 +76,7 @@ export default ({ mainText, secondaryText, short = false }: Props) => (
       <Text style={s.secondaryText}>{secondaryText}</Text>
     </TouchableOpacity>
 
-    <TouchableOpacity style={s.right}>
+    <TouchableOpacity style={s.right} onPress={onDelete}>
       <Image style={s.trashIcon} source={require('../../../../assets/images/trash.png')} />
     </TouchableOpacity>
   </View>

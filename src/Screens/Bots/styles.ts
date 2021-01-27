@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, Metrics } from '../../Styles/enums';
+import { Colors } from '../../Styles/enums';
 
 export default StyleSheet.create({
   container: {
@@ -9,6 +9,14 @@ export default StyleSheet.create({
   innerContainer: {
     padding: 10,
     flex: 1,
-    flexDirection: 'row',
+  },
+  emptySection: {
+    padding: 50,
+    alignSelf: 'center',
+    alignContent: 'center',
+  },
+  emptyText: {
+    color: Colors.DarkGrey,
+    marginBottom: 10,
   },
 });

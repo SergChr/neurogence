@@ -5,7 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   GameStore,
 } from './interfaces';
-import Localhost from 'Services/game/entities/hosts/localhost';
+import Localhost from '../Services/game/entities/hosts/localhost';
+import Bot from '../Services/game/entities/bot';
 
 // TODO: add persist()
 // const useStore = create<GameStore>(persist(
@@ -65,6 +66,22 @@ const useStore = create<GameStore>(
     setUpgrade(s, v) {
       this.upgrades[s] = v;
     },
+
+    bots: [],
+    updateBot(data, toRemove) {
+      const bots = [...get().bots];
+      const botIndex = bots.findIndex(b => b.id === data.id);
+      if (botIndex === -1) {
+        bots.push(new Bot(data));
+      } else if (toRemove) {
+        bots.splice(botIndex, 1);
+      } else {
+        Object.entries(data).forEach(([key, value]) => {
+          (bots[botIndex] as any)[key] = value;
+        });
+      }
+      set({ bots });
+    }
   }));
 
 export default useStore;

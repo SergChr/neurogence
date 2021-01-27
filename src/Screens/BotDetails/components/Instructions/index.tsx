@@ -1,33 +1,67 @@
 import React from 'react';
 import { View } from 'react-native';
+import Modal from 'react-native-modal';
 
 import Instruction from './Item';
 import FlatList from '../../../../Components/FlatList';
 import s from './styles';
 import Text from '../../../../Components/Text';
 import Button, { ButtonTypes } from '../../../../Components/Button';
+import { Script } from '../../../../Services/game/entities/bot/interface';
+import { ScriptUpdateInstructions, ActionTypes } from '../../interface';
 
 type Props = {
-  data: any;
+  data: Script[];
+  onUpdate: (p: ScriptUpdateInstructions) => void;
 };
 
-type State = {};
+enum Modes {
+  Add = 'add',
+  Edit = 'edit',
+};
+
+type State = {
+  mode: Modes | null;
+  indexes: [number, number?] | null;
+};
 
 export default class HostScreen extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
   }
 
-  state: State = {}
+  state = {
+    mode: null,
+    indexes: null,
+  }
 
-  componentDidMount() {
+  requestEdit = () => {
+
+  }
+
+  delete = () => {
+
+  }
+
+  addItemToRow = () => {
+
+  }
+
+  addScript = () => {
 
   }
 
   render() {
     const { data = [] } = this.props;
+    const { mode } = this.state;
     return (
       <View style={s.container}>
+        {/* <Modal isVisible={true}>
+          <View style={{ flex: 1 }}>
+            <Text>I am the modal content!</Text>
+          </View>
+        </Modal> */}
+
         <FlatList>
           {data.map((item, index) => {
             if (Array.isArray(item)) {
@@ -46,6 +80,8 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                           short
                           mainText={script.type}
                           secondaryText={script.thenText}
+                          onEdit={() => {}}
+                          onDelete={this.delete}
                         />
                         {hasOrSeparator && <Text style={s.or}>OR</Text>}
                         {hasAddButton && (
@@ -53,6 +89,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                             style={s.addButton}
                             text="+"
                             type={ButtonTypes.Helper}
+                            onPress={this.addItemToRow}
                           />
                         )}
                       </View>
@@ -66,6 +103,8 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                   <Instruction
                     mainText={item.type}
                     secondaryText={item.thenText}
+                    onEdit={this.requestEdit}
+                    onDelete={this.delete}
                   />
                 </View>
               );
@@ -75,6 +114,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
         <Button
           type={ButtonTypes.Primary}
           text="Add instruction"
+          onPress={this.addScript}
         />
       </View>
     );
