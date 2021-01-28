@@ -15,12 +15,17 @@ export enum ScriptTypes {
   CloneItself = 'Clone itself', // automation! you don't need to click "Release"
 }
 
+export enum ScriptGroups {
+  Login = 'login',
+}
+
 export type ScriptItem = {
   type: ScriptTypes;
   thenText: string;
   shouldBeLast: boolean;
   description: string;
   hasOrSupport: boolean;
+  group?: ScriptGroups;
 };
 
 export type Script = ScriptItem | ScriptItem[];

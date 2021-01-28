@@ -10,6 +10,7 @@ export enum Colors {
 	SecondaryDark = '#00344d',
 
 	Grey = '#D6D6D6',
+	GreyDark = '#b8b8b8',
 	DarkGrey = '#686564',
 	Orange = '#C47631',
 	Red = '#C1451F',

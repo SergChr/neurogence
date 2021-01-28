@@ -11,6 +11,7 @@ type Props = {
   style?: Record<string, string | number>;
   horizontal?: boolean;
   separator?: any;
+  disableScrollToEnd?: boolean;
 }
 
 const getLayoutOffset = (h: number[], i: number) => {
@@ -23,6 +24,7 @@ export default ({
   style,
   horizontal = false,
   separator,
+  disableScrollToEnd = false,
 }: Props) => {
 	let elem: FlatList<Element>;
   const itemSizes: number[] = [];
@@ -55,7 +57,12 @@ export default ({
         return { length: itemSizes[index] || 0, offset: getLayoutOffset(itemSizes, index), index };
       }}
       ListFooterComponent={<View style={{ marginBottom: Metrics.PaddingXSM }} />}
-      onContentSizeChange={() => !horizontal && elem.scrollToEnd()}
+      onContentSizeChange={() => {
+        if (disableScrollToEnd) {
+          return null;
+        }
+        return !horizontal && elem.scrollToEnd();
+      }}
       horizontal={horizontal}
       showsHorizontalScrollIndicator={false}
       ItemSeparatorComponent={separator}

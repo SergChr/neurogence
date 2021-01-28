@@ -24,4 +24,37 @@ export default StyleSheet.create({
   addButton: {
     marginLeft: 8,
   },
+  modal: {
+    width: '60%',
+    flex: 1,
+    alignSelf: 'center'
+  },
+  modalView: {
+    backgroundColor: Colors.PrimaryLight,
+    flex: 1,
+    borderRadius: Metrics.BorderRadiusSM,
+    padding: 15,
+  },
+  modalList: {},
+  modalItem: {
+    marginBottom: 8,
+    padding: 8,
+    backgroundColor: Colors.PrimaryDark2,
+    borderRadius: Metrics.BorderRadiusSM,
+  },
+  modalItemHighlighted: {
+    backgroundColor: Colors.Primary,
+  },
+  modalItemTitle: {
+    color: Colors.Grey,
+    fontWeight: 'bold',
+  },
+  modalItemDescription: {
+    fontSize: Metrics.FontSizeXSM,
+    color: Colors.GreyDark
+  },
+  modalItemWarn: {
+    fontSize: Metrics.FontSizeXSM,
+    color: Colors.Orange,
+  },
 });

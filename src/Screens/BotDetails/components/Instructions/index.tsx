@@ -1,14 +1,15 @@
 import React from 'react';
 import { View } from 'react-native';
-import Modal from 'react-native-modal';
 
 import Instruction from './Item';
 import FlatList from '../../../../Components/FlatList';
 import s from './styles';
 import Text from '../../../../Components/Text';
 import Button, { ButtonTypes } from '../../../../Components/Button';
-import { Script } from '../../../../Services/game/entities/bot/interface';
-import { ScriptUpdateInstructions, ActionTypes } from '../../interface';
+import Modal from './modal';
+import { Script, ScriptItem, ScriptTypes } from '../../../../Services/game/entities/bot/interface';
+import scripts from '../../../../Services/game/entities/bot/scripts';
+import { ActionTypes, ScriptUpdateInstructions } from '../../interface';
 
 type Props = {
   data: Script[];
@@ -23,6 +24,8 @@ enum Modes {
 type State = {
   mode: Modes | null;
   indexes: [number, number?] | null;
+  modalVisible: boolean;
+  currentScript: string | null;
 };
 
 export default class HostScreen extends React.PureComponent<Props, State> {
@@ -33,10 +36,12 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   state = {
     mode: null,
     indexes: null,
+    modalVisible: false,
+    currentScript: null,
   }
 
   requestEdit = () => {
-
+    this.setState({ mode: Modes.Edit, modalVisible: true });
   }
 
   delete = () => {
@@ -47,20 +52,44 @@ export default class HostScreen extends React.PureComponent<Props, State> {
 
   }
 
-  addScript = () => {
+  toggleModalVisibility = () => this.setState(({ modalVisible }) => ({ modalVisible: !modalVisible }));
 
+  addScript = () => {
+    this.setState({ mode: Modes.Add, modalVisible: true });
+  }
+
+  pickValue = (scriptItem: ScriptItem) => {
+    const { mode } = this.state;
+    let actionType = ActionTypes.Add;
+    if (mode === Modes.Edit) {
+      actionType = ActionTypes.Update;
+    }
+    // TODO: add delete action type
+
+    const data = {
+      actionType,
+      // TODO: if actionType === update
+      // index:
+      // secondaryIndex:
+      payload: scriptItem,
+    };
+    this.props.onUpdate(data);
+    this.setState({ modalVisible: false, mode: null, currentScript: null });
   }
 
   render() {
     const { data = [] } = this.props;
-    const { mode } = this.state;
+    const { modalVisible, currentScript } = this.state;
     return (
       <View style={s.container}>
-        {/* <Modal isVisible={true}>
-          <View style={{ flex: 1 }}>
-            <Text>I am the modal content!</Text>
-          </View>
-        </Modal> */}
+        {modalVisible && (
+          <Modal
+            value={currentScript}
+            values={scripts}
+            onClose={this.toggleModalVisibility}
+            onPick={this.pickValue}
+          />
+        )}
 
         <FlatList>
           {data.map((item, index) => {
