@@ -60,7 +60,7 @@ type Props = {
   onDelete: () => void;
 }
 
-export default ({
+export default React.memo(({
   mainText,
   secondaryText,
   short = false,
@@ -80,4 +80,4 @@ export default ({
       <Image style={s.trashIcon} source={require('../../../../assets/images/trash.png')} />
     </TouchableOpacity>
   </View>
-);
+));

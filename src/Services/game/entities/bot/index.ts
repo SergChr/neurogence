@@ -8,6 +8,7 @@ type BotCreationProps = {
   name?: string;
   scripts?: Script[];
   targetOS?: OS;
+  id?: string;
 };
 
 export type BotData = {
@@ -26,7 +27,7 @@ const chance = new Chance();
 
 export default class Bot {
   constructor(p: BotCreationProps = {}) {
-    this.id = chance.guid();
+    this.id = p.id || chance.guid();
     let name = chance.word();
     name = `${name[0].toUpperCase()}${name.slice(1, name.length - 1)}`;
     this.name = p.name || name;

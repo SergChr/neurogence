@@ -23,7 +23,7 @@ enum Modes {
 
 type State = {
   mode: Modes | null;
-  indexes: [number, number?] | null;
+  indexes: number[] | null;
   modalVisible: boolean;
   currentScript: string | null;
 };
@@ -40,16 +40,24 @@ export default class HostScreen extends React.PureComponent<Props, State> {
     currentScript: null,
   }
 
-  requestEdit = () => {
-    this.setState({ mode: Modes.Edit, modalVisible: true });
+  requestEdit = (i: number, ii?: number) => {
+    const indexes = [i];
+    if (ii) {
+      indexes.push(ii);
+    }
+    this.setState({ mode: Modes.Edit, modalVisible: true, indexes });
   }
 
-  delete = () => {
-
+  delete = (i: number, ii?: number) => {
+    this.props.onUpdate({
+      index: i,
+      secondaryIndex: ii,
+      actionType: ActionTypes.Delete,
+    });
   }
 
   addItemToRow = () => {
-
+    //: not implemented
   }
 
   toggleModalVisibility = () => this.setState(({ modalVisible }) => ({ modalVisible: !modalVisible }));
@@ -59,22 +67,20 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   }
 
   pickValue = (scriptItem: ScriptItem) => {
-    const { mode } = this.state;
+    const { mode, indexes } = this.state;
     let actionType = ActionTypes.Add;
     if (mode === Modes.Edit) {
       actionType = ActionTypes.Update;
     }
-    // TODO: add delete action type
 
     const data = {
       actionType,
-      // TODO: if actionType === update
-      // index:
-      // secondaryIndex:
+      index: indexes?.[0],
+      secondaryIndex: indexes?.[1],
       payload: scriptItem,
     };
     this.props.onUpdate(data);
-    this.setState({ modalVisible: false, mode: null, currentScript: null });
+    this.setState({ modalVisible: false, mode: null, currentScript: null, indexes: [] });
   }
 
   render() {
@@ -109,8 +115,8 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                           short
                           mainText={script.type}
                           secondaryText={script.thenText}
-                          onEdit={() => {}}
-                          onDelete={this.delete}
+                          onEdit={() => this.requestEdit(index, i)}
+                          onDelete={() => this.delete(index, i)}
                         />
                         {hasOrSeparator && <Text style={s.or}>OR</Text>}
                         {hasAddButton && (
@@ -132,8 +138,8 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                   <Instruction
                     mainText={item.type}
                     secondaryText={item.thenText}
-                    onEdit={this.requestEdit}
-                    onDelete={this.delete}
+                    onEdit={() => this.requestEdit(index)}
+                    onDelete={() => this.delete(index)}
                   />
                 </View>
               );

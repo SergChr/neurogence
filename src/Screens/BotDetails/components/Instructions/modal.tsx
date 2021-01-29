@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 
@@ -37,7 +37,7 @@ const Item = ({ value, description, shouldBeLast, highlighted, onPick }: ItemPro
   </TouchableOpacity>
 );
 
-export default ({
+const EditingModal = ({
   value,
   values,
   onClose,
@@ -69,3 +69,5 @@ export default ({
     </Modal>
   );
 }
+
+export default memo(EditingModal);

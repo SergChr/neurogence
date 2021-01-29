@@ -105,19 +105,22 @@ export default class HostScreen extends React.PureComponent<Props, State> {
               onUpdate={this.updateInstructions}
             />
           </View>
-          <Button
-            type={ButtonTypes.Primary}
-            text='Save'
-            onPress={this.save}
-          />
-
-          {saved &&
+          
+          <View style={s.rightBlock}>
             <Button
               type={ButtonTypes.Primary}
-              text='Remove'
-              onPress={this.remove}
+              text='Save'
+              onPress={this.save}
             />
-          }
+
+            {saved &&
+              <Button
+                type={ButtonTypes.Primary}
+                text='Remove'
+                onPress={this.remove}
+              />
+            }
+          </View>
         </View>
       </View>
     );
