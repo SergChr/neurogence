@@ -16,7 +16,9 @@ export enum ScriptTypes {
 }
 
 export enum ScriptGroups {
+  OutsideHost = 'outsideHost',
   Login = 'login',
+  LoggedIn = 'loggedIn',
 }
 
 export type ScriptItem = {

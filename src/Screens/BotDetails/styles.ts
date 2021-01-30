@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Colors, Metrics } from '../../Styles/enums';
 
 export default StyleSheet.create({
   innerContainer: {
@@ -12,4 +13,24 @@ export default StyleSheet.create({
     flex: 1,
     margin: 5,
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+    justifyContent: 'space-between',
+  },
+  rightBlockText: {
+    flex: 0.5,
+    color: Colors.Grey
+  },
+  textInput: {
+    backgroundColor: Colors.SecondaryDark,
+    borderRadius: Metrics.BorderRadiusSM,
+    color: Colors.Primary,
+    // TODO: fix (the input isn't well-aligned with Picker)
+    paddingLeft: 10,
+    marginLeft: 7,
+    flex: 1,
+    fontSize: Metrics.FontSizeSM1,
+  }
 });

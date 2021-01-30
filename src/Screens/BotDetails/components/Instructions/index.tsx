@@ -7,7 +7,7 @@ import s from './styles';
 import Text from '../../../../Components/Text';
 import Button, { ButtonTypes } from '../../../../Components/Button';
 import Modal from './modal';
-import { Script, ScriptItem, ScriptTypes } from '../../../../Services/game/entities/bot/interface';
+import { Script, ScriptItem } from '../../../../Services/game/entities/bot/interface';
 import scripts from '../../../../Services/game/entities/bot/scripts';
 import { ActionTypes, ScriptUpdateInstructions } from '../../interface';
 
@@ -56,8 +56,8 @@ export default class HostScreen extends React.PureComponent<Props, State> {
     });
   }
 
-  addItemToRow = () => {
-    //: not implemented
+  addItemToRow = (i: number) => {
+    this.setState({ mode: Modes.Add, modalVisible: true, indexes: [i] });
   }
 
   toggleModalVisibility = () => this.setState(({ modalVisible }) => ({ modalVisible: !modalVisible }));
@@ -124,7 +124,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                             style={s.addButton}
                             text="+"
                             type={ButtonTypes.Helper}
-                            onPress={this.addItemToRow}
+                            onPress={() => this.addItemToRow(i)}
                           />
                         )}
                       </View>

@@ -19,11 +19,13 @@ const s = StyleSheet.create({
     borderRadius: Metrics.BorderRadiusSM,
   },
   short: {
-    minWidth: windowWidth() / 3, // TODO: test on different devices
+    minWidth: windowWidth() / 2.5, // TODO: test on different devices
   },
   left: {
     flex: 4,
-    padding: 8,
+    paddingTop: 8,
+    paddingLeft: 8,
+    paddingBottom: 8,
   },
   mainText: {
     color: Colors.Grey,
