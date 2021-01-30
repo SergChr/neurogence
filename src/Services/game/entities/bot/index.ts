@@ -2,7 +2,6 @@ import Chance from 'chance';
 
 import { OS } from '../hosts/enums';
 import { Script, ScriptItem } from './interface';
-import { gameStore } from '../../../../Store';
 
 type BotCreationProps = {
   name?: string;
@@ -58,10 +57,5 @@ export default class Bot {
       description: p.description!,
       hasOrSupport: p.hasOrSupport || false,
     };
-  }
-
-  save() {
-    const store = gameStore.getState();
-    store.updateBot(this);
   }
 }

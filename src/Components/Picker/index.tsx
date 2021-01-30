@@ -13,7 +13,7 @@ type Value = {
 type Props = {
   value?: string | number;
   style?: object;
-  onChange: (v: string) => void;
+  onChange: (v: string | number, i: number) => void;
   values: Value[];
 };
 

@@ -1,5 +1,5 @@
 export default {
-  // by how much the localhost should have more computing power
+  // by how much more the localhost should have computing power
   // to enslave the other host
   COMP_TRANSCENDENCE_COEF: 5,
 
@@ -17,7 +17,7 @@ export default {
     },
   },
 
-  COMPANY: 'Neurocord',
+  COMPANY: 'Ambicord',
   FONT_FAMILY: {
     REGULAR: 'Baumans-Regular',
     BOLD: 'Arya-Bold',

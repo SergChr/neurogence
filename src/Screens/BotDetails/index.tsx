@@ -135,7 +135,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
             <View style={s.row}>
               <Text style={s.rightBlockText}>Target OS:</Text>
               <Picker
-                onChange={(v: string) => this.setField('targetOS', v)}
+                onChange={(v: string | number) => this.setField('targetOS', v)}
                 values={OSs}
                 value={bot.targetOS}
               />
