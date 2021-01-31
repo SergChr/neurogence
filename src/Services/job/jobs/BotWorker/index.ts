@@ -1,11 +1,11 @@
-import Job from '../../index';
+import Worker from '../worker';
 
 type Props = {
   store: any;
   tickInterval?: number;
 };
 
-export default class BotWorker extends Job {
+export default class BotWorker extends Worker {
   constructor({ store, tickInterval }: Props) {
     super({ store });
     this.tickInterval = tickInterval || this.tickInterval;
@@ -17,16 +17,14 @@ export default class BotWorker extends Job {
   run() {
     console.log('BotWorker.run');
     this.timer = <any>setInterval(this.poll, this.tickInterval);
-    // TODO: add the job to store.jobs
   }
 
   poll() {
-    console.log('BotWorker polling');
+    console.log('BotWorker.poll');
     // TODO: write the logic for processing bots!
   }
 
   stop() {
     clearInterval(this.timer);
-    // TODO: clean the job in store.jobs
   }
 }

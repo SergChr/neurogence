@@ -83,7 +83,7 @@ const useStore = create<GameStore>(
       set({ bots });
     },
 
-    jobs: [],
+    jobs: new Set(),
   }));
 
 export default useStore;

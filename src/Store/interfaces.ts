@@ -1,7 +1,7 @@
 import Localhost, { SkillNames } from 'Services/game/entities/hosts/localhost';
 import BasicHost from '../Services/game/entities/hosts/basic';
 import Bot, { BotData } from '../Services/game/entities/bot';
-import { Job } from '../Services/job';
+import { JobTypes } from '../Services/job/jobs/types';
 
 export enum LogEntryTypes {
   Trace = 'trace',
@@ -40,5 +40,5 @@ export interface GameStore extends Store {
   setUpgrade(s: string, v: boolean): void;
   bots: Bot[];
   updateBot(payload: BotData, toRemove?: boolean): void;
-  jobs: Job[];
+  jobs: Set<JobTypes>;
 }
