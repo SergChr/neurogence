@@ -1,6 +1,12 @@
+import Chance from 'chance';
+
 import constants from '../../../../Config/constants';
 import { File } from '../file';
-import { HostTypes } from './enums';
+import { HostTypes, OS } from './enums';
+import getWeightedRand from '../../../../utils/getWeightedRand';
+import c from '../../../../Config/constants';
+
+const chance = new Chance();
 
 export interface CPU {
   cores: number;
@@ -25,6 +31,7 @@ type Constructor = {
   files?: File[];
   passwordSuggestions?: string[];
   password?: string;
+  OS?: OS;
 }
 
 interface Filesystem {
@@ -41,6 +48,7 @@ export default class Host {
     }
     this.password = p.password || ' ';
     this.passwordSuggestions = p.passwordSuggestions || [];
+    this.OS = p.OS || OS.CentOS;
   }
 
   public readonly name: string;
@@ -54,6 +62,7 @@ export default class Host {
   connected = false;
   password: string;
   passwordSuggestions: string[] = [];
+  OS: OS;
 
   // 0 indicates there is no security patches, the host should be updated.
   // If not updated, it can be enslaved without any effort.
@@ -93,4 +102,17 @@ export default class Host {
     this.cpu.frequency += frequency;
     this.cpu.ops += ops;
   }
+}
+
+export const generateHost = (): Host => {
+  return new Host({
+    name: 'Unknown',
+    type: getWeightedRand(c.HOST_TYPE_PREVALENCE) as HostTypes,
+    OS: getWeightedRand(c.OS_PREVALENCE) as OS,
+    cpu: {
+      cores: chance.integer({ min: 1, max: 4 }),
+      frequency: chance.integer({ min: 1000000000, max: 12000000000 }),
+      ops: chance.integer({ min: 2, max: 8 }),
+    },
+  });
 }

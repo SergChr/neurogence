@@ -16,6 +16,7 @@ export interface LogEntry {
   type: LogEntryTypes;
 }
 
+// TODO: replace with Set
 interface GameUpgrades extends Record<string, boolean> {}
 
 interface Store extends Record<string, any> {}

@@ -72,7 +72,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
     if (mode === Modes.Edit) {
       actionType = ActionTypes.Update;
     }
-
+    console.log('pickValue', indexes)
     const data = {
       actionType,
       index: indexes?.[0],
@@ -124,7 +124,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                             style={s.addButton}
                             text="+"
                             type={ButtonTypes.Helper}
-                            onPress={() => this.addItemToRow(i)}
+                            onPress={() => this.addItemToRow(index)}
                           />
                         )}
                       </View>

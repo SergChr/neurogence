@@ -1,4 +1,3 @@
-import { Group } from 'react-native';
 import { ScriptTypes as Types, ScriptGroups as Groups } from './interface';
 
 const script = (

@@ -52,7 +52,7 @@ I'm not a boss though. We'll do what CEO wants us to do.`
         ),
         makeEmail(
           'Marvin McCarty',
-          `We're good too!! How is the trip with Sophia?
+          `We're good too !! How is the trip with Sophia?
 I wanted to tell you I don't think it's a good idea to hire engineers so rapidly. We don't have a comprehensive onboarding process right now.
 Amanda is telling me the same. We work hard on consolidating it, but it needs more time...Not competent people can do bad things to ${c.COMPANY}.`
         ),
@@ -70,6 +70,7 @@ As a CEO, you Marvin should understand possible consequences and have full contr
       emails: [
         makeEmail(
           'Margaret Chester',
+          // TODO: add
           ``
         ),
         makeEmail(

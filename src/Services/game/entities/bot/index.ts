@@ -17,7 +17,6 @@ export type BotData = {
   targetOS: OS;
   metrics: {
     quantity: number;
-    online: number;
     absorbedHosts: number;
   };
 }
@@ -34,7 +33,6 @@ export default class Bot {
     this.targetOS = p.targetOS || OS.CentOS;
     this.metrics = {
       quantity: 0,
-      online: 0,
       absorbedHosts: 0,
     };
   }
@@ -45,7 +43,6 @@ export default class Bot {
   targetOS: OS;
   metrics: {
     quantity: number;
-    online: number;
     absorbedHosts: number;
   };
 
@@ -56,6 +53,11 @@ export default class Bot {
       shouldBeLast: p.shouldBeLast || false,
       description: p.description!,
       hasOrSupport: p.hasOrSupport || false,
+      group: p.group,
     };
+  }
+
+  executeScript(s: ScriptItem) {
+
   }
 }

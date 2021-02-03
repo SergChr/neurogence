@@ -10,6 +10,7 @@ import Worker from './jobs/worker';
 export default class JobManager extends Job {
   constructor(store: UseStore<GameStore>) {
     super({ store });
+    // TODO: adjust tickInterval, use constant
     this.botWorker = new BotWorker({ store, tickInterval: 1000 });
   }
 
@@ -18,10 +19,23 @@ export default class JobManager extends Job {
   run() {
     this.subscribe(this.onJobsChange, 'jobs');
     this.subscribe(this.onBotsChange, 'bots');
-    console.log('SUBSCRIBE')
 
-    // TODO: check if any job existed in state before (when the app went offline)
+    // Check if any job existed in state before (when the app went offline)
     // need to resume their running
+    // TODO: test job handling when device went offline with persistent store
+    const jobs = this.store.getState().jobs;
+    if (jobs.size > 0) {
+      this.resumeRunningJobs(jobs);
+    }
+  }
+
+  resumeRunningJobs(jobs: Set<JobTypes>) {
+    jobs.forEach(job => {
+      const worker = this.getWorker(job);
+      if (worker) {
+        worker.run();
+      }
+    });
   }
 
   addJob(jobName: JobTypes): void {
@@ -36,6 +50,9 @@ export default class JobManager extends Job {
 
   removeJob(jobName: JobTypes): void {
     const jobs = this.store.getState().jobs;
+    if (!jobs.has(jobName)) {
+      return;
+    }
     const newJobs = new Set([...jobs]);
     newJobs.delete(jobName);
     this.store.setState({ jobs: newJobs });
@@ -54,21 +71,19 @@ export default class JobManager extends Job {
     }
   }
 
-  onBotsChange(newValue: Bot[], prev: Bot[]) {
-    console.log('> onBotsChange')
-    if (prev.length === 0 && newValue.length > 0) {
-      console.log('>> addJob')
-      this.addJob(JobTypes.BotWorker)
-    }
-
-    if (prev.length > 0 && newValue.length === 0) {
+  onBotsChange(newValue: Bot[]) {
+    const hasReleasedBots = newValue.some(b => b.metrics.quantity > 0);
+    if (hasReleasedBots) {
+      console.log('>> addJob');
+      this.addJob(JobTypes.BotWorker);
+    } else {
       console.log('>> removeJob')
       this.removeJob(JobTypes.BotWorker);
     }
   }
 
   onJobsChange(newValue: Set<JobTypes>, prev: Set<JobTypes>): void {
-    console.log('\nJobs change fired!', newValue, prev);
+    console.log('Jobs change fired!', newValue, prev);
 
     // Job added
     if (newValue.size > prev.size) {

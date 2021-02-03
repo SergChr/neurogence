@@ -9,6 +9,7 @@ import Button, { ButtonTypes } from '../../Components/Button';
 import commonStyle from '../../Styles/common';
 import { gameStore } from '../../Store';
 import s from './styles';
+import { BotData } from '../../Services/game/entities/bot';
 
 type Props = {
   navigation: any;
@@ -17,6 +18,15 @@ type Props = {
 export default ({ navigation }: Props) => {
   const onPickBot = (id?: string) => navigation.navigate('BotDetails', { id });
   const bots = gameStore(s => s.bots);
+  const releaseBot = (b: BotData) => {
+    gameStore.getState().updateBot({
+      ...b,
+      metrics: {
+        ...b.metrics,
+        quantity: b.metrics.quantity + 1,
+      },
+    });
+  }
   return (
     <View style={{...commonStyle.screen, ...s.container}}>
       <Sidebar
@@ -36,9 +46,9 @@ export default ({ navigation }: Props) => {
               key={i.name}
               name={i.name}
               all={i.metrics.quantity}
-              online={i.metrics.online}
               enslaved={i.metrics.absorbedHosts}
               onPick={() => onPickBot(i.id)}
+              onRelease={() => releaseBot(i)}
             />
           ))}
         </FlatList>

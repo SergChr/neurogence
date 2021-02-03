@@ -7,13 +7,13 @@ import s from './styles';
 
 type Props = {
   name: string;
-  online: number;
   all: number;
   enslaved: number;
   onPick: () => void;
+  onRelease: () => void;
 };
 
-export default ({ name, online, all, enslaved, onPick }: Props) => (
+export default ({ name, all, enslaved, onPick, onRelease }: Props) => (
   <View style={s.block}>
     <TouchableOpacity
       style={s.leftPart}
@@ -25,15 +25,16 @@ export default ({ name, online, all, enslaved, onPick }: Props) => (
       </View>
 
       <View style={s.infoBlock}>
-        <Text style={s.infoHelp}>Absorbed hosts / Online / All</Text>
-        <Text style={s.info}>{enslaved} / {online} / {all}</Text>
+        <Text style={s.infoHelp}>Absorbed hosts / All bots</Text>
+        <Text style={s.info}>{enslaved} / {all}</Text>
       </View>
     </TouchableOpacity>
 
     <View style={s.rightPart}>
       <Button
         type={ButtonTypes.Primary}
-        text="Release"  
+        text="Release"
+        onPress={onRelease}
       />
     </View>
   </View>
