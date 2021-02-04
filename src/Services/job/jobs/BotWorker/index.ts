@@ -11,8 +11,7 @@ type Props = {
 
 type TempBotData = {
   timerId: any;
-  currentHost?: Host;
-  skipTicks?: number;
+  isProcessing?: boolean;
 }
 
 export default class BotWorker extends Worker {
@@ -57,16 +56,32 @@ export default class BotWorker extends Worker {
     this.pollingBots.set(b.id, { timerId });
   }
 
-  processBotRoutine(id: string) {
-    const bot = this.store.getState().bots.find(b => b.id === id);
-    // TODO: hosts quantity === bot.quantity
-    console.log('BotWorker.processBotRoutine');
-    const randomHost = generateHost();
-    // console.log('generated host', randomHost);
-    // console.log('bot', bot);
-    if (randomHost.OS === bot?.targetOS) {
-      console.log('a host found');
+  async processBotRoutine(id: string) {
+    const currentBot = this.pollingBots.get(id);
+    if (currentBot && currentBot.isProcessing) {
+      console.log('Bot is still in processing...')
+      return;
     }
+    this.pollingBots.set(id, { ...currentBot!, isProcessing: true });
+
+    const bot = this.store.getState().bots.find(b => b.id === id);
+    if (!bot) {
+      return;
+    }
+
+    const hosts = [...Array(bot.metrics.quantity)]
+      .map(() => generateHost())
+      .filter(host => host.OS === bot.targetOS);
+    console.log('Target hosts found:', hosts.length);
+    const localhost = this.store.getState().getLocalhost();
+
+    for await (const host of hosts) {
+      const result = await bot.executeScriptsOn(host, localhost);
+      // TODO: handle result
+      // e.g.: this.store.updateHost();
+    }
+
+    this.pollingBots.set(id, { ...currentBot!, isProcessing: false });
   }
 
   stopProcessingBot(id: string) {

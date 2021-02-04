@@ -1,7 +1,10 @@
 import Chance from 'chance';
 
 import { OS } from '../hosts/enums';
-import { Script, ScriptItem } from './interface';
+import Host from '../hosts/basic';
+import { Script, ScriptItem, ScriptTypes } from './interface';
+import { bruteforcePassword } from './execScripts';
+import Localhost from '../hosts/localhost';
 
 type BotCreationProps = {
   name?: string;
@@ -20,6 +23,12 @@ export type BotData = {
     absorbedHosts: number;
   };
 }
+
+export type ScriptExecutionResult = {
+  isOk: boolean;
+  updHost: Host;
+  updLocalhost: Localhost;
+};
 
 const chance = new Chance();
 
@@ -57,7 +66,57 @@ export default class Bot {
     };
   }
 
-  executeScript(s: ScriptItem) {
+  // TODO: maybe write and show bot logs? We might call it "debug"
+  // to give user a scheme what is happening under the hood
+  async executeScriptsOn(host: Host, localhost: Localhost): Promise<any> {
+    const s = this.scripts;
+    const intermediary = [];
 
+    for await (const script of s) {
+      if (Array.isArray(script)) {
+        for await (const scriptItem of script) {
+          const { isOk, updHost, updLocalhost } = await this.executeScript(scriptItem, host, localhost);
+          if (!isOk) {
+            intermediary.push(false);
+            continue;
+          }
+          host = updHost;
+          localhost = updLocalhost;
+          intermediary.push(true);
+        }
+      } else {
+        const lastScriptResult = intermediary[intermediary.length - 1];
+        if (lastScriptResult === false) {
+          break;
+        }
+        const { isOk, updHost, updLocalhost } = await this.executeScript(script, host, localhost);
+        if (isOk) {
+          intermediary.push(true);
+          host = updHost;
+          localhost = updLocalhost;
+        } else {
+          break;
+        }
+      }
+    }
+
+    return;
+  }
+
+  async executeScript(s: ScriptItem, host: Host, localhost: Localhost): Promise<ScriptExecutionResult> {
+    const response = (
+      isOk: boolean = false,
+      updHost: Host = host,
+      updLocalhost: Localhost = localhost,
+    ) => ({
+      isOk, updHost, updLocalhost,
+    });
+
+    switch (s.type) {
+      case ScriptTypes.SearchForHosts: return response(true);
+      case ScriptTypes.BruteforcePassword: return bruteforcePassword(host, localhost);
+
+      default: return response();
+    }
   }
 }

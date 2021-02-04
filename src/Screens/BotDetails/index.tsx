@@ -79,8 +79,10 @@ export default class HostScreen extends React.PureComponent<Props, State> {
       case ActionTypes.Update: {
         if (p.secondaryIndex) {
           (items[p.index!] as ScriptItem[])[p.secondaryIndex!] = p.payload!;
+        } else if (p.payload!.hasOrSupport) {
+          items[p.index!] = [Bot.createScript(p.payload!)];
         } else {
-         items[p.index!] = p.payload!;
+          items[p.index!] = p.payload!;
         }
         break;
       }

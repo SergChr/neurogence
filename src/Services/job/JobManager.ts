@@ -6,12 +6,13 @@ import BotWorker from './jobs/BotWorker';
 import Job from './index';
 import { JobTypes } from './jobs/types';
 import Worker from './jobs/worker';
+import c from '../../Config/constants';
 
 export default class JobManager extends Job {
   constructor(store: UseStore<GameStore>) {
     super({ store });
     // TODO: adjust tickInterval, use constant
-    this.botWorker = new BotWorker({ store, tickInterval: 1000 });
+    this.botWorker = new BotWorker({ store, tickInterval: c.BOT_POLLING_INTERVAL });
   }
 
   botWorker: BotWorker;

@@ -25,8 +25,8 @@ export default {
     BOLD: 'Arya-Bold',
   },
 
-  POLLING_INTERVAL: 2000,
-  BOT_POLLING_INTERVAL: 1000,
+  POLLING_INTERVAL: 4000,
+  BOT_POLLING_INTERVAL: 2000,
   OS_PREVALENCE: {
     [OS.Windows]: 0.16,
     [OS.MacOS]: 0.04,

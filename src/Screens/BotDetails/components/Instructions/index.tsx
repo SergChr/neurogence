@@ -72,7 +72,6 @@ export default class HostScreen extends React.PureComponent<Props, State> {
     if (mode === Modes.Edit) {
       actionType = ActionTypes.Update;
     }
-    console.log('pickValue', indexes)
     const data = {
       actionType,
       index: indexes?.[0],
