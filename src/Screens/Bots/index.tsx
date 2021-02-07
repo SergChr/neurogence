@@ -7,7 +7,7 @@ import BotListItem from './components/BotListItem';
 import Text from '../../Components/Text';
 import Button, { ButtonTypes } from '../../Components/Button';
 import commonStyle from '../../Styles/common';
-import { gameStore } from '../../Store';
+import { gameStore, logStore } from '../../Store';
 import s from './styles';
 import { BotData } from '../../Services/game/entities/bot';
 
@@ -27,6 +27,8 @@ export default ({ navigation }: Props) => {
       },
     });
   }
+  const botLogs = logStore(s => s.botLog);
+  console.log('all logs', botLogs)
   return (
     <View style={{...commonStyle.screen, ...s.container}}>
       <Sidebar
@@ -49,6 +51,7 @@ export default ({ navigation }: Props) => {
               enslaved={i.metrics.absorbedHosts}
               onPick={() => onPickBot(i.id)}
               onRelease={() => releaseBot(i)}
+              logs={botLogs.get(i.id)}
             />
           ))}
         </FlatList>

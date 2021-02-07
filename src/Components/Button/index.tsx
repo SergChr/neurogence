@@ -31,6 +31,7 @@ const s = StyleSheet.create({
 		paddingLeft: 12,
 	},
   primary: {
+		minWidth: 40,
     backgroundColor: Colors.Primary,
 	},
 	secondary: {
@@ -46,7 +47,7 @@ const s = StyleSheet.create({
 	},
 	helper: {
 		minWidth: 40,
-		backgroundColor: Colors.Primary,
+		backgroundColor: Colors.GreyDark,
 	},
 });
 

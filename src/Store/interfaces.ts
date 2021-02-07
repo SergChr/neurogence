@@ -25,6 +25,8 @@ export interface LogStore extends Store {
   log: LogEntry[];
   write: (text: string, type?: LogEntryTypes) => void;
   reset: () => void;
+  botLog: Map<string, string[]>;
+  addBotLog(id: string, msg: string): void;
 }
 
 export interface GameStore extends Store {
@@ -42,4 +44,6 @@ export interface GameStore extends Store {
   bots: Bot[];
   updateBot(payload: BotData, toRemove?: boolean): void;
   jobs: Set<JobTypes>;
+  variables: Map<string, any>;
+  setVar: (key: string, value: any) => void;
 }

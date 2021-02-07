@@ -14,7 +14,7 @@ export interface CPU {
   ops: number; // operations per cycle
 }
 
-enum PortStates {
+export enum PortStates {
   Opened = 1,
   Closed = 0,
 }
@@ -32,6 +32,7 @@ type Constructor = {
   passwordSuggestions?: string[];
   password?: string;
   OS?: OS;
+  ports?: Map<number, PortStates>;
 }
 
 interface Filesystem {
@@ -49,12 +50,13 @@ export default class Host {
     this.password = p.password || ' ';
     this.passwordSuggestions = p.passwordSuggestions || [];
     this.OS = p.OS || OS.CentOS;
+    this.ports = p.ports || new Map();
   }
 
   public readonly name: string;
   public readonly type: HostTypes;
   public cpu: CPU;
-  public ports: Port[] = [];
+  public ports: Map<number, PortStates>;
   public readonly fs: Filesystem = {
     files: [],
   };
@@ -114,5 +116,9 @@ export const generateHost = (): Host => {
       frequency: chance.integer({ min: 1000000000, max: 12000000000 }),
       ops: chance.integer({ min: 2, max: 8 }),
     },
+    password: '1'.repeat(chance.integer({ min: 1, max: 14 })),
+    ports: new Map([
+      [4790, PortStates.Opened],
+    ]),
   });
 }

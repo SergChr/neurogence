@@ -122,7 +122,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                           <Button
                             style={s.addButton}
                             text="+"
-                            type={ButtonTypes.Helper}
+                            type={ButtonTypes.Primary}
                             onPress={() => this.addItemToRow(index)}
                           />
                         )}

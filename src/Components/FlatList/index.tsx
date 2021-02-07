@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   FlatList,
@@ -12,6 +12,9 @@ type Props = {
   horizontal?: boolean;
   separator?: any;
   disableScrollToEnd?: boolean;
+  removeClippedSubviews? :boolean;
+  maxToRenderPerBatch?: number;
+  updateCellsBatchingPeriod?: number;
 }
 
 const getLayoutOffset = (h: number[], i: number) => {
@@ -25,30 +28,35 @@ export default ({
   horizontal = false,
   separator,
   disableScrollToEnd = false,
+  removeClippedSubviews = false,
+  maxToRenderPerBatch,
+  updateCellsBatchingPeriod,
 }: Props) => {
 	let elem: FlatList<Element>;
   const itemSizes: number[] = [];
   const ITEM_SIZE = horizontal ? 600 : 155;
+
+  const renderItem = ({ item, index }: any) => (
+    <View
+      key={index}
+      onLayout={object => {
+        if (horizontal) {
+          itemSizes[index] = object.nativeEvent.layout.width;
+        } else {
+          itemSizes[index] = object.nativeEvent.layout.height;
+        }
+      }}
+    >
+      {item}
+    </View>
+  );
 
 	return (
     <FlatList
       ref={(e) => { elem = e! }}
       style={style}
       data={children}
-      renderItem={({ item, index }) => (
-        <View
-          key={index}
-          onLayout={object => {
-            if (horizontal) {
-              itemSizes[index] = object.nativeEvent.layout.width;
-            } else {
-              itemSizes[index] = object.nativeEvent.layout.height;
-            }
-          }}
-        >
-          {item}
-        </View>
-      )}
+      renderItem={renderItem}
       keyExtractor={(el, i) => i.toString()}
       getItemLayout={(data, index) => {
         if (itemSizes.length < 1) {
@@ -66,6 +74,9 @@ export default ({
       horizontal={horizontal}
       showsHorizontalScrollIndicator={false}
       ItemSeparatorComponent={separator}
+      removeClippedSubviews={removeClippedSubviews}
+      maxToRenderPerBatch={maxToRenderPerBatch}
+      updateCellsBatchingPeriod={updateCellsBatchingPeriod}
     >
     </FlatList>
 	);

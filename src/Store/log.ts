@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { throttle } from 'throttle-debounce';
 
 import {
   LogEntryTypes,
@@ -18,6 +19,23 @@ const useStore = create<LogStore>(
       const items = get().log;
       const newEntry = { text, createdAt: new Date(), type };
       set({ log: [...items.slice(items.length - MAX_LOG_ITEMS), newEntry] });
+    },
+
+    botLog: new Map(),
+    addBotLog(botId, text) {
+      console.log('addBotLog', botId)
+      const logs = get().botLog;
+      let targetLog = logs.get(botId);
+      if (!targetLog) {
+        logs.set(botId, [text]);
+        return set({ botLog: logs });
+      }
+      targetLog.push(text);
+      if (targetLog.length > 30) {
+        targetLog = targetLog.slice(targetLog.length - 30);
+      }
+      logs.set(botId, targetLog);
+      set({ botLog: logs });
     },
   }),
   // {

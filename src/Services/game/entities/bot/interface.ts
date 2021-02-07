@@ -1,9 +1,12 @@
+import Host from '../hosts/basic';
+import Localhost from '../hosts/localhost';
+import Bot from './index';
+
 export enum ScriptTypes {
   SearchForHosts = 'Search for target hosts',
   BruteforcePassword = 'Log in via bruteforcing password',
   LoginViaExploit = 'Log in via exploit',
   ForceAbsorb = 'Force absorb',
-  DDoSAttack = 'DDoS attack on host', // dangerous
 
   ///// Logged in /////
 
@@ -31,3 +34,21 @@ export type ScriptItem = {
 };
 
 export type Script = ScriptItem | ScriptItem[];
+
+export type ScriptExecutionResult = {
+  isOk: boolean;
+  updHost?: Host;
+  updLocalhost?: Localhost;
+};
+
+export type ScriptsExecResult = {
+  isOk: boolean;
+  localhost: Localhost;
+  bot: Bot;
+}
+
+export type ScriptExecProps = {
+  host: Host;
+  localhost: Localhost;
+  vars: Map<string, any>;
+};

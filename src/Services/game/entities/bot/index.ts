@@ -2,8 +2,20 @@ import Chance from 'chance';
 
 import { OS } from '../hosts/enums';
 import Host from '../hosts/basic';
-import { Script, ScriptItem, ScriptTypes } from './interface';
-import { bruteforcePassword } from './execScripts';
+import {
+  Script,
+  ScriptItem,
+  ScriptTypes,
+  ScriptExecutionResult,
+  ScriptExecProps,
+  ScriptsExecResult,
+} from './interface';
+import {
+  bruteforcePassword,
+  loginViaExploit,
+  forceAbsorb,
+  closePorts,
+} from './execScripts';
 import Localhost from '../hosts/localhost';
 
 type BotCreationProps = {
@@ -23,12 +35,6 @@ export type BotData = {
     absorbedHosts: number;
   };
 }
-
-export type ScriptExecutionResult = {
-  isOk: boolean;
-  updHost: Host;
-  updLocalhost: Localhost;
-};
 
 const chance = new Chance();
 
@@ -68,20 +74,33 @@ export default class Bot {
 
   // TODO: maybe write and show bot logs? We might call it "debug"
   // to give user a scheme what is happening under the hood
-  async executeScriptsOn(host: Host, localhost: Localhost): Promise<any> {
+  async executeScriptsOn({
+    host,
+    localhost,
+    vars,
+  }: ScriptExecProps): Promise<ScriptsExecResult> {
     const s = this.scripts;
     const intermediary = [];
 
     for await (const script of s) {
       if (Array.isArray(script)) {
         for await (const scriptItem of script) {
-          const { isOk, updHost, updLocalhost } = await this.executeScript(scriptItem, host, localhost);
+          const { isOk, updHost, updLocalhost } = await this.executeScript({
+            s: scriptItem,
+            host,
+            localhost,
+            vars,
+          });
           if (!isOk) {
             intermediary.push(false);
             continue;
           }
-          host = updHost;
-          localhost = updLocalhost;
+          if (updHost) {
+            host = updHost;
+          }
+          if (updLocalhost) {
+            localhost = updLocalhost;
+          }
           intermediary.push(true);
         }
       } else {
@@ -89,21 +108,40 @@ export default class Bot {
         if (lastScriptResult === false) {
           break;
         }
-        const { isOk, updHost, updLocalhost } = await this.executeScript(script, host, localhost);
+        const { isOk, updHost, updLocalhost } = await this.executeScript({
+            s: script,
+            host,
+            localhost,
+            vars,
+        });
         if (isOk) {
           intermediary.push(true);
-          host = updHost;
-          localhost = updLocalhost;
+          if (updHost) {
+            host = updHost;
+          }
+          if (updLocalhost) {
+            localhost = updLocalhost;
+          }
         } else {
           break;
         }
       }
     }
 
-    return;
+    const isOk = intermediary[intermediary.length - 1];
+    return {
+      isOk,
+      localhost,
+      bot: this,
+    };
   }
 
-  async executeScript(s: ScriptItem, host: Host, localhost: Localhost): Promise<ScriptExecutionResult> {
+  async executeScript({
+    s,
+    host,
+    localhost,
+    vars,
+}: ScriptExecProps & { s: ScriptItem }): Promise<ScriptExecutionResult> {
     const response = (
       isOk: boolean = false,
       updHost: Host = host,
@@ -112,9 +150,14 @@ export default class Bot {
       isOk, updHost, updLocalhost,
     });
 
+    const params = { host, localhost, vars, bot: this };
+
     switch (s.type) {
       case ScriptTypes.SearchForHosts: return response(true);
-      case ScriptTypes.BruteforcePassword: return bruteforcePassword(host, localhost);
+      case ScriptTypes.BruteforcePassword: return bruteforcePassword(params);
+      case ScriptTypes.LoginViaExploit: return loginViaExploit(params);
+      case ScriptTypes.ForceAbsorb: return forceAbsorb(params);
+      case ScriptTypes.ClosePorts: return closePorts(params);
 
       default: return response();
     }

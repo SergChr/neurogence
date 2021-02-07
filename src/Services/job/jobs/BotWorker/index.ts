@@ -64,7 +64,8 @@ export default class BotWorker extends Worker {
     }
     this.pollingBots.set(id, { ...currentBot!, isProcessing: true });
 
-    const bot = this.store.getState().bots.find(b => b.id === id);
+    const store = this.store.getState();
+    const bot = store.bots.find(b => b.id === id);
     if (!bot) {
       return;
     }
@@ -73,12 +74,18 @@ export default class BotWorker extends Worker {
       .map(() => generateHost())
       .filter(host => host.OS === bot.targetOS);
     console.log('Target hosts found:', hosts.length);
-    const localhost = this.store.getState().getLocalhost();
+    const localhost = store.getLocalhost();
 
     for await (const host of hosts) {
-      const result = await bot.executeScriptsOn(host, localhost);
-      // TODO: handle result
-      // e.g.: this.store.updateHost();
+      const result = await bot.executeScriptsOn({
+        host,
+        localhost,
+        vars: store.variables,
+      });
+      // TODO: refactor updateHost fn.
+      // it can only take specific params
+      // store.updateLocalhost(result.localhost);
+      store.updateBot(result.bot);
     }
 
     this.pollingBots.set(id, { ...currentBot!, isProcessing: false });

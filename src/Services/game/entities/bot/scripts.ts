@@ -34,14 +34,6 @@ export default [
     Groups.Login,
   ),
   script(
-    Types.DDoSAttack,
-    'Flood the bandwidth with packets on a target host',
-    'When the host became unavailable, then',
-    false,
-    false,
-    Groups.OutsideHost,
-  ),
-  script(
     Types.LoginViaExploit,
     'Find a security vulnerability and exploit it',
     'If successfully, then',

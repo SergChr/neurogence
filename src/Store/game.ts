@@ -57,7 +57,6 @@ const useStore = create<GameStore>(
       }
       if (payload.connected !== undefined) {
         hosts[hostIndex].connected = payload.connected;
-        console.log(hosts[hostIndex].connected)
       }
       set({ hosts });
     },
@@ -84,6 +83,15 @@ const useStore = create<GameStore>(
     },
 
     jobs: new Set(),
+
+    variables: new Map([
+      ['bruteforcePwdTimeLimit', 30],
+    ]),
+    setVar(key, value) {
+      const vars = get().variables;
+      vars.set(key, value);
+      set({ variables: vars });
+    },
   }));
 
 export default useStore;

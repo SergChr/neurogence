@@ -20,6 +20,7 @@ export default StyleSheet.create({
   rightPart: {
     marginLeft: 14,
     marginRight: 6,
+    flexDirection: 'row',
   },
   nameBlock: {
     flex: 4,
@@ -47,5 +48,20 @@ export default StyleSheet.create({
   info: {
     color: Colors.Grey,
     fontSize: Metrics.FontSizeSM,
+  },
+  modal: {
+    width: '60%',
+    flex: 1,
+    alignSelf: 'center',
+  },
+  modalView: {
+    backgroundColor: Colors.Black,
+    flex: 1,
+    borderRadius: Metrics.BorderRadiusSM,
+    padding: 15,
+  },
+  logItem: {
+    fontSize: Metrics.FontSizeXSM,
+    color: Colors.Grey,
   }
 });
