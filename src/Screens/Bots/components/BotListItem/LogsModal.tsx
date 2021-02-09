@@ -27,6 +27,12 @@ export default React.memo(({
           maxToRenderPerBatch={5}
           updateCellsBatchingPeriod={500}
         >
+          {data.length === 0 && (
+            <View>
+              <Text style={s.logItem}># No logs so far. The bot is searching for target hosts (if "All bots" is &gt; 0)</Text>
+              <Text style={s.logItem}># Come back soon</Text>
+            </View>
+          )}
           {data.map((log, i) => (
             <Text key={i} style={s.logItem}>{log}</Text>
           ))}

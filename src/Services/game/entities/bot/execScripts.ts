@@ -46,6 +46,7 @@ export const bruteforcePassword = async ({
 }
 
 export const loginViaExploit = (p: Args) => {
+  // TODO: uncomment
   if (1/*p.host.securityPatch < p.localhost.exploitVersion*/) {
     writeBotLog(p.bot.id, 'Logged in via exploit');
     p.host.connected = true;
@@ -70,6 +71,19 @@ export const forceAbsorb = (p: Args) => {
 export const closePorts = (p: Args) => {
   if (!isConnected(p.host)) {
     writeBotLog(p.bot.id, 'Failed to close ports: the bot isn\'t logged in to the host');
+    return response(false);
+  }
+  for (const [port] of p.host.ports) {
+    p.host.ports.set(port, PortStates.Closed);
+  }
+
+  writeBotLog(p.bot.id, 'All network ports were closed');
+  return response(true, p.host);
+}
+
+export const deleteUserLog = (p: Args) => {
+  if (!isConnected(p.host)) {
+    writeBotLog(p.bot.id, 'Failed to delete user log: the bot isn\'t logged in to the host');
     return response(false);
   }
   for (const [port] of p.host.ports) {

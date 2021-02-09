@@ -9,6 +9,7 @@ import HostScreen from './Screens/Host';
 import BotsScreen from './Screens/Bots';
 import BotDetailsScreen from './Screens/BotDetails';
 import Game from './Services/game';
+import Alert from './Components/Alert';
 
 Game.run();
 
@@ -45,6 +46,7 @@ const App = () => {
           component={BotDetailsScreen}
         />
       </Stack.Navigator>
+      <Alert />
     </NavigationContainer>
   );
 };

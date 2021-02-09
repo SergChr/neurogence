@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 
 import Sidebar from '../../Components/Sidebar';
@@ -10,6 +10,8 @@ import commonStyle from '../../Styles/common';
 import { gameStore, logStore } from '../../Store';
 import s from './styles';
 import { BotData } from '../../Services/game/entities/bot';
+import { showMessage } from '../../utils/notifications';
+import { GameVars } from '../../Config/enums';
 
 type Props = {
   navigation: any;
@@ -27,8 +29,18 @@ export default ({ navigation }: Props) => {
       },
     });
   }
+  const removeOneInstanceOfBot = (b: BotData) => {
+    gameStore.getState().updateBot({
+      ...b,
+      metrics: {
+        ...b.metrics,
+        quantity: b.metrics.quantity - 1,
+      },
+    });
+  }
   const botLogs = logStore(s => s.botLog);
-  console.log('all logs', botLogs)
+  const gameVars = gameStore(s => s.variables);
+
   return (
     <View style={{...commonStyle.screen, ...s.container}}>
       <Sidebar
@@ -52,11 +64,15 @@ export default ({ navigation }: Props) => {
               onPick={() => onPickBot(i.id)}
               onRelease={() => releaseBot(i)}
               logs={botLogs.get(i.id)}
+              removeOne={() => removeOneInstanceOfBot(i)}
+              canRelease={i.metrics.quantity <= gameVars.get(GameVars.MaxBotInstances)}
+              canRemove={i.metrics.quantity > 0}
             />
           ))}
         </FlatList>
 
         <Button
+          disabled={bots.length > gameVars.get(GameVars.MaxBots)}
           onPress={() => onPickBot()}
           type={ButtonTypes.Primary}
           text='Create a bot'

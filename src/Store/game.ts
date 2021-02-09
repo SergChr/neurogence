@@ -7,6 +7,7 @@ import {
 } from './interfaces';
 import Localhost from '../Services/game/entities/hosts/localhost';
 import Bot from '../Services/game/entities/bot';
+import { GameVars } from '../Config/enums';
 
 // TODO: add persist()
 // const useStore = create<GameStore>(persist(
@@ -85,7 +86,10 @@ const useStore = create<GameStore>(
     jobs: new Set(),
 
     variables: new Map([
-      ['bruteforcePwdTimeLimit', 30],
+      [GameVars.BruteforcePwdLimitTime, 30],
+      [GameVars.MaxBots, 3],
+      [GameVars.MaxBotInstances, 3],
+      [GameVars.MaxBotScripts, 6],
     ]),
     setVar(key, value) {
       const vars = get().variables;

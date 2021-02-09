@@ -102,6 +102,7 @@ export default class Bot {
             localhost = updLocalhost;
           }
           intermediary.push(true);
+          break;
         }
       } else {
         const lastScriptResult = intermediary[intermediary.length - 1];
@@ -158,6 +159,7 @@ export default class Bot {
       case ScriptTypes.LoginViaExploit: return loginViaExploit(params);
       case ScriptTypes.ForceAbsorb: return forceAbsorb(params);
       case ScriptTypes.ClosePorts: return closePorts(params);
+      // case ScriptTypes.DeleteUserLog: return
 
       default: return response();
     }

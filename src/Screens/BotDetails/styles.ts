@@ -32,5 +32,13 @@ export default StyleSheet.create({
     marginLeft: 7,
     flex: 1,
     fontSize: Metrics.FontSizeSM1,
+  },
+  leftInfoText: {
+    color: Colors.PrimaryBtn,
+  },
+  rowInfo: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    marginTop: 10,
   }
 });

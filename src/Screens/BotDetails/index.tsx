@@ -3,6 +3,7 @@ import { View, TextInput } from 'react-native';
 
 import TopPanel from '../../Components/TopPanel';
 import Button, { ButtonTypes } from '../../Components/Button';
+import Pressable, { PressableTypes } from '../../Components/Button/Pressable';
 import Picker from '../../Components/Picker';
 import Text from '../../Components/Text';
 import Instructions from './components/Instructions';
@@ -13,6 +14,8 @@ import Bot, { BotData } from '../../Services/game/entities/bot';
 import { ScriptItem } from '../../Services/game/entities/bot/interface';
 import { gameStore } from '../../Store';
 import { OS } from '../../Services/game/entities/hosts/enums';
+import { showMessage } from '../../utils/notifications';
+import { GameVars } from '../../Config/enums';
 
 type Props = {
   navigation: any;
@@ -22,6 +25,7 @@ type Props = {
 type State = {
   bot: Bot | Record<string, any>;
   saved?: boolean;
+  scriptsLimit: number;
 };
 
 const OSs = Object.entries(OS).map(([k, v]) => ({ label: k, value: v }));
@@ -34,9 +38,13 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   componentDidMount() {
     const { id } = this.props.route.params;
     if (id) {
-      const bots = gameStore.getState().bots;
-      const targetBot = bots.find(b => b.id === id);
-      this.setState({ bot: targetBot!, saved: true });
+      const store = gameStore.getState();
+      const targetBot = store.bots.find(b => b.id === id);
+      this.setState({
+        bot: targetBot!,
+        saved: true,
+        scriptsLimit: store.variables.get(GameVars.MaxBotScripts),
+      });
     } else {
       const bot = new Bot();
       this.setState({ bot });
@@ -45,6 +53,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
 
   state: State = {
     bot: {},
+    scriptsLimit: 6,
   };
 
   updateInstructions = (p: ScriptUpdateInstructions) => {
@@ -96,12 +105,22 @@ export default class HostScreen extends React.PureComponent<Props, State> {
     const store = gameStore.getState();
     store.updateBot(this.state.bot! as BotData);
     this.setState({ saved: true });
+    showMessage({
+      type: 'success',
+      message: `Saved`,
+      duration: 500,
+    });
   }
 
   remove = () => {
     const store = gameStore.getState();
     store.updateBot(this.state.bot! as BotData, true);
     this.props.navigation.goBack();
+    showMessage({
+      type: 'success',
+      message: `${this.state.bot.name} was removed`,
+      duration: 500,
+    });
   }
 
   setField = (k: string, v: string | number) => {
@@ -109,10 +128,11 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { bot, saved } = this.state;
+    const { bot, saved, scriptsLimit } = this.state;
     if (!bot) {
       return null;
     }
+
     return (
       <View style={commonStyle.screen}>
         <TopPanel text={bot.name} goBack={this.props.navigation.goBack} />
@@ -122,6 +142,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
             <Instructions
               data={bot.scripts}
               onUpdate={this.updateInstructions}
+              canAddMore={(bot.scripts?.length ?? 0) < scriptsLimit}
             />
           </View>
           
@@ -144,16 +165,20 @@ export default class HostScreen extends React.PureComponent<Props, State> {
               />
             </View>
 
+            <View style={s.rowInfo}>
+              <Text style={s.rightBlockText}>Instructions:</Text>
+              <Text style={s.leftInfoText}>{bot.scripts?.length ?? 0}/{scriptsLimit}</Text>
+            </View>
+
             <Button
               type={ButtonTypes.Primary}
               text='Save'
               onPress={this.save}
             />
 
-            {/* TODO: replace with https://reactnative.dev/docs/pressable */}
             {saved &&
-              <Button
-                type={ButtonTypes.Primary}
+              <Pressable
+                type={PressableTypes.Danger}
                 text='Remove'
                 onPress={this.remove}
               />

@@ -19,11 +19,6 @@ export enum PortStates {
   Closed = 0,
 }
 
-interface Port {
-  n: number; // port number
-  state: PortStates;
-}
-
 type Constructor = {
   name: string;
   type: HostTypes;

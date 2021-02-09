@@ -12,10 +12,23 @@ type Props = {
   enslaved: number;
   onPick: () => void;
   onRelease: () => void;
+  removeOne: () => void;
   logs?: string[];
+  canRelease: boolean;
+  canRemove: boolean;
 };
 
-export default React.memo(({ name, all, enslaved, onPick, onRelease, logs }: Props) => {
+export default React.memo(({
+  name,
+  all,
+  enslaved,
+  onPick,
+  onRelease,
+  logs,
+  removeOne,
+  canRelease,
+  canRemove,
+}: Props) => {
   const [isModalVisible, setModalVisible] = useState(false);
   return (
     <View style={s.block}>
@@ -43,9 +56,18 @@ export default React.memo(({ name, all, enslaved, onPick, onRelease, logs }: Pro
   
       <View style={s.rightPart}>
         <Button
+          disabled={!canRelease}
           type={ButtonTypes.Primary}
           text="Release"
           onPress={onRelease}
+        />
+
+        <Button
+          disabled={!canRemove}
+          type={ButtonTypes.Danger}
+          text="Remove one"
+          onPress={removeOne}
+          style={{ marginLeft: 10 }}
         />
   
         <Button

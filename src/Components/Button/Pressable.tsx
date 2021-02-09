@@ -1,25 +1,25 @@
 import React from 'react';
 import {
   StyleSheet,
-	TouchableOpacity,
+	Pressable,
 } from 'react-native';
 
 import { Colors, Metrics } from '../../Styles/enums';
 import Text from '../Text';
 
-export enum ButtonTypes {
+export enum PressableTypes {
 	Primary = 'primary',
 	Secondary = 'secondary',
-	Helper = 'helper',
 	Danger = 'danger',
 }
 
 type Props = {
-	type: ButtonTypes,
+	type: PressableTypes,
 	text: string,
 	onPress?: () => void;
 	disabled?: boolean;
 	style?: Record<string, string | number>;
+	pressDelay?: number;
 }
 
 const s = StyleSheet.create({
@@ -46,15 +46,12 @@ const s = StyleSheet.create({
 	disabledText: {
 		color: Colors.Secondary,
 	},
-	helper: {
-		minWidth: 40,
-		backgroundColor: Colors.GreyDark,
-	},
 	danger: {
+		minWidth: 40,
 		backgroundColor: Colors.Red,
 	},
-	text: {
-		color: Colors.PrimaryLight,
+	pressed: {
+		backgroundColor: 'red',
 	},
 });
 
@@ -64,15 +61,25 @@ export default ({
 	onPress,
 	disabled = false,
 	style = {},
+	pressDelay = 700,
 }: Props) => {
 	const buttonStyle = s[type];
 	return (
-		<TouchableOpacity
-			style={{...s.common, ...buttonStyle, ...(disabled && s.disabled), ...style}}
-			onPress={onPress}
+		<Pressable
+			onLongPress={onPress}
+			delayLongPress={pressDelay}
 			disabled={disabled}
+			style={({ pressed }) => {
+				return [
+					s.common,
+					buttonStyle,
+					disabled && s.disabled,
+					style,
+					pressed && s.pressed,
+				]
+			}}
 		>
-			<Text style={disabled ? s.disabledText : s.text}>{text}</Text>
-		</TouchableOpacity>
+			<Text>{text}</Text>
+		</Pressable>
 	);
 }

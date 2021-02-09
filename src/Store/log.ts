@@ -23,7 +23,6 @@ const useStore = create<LogStore>(
 
     botLog: new Map(),
     addBotLog(botId, text) {
-      console.log('addBotLog', botId)
       const logs = get().botLog;
       let targetLog = logs.get(botId);
       if (!targetLog) {

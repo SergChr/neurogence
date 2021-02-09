@@ -14,6 +14,7 @@ import { ActionTypes, ScriptUpdateInstructions } from '../../interface';
 type Props = {
   data: Script[];
   onUpdate: (p: ScriptUpdateInstructions) => void;
+  canAddMore: boolean;
 };
 
 enum Modes {
@@ -83,7 +84,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { data = [] } = this.props;
+    const { data = [], canAddMore } = this.props;
     const { modalVisible, currentScript } = this.state;
     return (
       <View style={s.container}>
@@ -146,6 +147,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
           })}
         </FlatList>
         <Button
+          disabled={!canAddMore}
           type={ButtonTypes.Primary}
           text="Add instruction"
           onPress={this.addScript}
