@@ -15,6 +15,8 @@ import {
   loginViaExploit,
   forceAbsorb,
   closePorts,
+  deleteUserLog,
+  absorb,
 } from './execScripts';
 import Localhost from '../hosts/localhost';
 
@@ -96,6 +98,9 @@ export default class Bot {
             continue;
           }
           if (updHost) {
+            if (updHost.enslaved) {
+              this.metrics.absorbedHosts += 1;
+            }
             host = updHost;
           }
           if (updLocalhost) {
@@ -118,6 +123,9 @@ export default class Bot {
         if (isOk) {
           intermediary.push(true);
           if (updHost) {
+            if (updHost.enslaved) {
+              this.metrics.absorbedHosts += 1;
+            }
             host = updHost;
           }
           if (updLocalhost) {
@@ -159,7 +167,8 @@ export default class Bot {
       case ScriptTypes.LoginViaExploit: return loginViaExploit(params);
       case ScriptTypes.ForceAbsorb: return forceAbsorb(params);
       case ScriptTypes.ClosePorts: return closePorts(params);
-      // case ScriptTypes.DeleteUserLog: return
+      case ScriptTypes.DeleteUserLog: return deleteUserLog(params);
+      case ScriptTypes.Absorb: return absorb(params);
 
       default: return response();
     }

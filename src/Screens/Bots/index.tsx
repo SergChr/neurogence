@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
 import Sidebar from '../../Components/Sidebar';
@@ -10,7 +10,6 @@ import commonStyle from '../../Styles/common';
 import { gameStore, logStore } from '../../Store';
 import s from './styles';
 import { BotData } from '../../Services/game/entities/bot';
-import { showMessage } from '../../utils/notifications';
 import { GameVars } from '../../Config/enums';
 
 type Props = {

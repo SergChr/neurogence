@@ -20,6 +20,7 @@ type Props = {
 	disabled?: boolean;
 	style?: Record<string, string | number>;
 	pressDelay?: number;
+	onShortPress?: () => void;
 }
 
 const s = StyleSheet.create({
@@ -62,10 +63,12 @@ export default ({
 	disabled = false,
 	style = {},
 	pressDelay = 700,
+	onShortPress,
 }: Props) => {
 	const buttonStyle = s[type];
 	return (
 		<Pressable
+			onPress={onShortPress}
 			onLongPress={onPress}
 			delayLongPress={pressDelay}
 			disabled={disabled}

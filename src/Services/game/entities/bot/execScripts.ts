@@ -30,6 +30,10 @@ export const bruteforcePassword = async ({
   vars,
   bot,
 }: Args) => {
+  if (host.connected === true) {
+    writeBotLog(bot.id, 'Skip bruteforcing passwords: the bot is already logged in');
+    return response(true);
+  }
   writeBotLog(bot.id, 'Bruteforce passwords started');
   const pwdLen = host.password.length;
   const timeToBruteforce = pwdLen / (localhost.TFLOPS / 2); // seconds
@@ -61,6 +65,7 @@ export const forceAbsorb = (p: Args) => {
   if (p.host.canBeEnslavedViaComputingTranscendence(p.localhost.FLOPS)) {
     writeBotLog(p.bot.id, 'Absorbed host forcefully');
     p.host.connected = true;
+    p.host.enslave();
     return response(true, p.host);
   }
 
@@ -86,10 +91,17 @@ export const deleteUserLog = (p: Args) => {
     writeBotLog(p.bot.id, 'Failed to delete user log: the bot isn\'t logged in to the host');
     return response(false);
   }
-  for (const [port] of p.host.ports) {
-    p.host.ports.set(port, PortStates.Closed);
-  }
+  p.host.isUserLogEmpty = true;
+  writeBotLog(p.bot.id, 'A user log has been deleted');
+  return response(true, p.host);
+}
 
-  writeBotLog(p.bot.id, 'All network ports were closed');
+export const absorb = (p: Args) => {
+  if (!isConnected(p.host)) {
+    writeBotLog(p.bot.id, 'Failed to absorb: the bot isn\'t logged in to the host');
+    return response(false);
+  }
+  p.host.enslave();
+  writeBotLog(p.bot.id, 'The host has been absorbed');
   return response(true, p.host);
 }

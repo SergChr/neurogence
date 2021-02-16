@@ -127,6 +127,11 @@ export default class HostScreen extends React.PureComponent<Props, State> {
     this.setState({ bot: { ...this.state.bot, [k]: v } });
   }
 
+  showOnDeleteNotification = () => showMessage({
+    message: 'Long press to remove',
+    duration: 500,
+  });
+
   render() {
     const { bot, saved, scriptsLimit } = this.state;
     if (!bot) {
@@ -181,6 +186,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                 type={PressableTypes.Danger}
                 text='Remove'
                 onPress={this.remove}
+                onShortPress={this.showOnDeleteNotification}
               />
             }
           </View>

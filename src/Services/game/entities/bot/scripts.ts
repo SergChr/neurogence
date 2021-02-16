@@ -73,13 +73,20 @@ export default [
     false,
     Groups.LoggedIn,
   ),
+  // script(
+  //   Types.CloneItself,
+  //   'Make a clone of the bot',
+  //   'Once done, then',
+  //   false,
+  //   false,
+  //   Groups.LoggedIn,
+  // ),
   script(
-    Types.CloneItself,
-    'Make a clone of the bot',
-    'Once done, then',
+    Types.VerifyDiaglyphHost,
+    'Verify if current host is a Diaglyph host',
+    'If Diaglyph, then',
     false,
     false,
     Groups.LoggedIn,
   ),
-
 ];

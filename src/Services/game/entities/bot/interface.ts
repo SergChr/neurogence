@@ -15,7 +15,8 @@ export enum ScriptTypes {
   ClosePorts = 'Close all the ports',
   DeleteUserLog = 'Delete user log',
   Absorb = 'Absorb host',
-  CloneItself = 'Clone itself', // automation! you don't need to click "Release"
+  // CloneItself = 'Clone itself', // automation! you don't need to click "Release"
+  VerifyDiaglyphHost = 'Verify it\'s a Diaglyph host',
 }
 
 export enum ScriptGroups {

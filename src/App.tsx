@@ -8,6 +8,8 @@ import MainScreen from './Screens/Main';
 import HostScreen from './Screens/Host';
 import BotsScreen from './Screens/Bots';
 import BotDetailsScreen from './Screens/BotDetails';
+import AboutScreen from './Screens/About';
+import HowToPlayScreen from './Screens/About/components/HowToPlay';
 import Game from './Services/game';
 import Alert from './Components/Alert';
 
@@ -44,6 +46,14 @@ const App = () => {
         <Stack.Screen
           name="BotDetails"
           component={BotDetailsScreen}
+        />
+        <Stack.Screen
+          name="About"
+          component={AboutScreen}
+        />
+        <Stack.Screen
+          name="HowToPlay"
+          component={HowToPlayScreen}
         />
       </Stack.Navigator>
       <Alert />

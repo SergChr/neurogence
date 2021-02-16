@@ -23,6 +23,6 @@ export default class Camera extends BasicHost {
   // TODO: implement
   public collectVideoStreamData() {
     // Evaluates how much computing time & power you spent
-    // to give you an addition to img & vide procesing skill
+    // to give you an addition to img & video procesing skill
   }
 }

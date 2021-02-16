@@ -46,6 +46,7 @@ export default class Host {
     this.passwordSuggestions = p.passwordSuggestions || [];
     this.OS = p.OS || OS.CentOS;
     this.ports = p.ports || new Map();
+    this.isUserLogEmpty = false;
   }
 
   public readonly name: string;
@@ -60,6 +61,7 @@ export default class Host {
   password: string;
   passwordSuggestions: string[] = [];
   OS: OS;
+  isUserLogEmpty: boolean;
 
   // 0 indicates there is no security patches, the host should be updated.
   // If not updated, it can be enslaved without any effort.

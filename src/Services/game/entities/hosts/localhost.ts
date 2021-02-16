@@ -47,11 +47,12 @@ export default class Localhost extends BasicHost {
 
   exploitVersion: number;
   public upgrades: Upgrade[];
-
   public skills: Skills = startingSkills;
+
   public setSkill(skill: SkillNames, value: number) {
     this.skills[skill] = value;
   }
+
   public getSkill(name: SkillNames) {
     return this.skills[name]!;
   }

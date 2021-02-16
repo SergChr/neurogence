@@ -65,12 +65,17 @@ export default ({
         icon={require('../../assets/images/terminal.png')}
       />
 
-    {botsAvailable &&
+      {botsAvailable &&
+        <MenuItem
+          to='Bots'
+          icon={require('../../assets/images/lab.png')}
+        />
+      }
+
       <MenuItem
-        to='Bots'
-        icon={require('../../assets/images/lab.png')}
+        to='About'
+        icon={require('../../assets/images/question.png')}
       />
-    }
     </View>
   )
 }

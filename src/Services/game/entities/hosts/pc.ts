@@ -10,9 +10,12 @@ interface ConstructorArgs {
   owner?: string;
   passwordSuggestions?: string[];
   password?: string;
+  isDiaglyph?: boolean;
 }
 
 const UNKNOWN = 'unknown';
+
+// TODO: name something "sempiternal"
 
 // TODO: write functionality to talk with the owner of the PC
 // Like:
@@ -35,7 +38,9 @@ export default class PC extends BasicHost {
     this.securityPatch = p.securityPatch;
     this.fs.files = p.files || [];
     this.owner = p.owner || UNKNOWN;
+    this.isDiaglyph = p.isDiaglyph || false;
   }
 
   owner: string;
+  isDiaglyph: boolean;
 }
