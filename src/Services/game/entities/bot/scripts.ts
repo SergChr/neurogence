@@ -87,6 +87,6 @@ export default [
     'If Diaglyph, then',
     false,
     false,
-    Groups.LoggedIn,
+    Groups.OutsideHost,
   ),
 ];

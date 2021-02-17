@@ -64,7 +64,7 @@ export default ({ navigation }: Props) => {
               onRelease={() => releaseBot(i)}
               logs={botLogs.get(i.id)}
               removeOne={() => removeOneInstanceOfBot(i)}
-              canRelease={i.metrics.quantity <= gameVars.get(GameVars.MaxBotInstances)}
+              canRelease={i.metrics.quantity < gameVars.get(GameVars.MaxBotInstances)}
               canRemove={i.metrics.quantity > 0}
             />
           ))}

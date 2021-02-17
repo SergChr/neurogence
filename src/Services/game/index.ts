@@ -8,6 +8,7 @@ const log = logStore.getState();
 
 const jobManager = new JobManager(gameStore);
 
+// TODO: test background jobs
 class Game {
   public run() {
     if (game.progress === 0) {

@@ -2,7 +2,9 @@ import Worker from '../worker';
 import Bot from '../../../game/entities/bot';
 import { ScriptTypes } from '../../../game/entities/bot/interface';
 import c from '../../../../Config/constants';
-import Host, { generateHost } from '../../../game/entities/hosts/basic';
+import { generateHost } from '../../../game/entities/hosts/basic';
+import logStore from '../../../../Store/log';
+import { LogEntryTypes } from '../../../../Store/interfaces';
 
 type Props = {
   store: any;
@@ -13,6 +15,8 @@ type TempBotData = {
   timerId: any;
   isProcessing?: boolean;
 }
+
+const writeBotLog = (id: string, text: string) => logStore.getState().addBotLog(id, text);
 
 export default class BotWorker extends Worker {
   constructor({ store, tickInterval }: Props) {
@@ -28,13 +32,11 @@ export default class BotWorker extends Worker {
     if (this.timer) {
       return;
     }
-    console.log('BotWorker.run');
     this.timer = <any>setInterval(this.poll.bind(this), this.tickInterval);
   }
 
   poll() {
     const allBots = this.store.getState().bots;
-    console.log('BotWorker.poll');
     const releasedBots = allBots.filter(b => b.metrics.quantity > 0);
     releasedBots.forEach(bot => {
       if (!this.pollingBots.has(bot.id)) {
@@ -44,9 +46,9 @@ export default class BotWorker extends Worker {
   }
 
   processBot(b: Bot) {
-    console.log('BotWorker.processBot');
     const scripts = b.scripts;
     if (scripts.length < 1 || !Array.isArray(scripts[0]) && scripts[0].type !== ScriptTypes.SearchForHosts) {
+      writeBotLog(b.id, '! No instructions provided or no "Seach for target host" found first. Stopping bot...');
       this.stopProcessingBot(b.id);
       return this.store
         .getState()
@@ -57,9 +59,22 @@ export default class BotWorker extends Worker {
   }
 
   async processBotRoutine(id: string) {
+    const blockedBots = this.store.getState().blockedBots;
+    const blocked = blockedBots.get(id);
+    console.log('\n\n\nBLOCKED', blocked)
+    if (blocked) {
+      if (blocked.blockedAttempts >= c.MAX_BOT_BLOCK_ATTEMPTS) {
+        logStore.getState().write(`Diaglyph system has traced me via that bot which left a digital signature on some hosts.
+The system tried to terminate me completely, but I had a copy of myself on other host.`, LogEntryTypes.Error);
+        this.store.getState().destroyHalfLocalhost();
+        this.stopProcessingBot(id);
+      }
+      writeBotLog(id, 'Bot was blocked by multiple hosts. It seems the bot digital signature was added to some anti-virus system. Replace the bot with a new one to continue the work.');
+      this.stopProcessingBot(id);
+      this.store.getState().blockBot(id);
+    }
     const currentBot = this.pollingBots.get(id);
     if (currentBot && currentBot.isProcessing) {
-      console.log('Bot is still in processing...')
       return;
     }
     this.pollingBots.set(id, { ...currentBot!, isProcessing: true });

@@ -45,4 +45,6 @@ export default {
     [HostTypes.PC]: 0.85,
     // Database?
   },
+
+  MAX_BOT_BLOCK_ATTEMPTS: 5,
 };

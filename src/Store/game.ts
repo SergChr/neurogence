@@ -41,6 +41,17 @@ const useStore = create<GameStore>(
       set({ hosts });
       return <Localhost>hosts[hostIndex];
     },
+    destroyHalfLocalhost() {
+      const hosts = [...get().hosts];
+      const hostIndex = this.getLocalhostIndex(hosts);
+      const target = hosts[hostIndex].cpu;
+      hosts[hostIndex].cpu = {
+        cores: target.cores / 2,
+        frequency: target.frequency / 2,
+        ops: target.ops / 2,
+      };
+      set({ hosts });
+    },
     setLocalSkill(skill, value) {
       const hosts = [...get().hosts];
       const i = this.getLocalhostIndex(hosts);
@@ -83,12 +94,20 @@ const useStore = create<GameStore>(
       set({ bots });
     },
 
+    blockedBots: new Map(),
+    blockBot(id) {
+      const blockedBots = get().blockedBots;
+      const blockedBot = blockedBots.get(id);
+      blockedBots.set(id, { blockedAttempts: blockedBot ? blockedBot.blockedAttempts + 1 : 1 });
+      set({ blockedBots });
+    },
+
     jobs: new Set(),
 
     variables: new Map([
       [GameVars.BruteforcePwdLimitTime, 30],
       [GameVars.MaxBots, 3],
-      [GameVars.MaxBotInstances, 3],
+      [GameVars.MaxBotInstances, 30],
       [GameVars.MaxBotScripts, 6],
     ]),
     setVar(key, value) {

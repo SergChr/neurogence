@@ -17,9 +17,8 @@ export interface LogEntry {
 }
 
 // TODO: replace with Set
-interface GameUpgrades extends Record<string, boolean> {}
-
-interface Store extends Record<string, any> {}
+interface GameUpgrades extends Record<string, boolean> {};
+interface Store extends Record<string, any> {};
 
 export interface LogStore extends Store {
   log: LogEntry[];
@@ -36,6 +35,7 @@ export interface GameStore extends Store {
   addHost: (h: BasicHost) => void;
   getLocalhostIndex(hosts: BasicHost[]): number;
   updateLocalhost: (payload: Partial<Localhost>) => Localhost;
+  destroyHalfLocalhost(): void;
   setLocalSkill(skill: SkillNames, value: number): void;
   getLocalhost(): Localhost;
   updateHost(name: string, payload: Partial<BasicHost>): void;
@@ -43,6 +43,8 @@ export interface GameStore extends Store {
   setUpgrade(s: string, v: boolean): void;
   bots: Bot[];
   updateBot(payload: BotData, toRemove?: boolean): void;
+  blockedBots: Map<string, {blockedAttempts: number}>;
+  blockBot(id: string): void;
   jobs: Set<JobTypes>;
   variables: Map<string, any>;
   setVar: (key: string, value: any) => void;

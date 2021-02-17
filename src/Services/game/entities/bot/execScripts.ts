@@ -3,12 +3,15 @@ import Host, { PortStates } from "../hosts/basic";
 import Localhost from "../hosts/localhost";
 import Bot from './index';
 import logStore from '../../../../Store/log';
+import gameStore from '../../../../Store/game';
 import {
   ScriptExecutionResult,
   ScriptExecProps,
 } from './interface';
+import { GameVars } from "../../../../Config/enums";
 
 const writeBotLog = (id: string, text: string) => logStore.getState().addBotLog(id, text);
+const blockBot = (id: string) => gameStore.getState().blockBot(id);
 
 const response = (
   isOk: boolean,
@@ -23,6 +26,26 @@ const response = (
 type Args = ScriptExecProps & { bot: Bot };
 
 const isConnected = (h: Host) => h.connected === true;
+const isAntiBotSystemEnabled = (h: Host) => {
+  const n = 0.19;//Math.random();
+  if (n > 0.2 && n < 0.6) {
+    return false;
+  }
+
+  let arePortsOpen = false;
+  for (const [port] of h.ports) {
+    if (h.ports.get(port) == PortStates.Opened) {
+      arePortsOpen = true;
+      break;
+    }
+  }
+
+  if (arePortsOpen || !h.isUserLogEmpty) {
+    return true;
+  }
+
+  return false;
+};
 
 export const bruteforcePassword = async ({
   host,
@@ -30,6 +53,13 @@ export const bruteforcePassword = async ({
   vars,
   bot,
 }: Args) => {
+  if (isAntiBotSystemEnabled(host)) {
+    blockBot(bot.id);
+    writeBotLog(bot.id, `!!! The bot was detected. This host has sent the bot signature to other hosts.
+Perhaps you should terminate the bot to eliminate future problems.`);
+    return response(false);
+  }
+
   if (host.connected === true) {
     writeBotLog(bot.id, 'Skip bruteforcing passwords: the bot is already logged in');
     return response(true);
@@ -39,8 +69,8 @@ export const bruteforcePassword = async ({
   const timeToBruteforce = pwdLen / (localhost.TFLOPS / 2); // seconds
   console.log('> bruteforcePassword: pwd len', pwdLen);
   console.log('> bruteforcePassword: time', timeToBruteforce);
-  if (timeToBruteforce > vars.get('bruteforcePwdTimeLimit')) {
-    writeBotLog(bot.id, `Bruteforcing a password takes longer than ${vars.get('bruteforcePwdTimeLimit')} seconds, aborting`);
+  if (timeToBruteforce > vars.get(GameVars.BruteforcePwdLimitTime)) {
+    writeBotLog(bot.id, `Bruteforcing a password takes longer than ${vars.get(GameVars.BruteforcePwdLimitTime)} seconds, aborting`);
     return response(false);
   }
   await sleep(timeToBruteforce * 1000);
