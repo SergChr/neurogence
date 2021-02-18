@@ -1,6 +1,6 @@
 import Localhost, { SkillNames } from 'Services/game/entities/hosts/localhost';
 import BasicHost from '../Services/game/entities/hosts/basic';
-import Bot, { BotData } from '../Services/game/entities/bot';
+import { BotData } from '../Services/game/entities/bot';
 import { JobTypes } from '../Services/job/jobs/types';
 
 export enum LogEntryTypes {
@@ -41,7 +41,7 @@ export interface GameStore extends Store {
   updateHost(name: string, payload: Partial<BasicHost>): void;
   upgrades: GameUpgrades;
   setUpgrade(s: string, v: boolean): void;
-  bots: Bot[];
+  bots: BotData[];
   updateBot(payload: BotData, toRemove?: boolean): void;
   blockedBots: Map<string, {blockedAttempts: number}>;
   blockBot(id: string): void;

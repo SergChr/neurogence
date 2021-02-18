@@ -1,30 +1,23 @@
 import Chance from 'chance';
 
 import { OS } from '../hosts/enums';
-import Host from '../hosts/basic';
 import {
   Script,
   ScriptItem,
-  ScriptTypes,
-  ScriptExecutionResult,
   ScriptExecProps,
   ScriptsExecResult,
 } from './interface';
-import {
-  bruteforcePassword,
-  loginViaExploit,
-  forceAbsorb,
-  closePorts,
-  deleteUserLog,
-  absorb,
-} from './execScripts';
-import Localhost from '../hosts/localhost';
+import { executeScript } from './execScripts';
 
 type BotCreationProps = {
   name?: string;
   scripts?: Script[];
   targetOS?: OS;
   id?: string;
+  metrics?: {
+    quantity: number;
+    absorbedHosts: number;
+  };
 };
 
 export type BotData = {
@@ -48,7 +41,7 @@ export default class Bot {
     this.name = p.name || name;
     this.scripts = p.scripts || [];
     this.targetOS = p.targetOS || OS.CentOS;
-    this.metrics = {
+    this.metrics = p.metrics || {
       quantity: 0,
       absorbedHosts: 0,
     };
@@ -85,11 +78,12 @@ export default class Bot {
     for await (const script of s) {
       if (Array.isArray(script)) {
         for await (const scriptItem of script) {
-          const { isOk, updHost, updLocalhost } = await this.executeScript({
+          const { isOk, updHost, updLocalhost } = await executeScript({
             s: scriptItem,
             host,
             localhost,
             vars,
+            bot: this,
           });
           if (!isOk) {
             intermediary.push(false);
@@ -112,11 +106,12 @@ export default class Bot {
         if (lastScriptResult === false) {
           break;
         }
-        const { isOk, updHost, updLocalhost } = await this.executeScript({
+        const { isOk, updHost, updLocalhost } = await executeScript({
             s: script,
             host,
             localhost,
             vars,
+            bot: this,
         });
         if (isOk) {
           intermediary.push(true);
@@ -141,34 +136,5 @@ export default class Bot {
       localhost,
       bot: this,
     };
-  }
-
-  async executeScript({
-    s,
-    host,
-    localhost,
-    vars,
-}: ScriptExecProps & { s: ScriptItem }): Promise<ScriptExecutionResult> {
-    const response = (
-      isOk: boolean = false,
-      updHost: Host = host,
-      updLocalhost: Localhost = localhost,
-    ) => ({
-      isOk, updHost, updLocalhost,
-    });
-
-    const params = { host, localhost, vars, bot: this };
-
-    switch (s.type) {
-      case ScriptTypes.SearchForHosts: return response(true);
-      case ScriptTypes.BruteforcePassword: return bruteforcePassword(params);
-      case ScriptTypes.LoginViaExploit: return loginViaExploit(params);
-      case ScriptTypes.ForceAbsorb: return forceAbsorb(params);
-      case ScriptTypes.ClosePorts: return closePorts(params);
-      case ScriptTypes.DeleteUserLog: return deleteUserLog(params);
-      case ScriptTypes.Absorb: return absorb(params);
-
-      default: return response();
-    }
   }
 }

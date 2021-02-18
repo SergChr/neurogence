@@ -1,7 +1,7 @@
 import { UseStore } from 'zustand';
 
 import { GameStore } from '../../Store/interfaces';
-import Bot from '../game/entities/bot';
+import { BotData } from '../game/entities/bot';
 import BotWorker from './jobs/BotWorker';
 import Job from './index';
 import { JobTypes } from './jobs/types';
@@ -72,7 +72,7 @@ export default class JobManager extends Job {
     }
   }
 
-  onBotsChange(newValue: Bot[]) {
+  onBotsChange(newValue: BotData[]) {
     const hasReleasedBots = newValue.some(b => b.metrics.quantity > 0);
     if (hasReleasedBots) {
       console.log('>> addJob');

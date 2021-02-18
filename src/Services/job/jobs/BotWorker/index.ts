@@ -40,7 +40,7 @@ export default class BotWorker extends Worker {
     const releasedBots = allBots.filter(b => b.metrics.quantity > 0);
     releasedBots.forEach(bot => {
       if (!this.pollingBots.has(bot.id)) {
-        this.processBot(bot);
+        this.processBot(new Bot(bot));
       }
     });
   }
@@ -83,6 +83,7 @@ The system tried to terminate me completely, but I had a copy of myself on other
     if (!bot) {
       return;
     }
+    const botInstance = new Bot(bot);
 
     const hosts = [...Array(bot.metrics.quantity)]
       .map(() => generateHost())
@@ -91,7 +92,7 @@ The system tried to terminate me completely, but I had a copy of myself on other
     const localhost = store.getLocalhost();
 
     for await (const host of hosts) {
-      const result = await bot.executeScriptsOn({
+      const result = await botInstance.executeScriptsOn({
         host,
         localhost,
         vars: store.variables,

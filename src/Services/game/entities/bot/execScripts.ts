@@ -1,12 +1,13 @@
 import sleep from "../../../../utils/sleep";
 import Host, { PortStates } from "../hosts/basic";
 import Localhost from "../hosts/localhost";
-import Bot from './index';
 import logStore from '../../../../Store/log';
 import gameStore from '../../../../Store/game';
 import {
   ScriptExecutionResult,
   ScriptExecProps,
+  ScriptItem,
+  ScriptTypes,
 } from './interface';
 import { GameVars } from "../../../../Config/enums";
 
@@ -23,7 +24,7 @@ const response = (
   updLocalhost: updLocalhost || undefined,
 });
 
-type Args = ScriptExecProps & { bot: Bot };
+type Args = ScriptExecProps & { bot: any };
 
 const isConnected = (h: Host) => h.connected === true;
 const isAntiBotSystemEnabled = (h: Host) => {
@@ -46,6 +47,36 @@ const isAntiBotSystemEnabled = (h: Host) => {
 
   return false;
 };
+
+export const executeScript = async ({
+  s,
+  host,
+  localhost,
+  vars,
+  bot,
+}: ScriptExecProps & { s: ScriptItem, bot: any }): Promise<ScriptExecutionResult> => {
+  const response = (
+    isOk: boolean = false,
+    updHost: Host = host,
+    updLocalhost: Localhost = localhost,
+  ) => ({
+    isOk, updHost, updLocalhost,
+  });
+
+  const params = { host, localhost, vars, bot };
+
+  switch (s.type) {
+    case ScriptTypes.SearchForHosts: return response(true);
+    case ScriptTypes.BruteforcePassword: return bruteforcePassword(params);
+    case ScriptTypes.LoginViaExploit: return loginViaExploit(params);
+    case ScriptTypes.ForceAbsorb: return forceAbsorb(params);
+    case ScriptTypes.ClosePorts: return closePorts(params);
+    case ScriptTypes.DeleteUserLog: return deleteUserLog(params);
+    case ScriptTypes.Absorb: return absorb(params);
+
+    default: return response();
+  }
+}
 
 export const bruteforcePassword = async ({
   host,

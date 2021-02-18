@@ -6,7 +6,6 @@ import {
   GameStore,
 } from './interfaces';
 import Localhost from '../Services/game/entities/hosts/localhost';
-import Bot from '../Services/game/entities/bot';
 import { GameVars } from '../Config/enums';
 
 // TODO: add persist()
@@ -83,7 +82,7 @@ const useStore = create<GameStore>(
       const bots = [...get().bots];
       const botIndex = bots.findIndex(b => b.id === data.id);
       if (botIndex === -1) {
-        bots.push(new Bot(data));
+        bots.push(data);
       } else if (toRemove) {
         bots.splice(botIndex, 1);
       } else {
