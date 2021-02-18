@@ -74,8 +74,6 @@ export default class Bot {
     };
   }
 
-  // TODO: maybe write and show bot logs? We might call it "debug"
-  // to give user a scheme what is happening under the hood
   async executeScriptsOn({
     host,
     localhost,

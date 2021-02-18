@@ -7,7 +7,7 @@ import s from './styles';
 import Text from '../../../../Components/Text';
 import Button, { ButtonTypes } from '../../../../Components/Button';
 import Modal from './modal';
-import { Script, ScriptItem } from '../../../../Services/game/entities/bot/interface';
+import { Script, ScriptItem, ScriptTypes } from '../../../../Services/game/entities/bot/interface';
 import scripts from '../../../../Services/game/entities/bot/scripts';
 import { ActionTypes, ScriptUpdateInstructions } from '../../interface';
 
@@ -41,12 +41,17 @@ export default class HostScreen extends React.PureComponent<Props, State> {
     currentScript: null,
   }
 
-  requestEdit = (i: number, ii?: number) => {
+  requestEdit = (type: ScriptTypes, i: number, ii?: number) => {
     const indexes = [i];
     if (ii) {
       indexes.push(ii);
     }
-    this.setState({ mode: Modes.Edit, modalVisible: true, indexes });
+    this.setState({
+      mode: Modes.Edit,
+      modalVisible: true,
+      indexes,
+      currentScript: type,
+    });
   }
 
   delete = (i: number, ii?: number) => {
@@ -86,6 +91,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
   render() {
     const { data = [], canAddMore } = this.props;
     const { modalVisible, currentScript } = this.state;
+
     return (
       <View style={s.container}>
         {modalVisible && (
@@ -115,7 +121,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                           short
                           mainText={script.type}
                           secondaryText={script.thenText}
-                          onEdit={() => this.requestEdit(index, i)}
+                          onEdit={() => this.requestEdit(script.type, index, i)}
                           onDelete={() => this.delete(index, i)}
                         />
                         {hasOrSeparator && <Text style={s.or}>OR</Text>}
@@ -138,7 +144,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
                   <Instruction
                     mainText={item.type}
                     secondaryText={item.thenText}
-                    onEdit={() => this.requestEdit(index)}
+                    onEdit={() => this.requestEdit(item.type, index)}
                     onDelete={() => this.delete(index)}
                   />
                 </View>

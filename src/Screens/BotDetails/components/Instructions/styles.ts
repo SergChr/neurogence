@@ -33,9 +33,8 @@ export default StyleSheet.create({
     backgroundColor: Colors.PrimaryLight,
     flex: 1,
     borderRadius: Metrics.BorderRadiusSM,
-    padding: 15,
+    padding: 7.5,
   },
-  modalList: {},
   modalItem: {
     marginBottom: 8,
     padding: 8,
@@ -56,5 +55,17 @@ export default StyleSheet.create({
   modalItemWarn: {
     fontSize: Metrics.FontSizeXSM,
     color: Colors.Orange,
+  },
+  groupSection: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 0,
+    borderRadius: Metrics.BorderRadiusSM,
+    marginBottom: 6,
+  },
+  groupTitle: {
+    marginBottom: 4,
+    fontSize: Metrics.FontSizeSM1,
   },
 });

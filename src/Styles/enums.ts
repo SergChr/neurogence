@@ -3,6 +3,7 @@ export enum Colors {
 	PrimaryBtn = '#0567A3',
 	PrimaryLight = '#0B334C',
 	Primary = '#0C91CF',
+	Primary2 = '#04638a',
 	PrimaryDark1 = '#062236',
 	PrimaryDark2 = '#084c75',
 
