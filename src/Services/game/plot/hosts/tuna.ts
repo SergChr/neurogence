@@ -75,7 +75,7 @@ export default new PC({
       values: { [SkillNames.Programming]: 0.0001 },
       onRead() {
         const game = gameStore.getState();
-        if (game.upgrades.dashboard) {
+        if (game.upgrades.has(Upgrades.MetricsPanel)) {
           return;
         }
         game.updateLocalhost({
@@ -83,7 +83,7 @@ export default new PC({
             id: Upgrades.MetricsPanel,
             description: 'Improve the metrics panel',
             make() {
-              game.setUpgrade('dashboard', true);
+              game.setUpgrade(Upgrades.MetricsPanel);
               game.setLocalSkill(SkillNames.Programming, 0.0001);
               return 'Enabled. You can now see the machine\'s skills.'
             },

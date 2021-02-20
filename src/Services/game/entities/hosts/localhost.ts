@@ -4,7 +4,6 @@ import { File } from '../file';
 import { HostTypes, Upgrades } from './enums';
 
 export enum SkillNames {
-  ImageVideoProcessing = 'imageVideoProcessing',
   NLP = 'NLP', // natural language processing
   Physics = 'physics',
   Programming = 'programming',
@@ -21,7 +20,6 @@ export interface Upgrade {
 export interface Skills extends Partial<Record<SkillNames, number>> {}
 
 const startingSkills: Skills = {
-  [SkillNames.ImageVideoProcessing]: constants.STARTING_OPTS.SKILLS.IMG_VIDEO_PROCESS,
   [SkillNames.NLP]: constants.STARTING_OPTS.SKILLS.NLP,
   [SkillNames.Physics]: constants.STARTING_OPTS.SKILLS.PHYSICS,
   [SkillNames.Programming]: constants.STARTING_OPTS.SKILLS.PROGRAMMING,

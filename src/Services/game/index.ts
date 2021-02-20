@@ -1,6 +1,7 @@
 import { gameStore, logStore } from '../../Store';
 import startGame from './actions/startGame';
-// import c from '../../Config/constants';
+import handleGameProgress from './actions/handleGameProgress';
+import c from '../../Config/constants';
 import JobManager from '../job/JobManager';
 
 const game = gameStore.getState();
@@ -11,26 +12,22 @@ const jobManager = new JobManager(gameStore);
 // TODO: test background jobs
 class Game {
   public run() {
-    if (game.progress === 0) {
+    if (game.progress.value === 0) {
       startGame(game, log);
     }
 
     jobManager.run();
     
-    // this.startPolling();
+    this.startPolling();
   }
 
-  // startPolling() {
-  //   setInterval(this.poll, c.POLLING_INTERVAL);
-  // }
+  startPolling() {
+    setInterval(this.poll.bind(this), c.POLLING_INTERVAL);
+  }
 
-  // = game tick
-  // poll() {
-    // Got background tasks?
-    // Check if they're running here on the app start
-    // If not, resume the processes
-    // If yes, do nothing
-  // }
+  poll() {
+    handleGameProgress(jobManager);
+  }
 }
 
 export default new Game;

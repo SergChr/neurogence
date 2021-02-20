@@ -70,6 +70,8 @@ const Metric = ({ icon, text, value }: MetricProps) => (
   </View>
 );
 
+const format = (n: number) => Math.round(n * 100000) / 100000;
+
 export default ({ data: host, full }: Props) => {
   if (!host) {
     return null;
@@ -89,19 +91,19 @@ export default ({ data: host, full }: Props) => {
           <Metric
             icon={require('../../assets/images/math.png')}
             text='Math'
-            value={host.getSkill(SkillNames.Math)}
+            value={format(host.getSkill(SkillNames.Math))}
           />
 
           <Metric
             icon={require('../../assets/images/language.png')}
             text='NLP'
-            value={host.getSkill(SkillNames.NLP)}
+            value={format(host.getSkill(SkillNames.NLP))}
           />
 
           <Metric
             icon={require('../../assets/images/programming.png')}
             text='Programming'
-            value={host.getSkill(SkillNames.Programming)}
+            value={format(host.getSkill(SkillNames.Programming))}
           />
         </View>
       }

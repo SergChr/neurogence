@@ -7,19 +7,21 @@ import Job from './index';
 import { JobTypes } from './jobs/types';
 import Worker from './jobs/worker';
 import c from '../../Config/constants';
+import SkillWorker from './jobs/SkillWorker';
 
 export default class JobManager extends Job {
   constructor(store: UseStore<GameStore>) {
     super({ store });
-    // TODO: adjust tickInterval, use constant
     this.botWorker = new BotWorker({ store, tickInterval: c.BOT_POLLING_INTERVAL });
+    this.skillWorker = new SkillWorker({ store, tickInterval: c.SKILLS_IMPROVING_INTERVAL });
   }
 
   botWorker: BotWorker;
+  skillWorker: SkillWorker;
 
   run() {
-    this.subscribe(this.onJobsChange, 'jobs');
-    this.subscribe(this.onBotsChange, 'bots');
+    this.subscribe('jobs', this.onJobsChange);
+    this.subscribe('bots', this.onBotsChange);
 
     // Check if any job existed in state before (when the app went offline)
     // need to resume their running
@@ -59,7 +61,7 @@ export default class JobManager extends Job {
     this.store.setState({ jobs: newJobs });
   }
 
-  subscribe(callback: Function, storeField: string): void {
+  subscribe(storeField: string, callback: Function): void {
     this.store.subscribe(callback.bind(this), (store) => store[storeField]);
   }
 
@@ -69,6 +71,7 @@ export default class JobManager extends Job {
     }
     switch(type) {
       case JobTypes.BotWorker: return this.botWorker;
+      case JobTypes.SkillWorker: return this.skillWorker;
     }
   }
 

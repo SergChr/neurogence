@@ -1,7 +1,6 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { throttle } from 'throttle-debounce';
 
 import {
   LogEntryTypes,
@@ -38,7 +37,7 @@ const useStore = create<LogStore>(
     },
   }),
   // {
-  //   name: 'log', // can be any name
+  //   name: 'LogStore', // can be any name
   //   storage: AsyncStorage,
   // }
 );

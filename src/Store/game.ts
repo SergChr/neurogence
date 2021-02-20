@@ -5,18 +5,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   GameStore,
 } from './interfaces';
-import Localhost from '../Services/game/entities/hosts/localhost';
+import Localhost, { SkillNames } from '../Services/game/entities/hosts/localhost';
 import { GameVars } from '../Config/enums';
 
-// TODO: add persist()
-// const useStore = create<GameStore>(persist(
 const useStore = create<GameStore>(
   (set, get) => ({
-    progress: 0,
-    setProgress(n) {
-      if (get().progress < n) {
-        set({ progress: n });
-      }
+    progress: {
+      value: 0,
+      handled: false,
+    },
+    setProgress(n, handled = false) {
+      set({
+        progress: {
+          value: n,
+          handled,
+        }
+      });
     },
 
     hosts: [],
@@ -72,9 +76,11 @@ const useStore = create<GameStore>(
       set({ hosts });
     },
 
-    upgrades: {},
-    setUpgrade(s, v) {
-      this.upgrades[s] = v;
+    upgrades: new Set(),
+    setUpgrade(upgrade) {
+      const newSet = get().upgrades;
+      newSet.add(upgrade);
+      set({ upgrades: newSet });
     },
 
     bots: [],
@@ -108,12 +114,24 @@ const useStore = create<GameStore>(
       [GameVars.MaxBots, 3],
       [GameVars.MaxBotInstances, 30],
       [GameVars.MaxBotScripts, 6],
+      [GameVars.ImprovingRateMath, 0.05],
+      [GameVars.ImprovingRateNLP, 0.05],
+      [GameVars.ImprovingRateProgramming, 0.05],
+      [GameVars.ImprovingRatePhysics, 0.05],
     ]),
     setVar(key, value) {
       const vars = get().variables;
       vars.set(key, value);
       set({ variables: vars });
     },
-  }));
+    getVar(key) {
+      return get().variables.get(key);
+    },
+}),
+  // {
+  //   name: 'GameStore',
+  //   storage: AsyncStorage,
+  // }
+);
 
 export default useStore;

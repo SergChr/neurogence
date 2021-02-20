@@ -10,11 +10,12 @@ import InfoPanel from '../../Components/InfoPanel';
 import { logStore, gameStore } from '../../Store';
 import scanNetwork from '../../Services/game/actions/scanNetwork';
 import s from './styles';
+import { Upgrades } from '../../Services/game/entities/hosts/enums';
 
 export default ({ navigation }: any) => {
   const log = logStore(s => s.log);
   const hosts = gameStore(s => s.hosts);
-  const gameProgress = gameStore(s => s.progress);
+  const gameProgress = gameStore(s => s.progress.value);
   const upgrades = gameStore(s => s.upgrades);
   const localhost = gameStore(s => s.getLocalhost());
 
@@ -38,7 +39,7 @@ export default ({ navigation }: any) => {
 
         <View style={{...s.col, ...s.widthSM}}>
           <View style={s.infoPanel}>
-            <InfoPanel data={localhost} full={upgrades.dashboard} />
+            <InfoPanel data={localhost} full={upgrades.has(Upgrades.MetricsPanel)} />
           </View>
 
           <View style={s.buttons}>

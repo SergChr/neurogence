@@ -89,7 +89,7 @@ As a CEO, you Marvin should understand possible consequences and have full contr
 We were developing it for years. No one escaped and no one will ever do that. I'm assuring you.`,
           '',
           () => {
-            logStore.getState().write('Diaglyph. We need to figure out what exactly it is and how to exploit that.');
+            logStore.getState().write('Diaglyph? We need to figure out what exactly it is and how to exploit that.');
             gameStore.getState().setProgress(5);
           }
         )

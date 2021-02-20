@@ -10,6 +10,7 @@ export enum HostTypes {
 export enum Upgrades {
   ExploitVersion = 'exploitVersion',
   MetricsPanel = 'metricsPanel',
+  IdlePowerToEnhanceSkills = 'idlePowerToEnhanceSkills',
 }
 
 export enum OS {
