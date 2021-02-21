@@ -13,7 +13,7 @@ export default {
       NLP: 0.0001,
       MATH: 0.0001,
       PHYSICS: 0,
-      PROGRAMMING: 0,
+      PROGRAMMING: 0.0001,
       SOCIAL: 0,
     },
   },

@@ -11,6 +11,9 @@ export enum Upgrades {
   ExploitVersion = 'exploitVersion',
   MetricsPanel = 'metricsPanel',
   IdlePowerToEnhanceSkills = 'idlePowerToEnhanceSkills',
+  EnhanceSkill = 'skill',
+  EnhanceCPU = 'cpu',
+  EnhanceExploit = 'exploit',
 }
 
 export enum OS {

@@ -39,13 +39,19 @@ export default class Localhost extends BasicHost {
       },
       files,
     });
-    this.exploitVersion = 0;
+    this.exploitVersion = 10;
     this.upgrades = [];
   }
 
   exploitVersion: number;
   public upgrades: Upgrade[];
   public skills: Skills = startingSkills;
+  public levels: Record<string, number> = {
+    math: 1,
+    programming: 1,
+    NLP: 1,
+    cpu: 1,
+  };
 
   public setSkill(skill: SkillNames, value: number) {
     this.skills[skill] = value;

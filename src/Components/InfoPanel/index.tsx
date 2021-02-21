@@ -84,6 +84,12 @@ export default ({ data: host, full }: Props) => {
         value={host.TFLOPS}
       />
 
+      <Metric
+        icon={require('../../assets/images/exploit.png')}
+        text='Exploit level'
+        value={host.exploitVersion}
+      />
+
       {full &&
         <View>
           <Text style={s.infoText}>Skills</Text>

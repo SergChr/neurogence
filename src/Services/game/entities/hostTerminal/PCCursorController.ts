@@ -17,9 +17,9 @@ const CURSOR = {
 const menuItems = [CURSOR.files];
 
 function skillsUpdateText(skills: Skills) {
-  let text = '\n\n__________\n|System info|\n';
+  let text = '\n\n__________\n|System info|';
   Object.entries(skills).forEach(([key, value]) => {
-    text += `Improved ${key} skill by ${value}`;
+    text += `\nImproved ${key} skill by ${value}`;
   });
   return text;
 }

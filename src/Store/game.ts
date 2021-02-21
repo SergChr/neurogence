@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   GameStore,
 } from './interfaces';
-import Localhost, { SkillNames } from '../Services/game/entities/hosts/localhost';
+import Localhost from '../Services/game/entities/hosts/localhost';
 import { GameVars } from '../Config/enums';
 
 const useStore = create<GameStore>(
@@ -33,16 +33,22 @@ const useStore = create<GameStore>(
     updateLocalhost(payload) {
       const hosts = [...get().hosts];
       const hostIndex = this.getLocalhostIndex(hosts);
+      const host = <Localhost>hosts[hostIndex];
       if (payload.upgrades) {
         payload.upgrades.forEach(upgrade => {
-          (<Localhost>hosts[hostIndex]).addUpgrade(upgrade);
+          host.addUpgrade(upgrade);
         });
       }
       if (payload.cpu) {
-        hosts[hostIndex].addCPUPower(payload.cpu);
+        host.addCPUPower(payload.cpu);
+      }
+      if (payload.levels) {
+        Object.entries(payload.levels).forEach(([key, value]) => {
+          host.levels[key] = value;
+        });
       }
       set({ hosts });
-      return <Localhost>hosts[hostIndex];
+      return host;
     },
     destroyHalfLocalhost() {
       const hosts = [...get().hosts];

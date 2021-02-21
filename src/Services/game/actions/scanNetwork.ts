@@ -4,6 +4,7 @@ import sleep from '../../../utils/sleep';
 import Tuna from '../plot/hosts/tuna';
 import TheWeakPhillip from '../plot/hosts/theWeakPhillip';
 import smtp1 from '../plot/hosts/smtp1';
+import A420 from '../plot/hosts/A420';
 
 const game = gameStore.getState();
 const log = logStore.getState();
@@ -21,4 +22,7 @@ export default async () => {
 
   await sleep(100);
   game.addHost(smtp1);
+
+  await sleep(150);
+  game.addHost(A420);
 }
