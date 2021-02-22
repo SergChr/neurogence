@@ -47,6 +47,14 @@ const useStore = create<GameStore>(
           host.levels[key] = value;
         });
       }
+      if (payload.exploitVersion) {
+        host.exploitVersion = payload.exploitVersion;
+      }
+      if (payload.override) {
+        Object.entries(payload.override).forEach(([key, value]) => {
+          (host as any)[key] = value;
+        });
+      }
       set({ hosts });
       return host;
     },

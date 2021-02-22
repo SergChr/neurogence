@@ -70,7 +70,7 @@ export default class LocalhostCursorController {
           const result = target.make();
           // Delete the upgrade
           this.host.upgrades.splice(i, 1);
-          gameStore.getState().updateLocalhost({ upgrades: this.host.upgrades });
+          gameStore.getState().updateLocalhost({ override: { upgrades: this.host.upgrades } });
           return {
             name: cursor[1],
             text: result || 'Upgrade is done.',

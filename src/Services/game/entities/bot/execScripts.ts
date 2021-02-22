@@ -98,8 +98,6 @@ Perhaps you should terminate the bot to eliminate future problems.`);
   writeBotLog(bot.id, 'Bruteforce passwords started');
   const pwdLen = host.password.length;
   const timeToBruteforce = pwdLen / (localhost.TFLOPS / 2); // seconds
-  console.log('> bruteforcePassword: pwd len', pwdLen);
-  console.log('> bruteforcePassword: time', timeToBruteforce);
   if (timeToBruteforce > vars.get(GameVars.BruteforcePwdLimitTime)) {
     writeBotLog(bot.id, `Bruteforcing a password takes longer than ${vars.get(GameVars.BruteforcePwdLimitTime)} seconds, aborting`);
     return response(false);

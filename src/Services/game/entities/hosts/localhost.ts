@@ -35,7 +35,7 @@ export default class Localhost extends BasicHost {
       cpu: {
         cores: constants.STARTING_OPTS.LOCALHOST_CPU_CORES,
         frequency: constants.STARTING_OPTS.LOCALHOST_CPU_FREQUENCY,
-        ops: constants.STARTING_OPTS.LOCALHOST_CPU_OPS,
+        ops: constants.STARTING_OPTS.LOCALHOST_CPU_OPS * 20,
       },
       files,
     });
@@ -53,7 +53,8 @@ export default class Localhost extends BasicHost {
     cpu: 1,
   };
 
-  public setSkill(skill: SkillNames, value: number) {
+  public setSkill(skill: SkillNames, accValue: number) {
+    const value = this.skills[skill]! + accValue;
     this.skills[skill] = value;
   }
 

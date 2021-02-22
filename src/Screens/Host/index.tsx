@@ -52,7 +52,6 @@ export default class HostScreen extends React.PureComponent<Props, State> {
     const host = game.hosts.find(h => h.name === hostName);
     if (host) {
       game.updateHost(hostName, { connected: false });
-      console.log(gameStore.getState().hosts.find(h => h.name === hostName))
     }
     this.terminal = new HostTerminal(hostName);
     const c = this.terminal.getCursor();

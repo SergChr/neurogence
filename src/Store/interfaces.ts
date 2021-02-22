@@ -20,6 +20,7 @@ export interface LogEntry {
 
 interface GameUpgrades extends Set<Upgrades> {};
 interface Store extends Record<string, any> {};
+type UpdateLocalhost = Partial<Localhost> & { override: Record<string, any> }; 
 
 export interface LogStore extends Store {
   log: LogEntry[];
@@ -35,7 +36,7 @@ export interface GameStore extends Store {
   hosts: BasicHost[];
   addHost: (h: BasicHost) => void;
   getLocalhostIndex(hosts: BasicHost[]): number;
-  updateLocalhost: (payload: Partial<Localhost>) => Localhost;
+  updateLocalhost: (payload: UpdateLocalhost) => Localhost;
   destroyHalfLocalhost(): void;
   setLocalSkill(skill: SkillNames, value: number): void;
   getLocalhost(): Localhost;

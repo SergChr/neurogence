@@ -78,7 +78,6 @@ export default class HostScreen extends React.PureComponent<Props, State> {
         if (p.payload!.hasOrSupport && typeof p.index === 'undefined') {
           items.push([Bot.createScript(p.payload!)]);
         } else if (p.payload!.hasOrSupport && typeof p.index === 'number') {
-          console.log(p.index, items);
           (items[p.index] as ScriptItem[]).push(Bot.createScript(p.payload!));
         } else {
           items.push(Bot.createScript(p.payload!));
