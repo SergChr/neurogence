@@ -14,7 +14,7 @@ export default class HostTerminal {
     const game = gameStore.getState();
     this.host = game.hosts.find(h => h.name === hostName)!;
 
-    switch (this.host.type) {
+    switch (this.host?.type) {
       case HostTypes.Localhost: {
         this.controller = new LocalhostCursorController(<Localhost>this.host);
         break
@@ -36,9 +36,6 @@ export default class HostTerminal {
     | MailServerCursorController;
 
   getCursor(cursorNames?: string[], page?: number): Cursor {
-    if (this.host.type !== HostTypes.Localhost) {
-      return this.controller!.getCursor(cursorNames, page);
-    }
     const newCursor = this.controller!.getCursor(cursorNames, page);
     return newCursor;
   }

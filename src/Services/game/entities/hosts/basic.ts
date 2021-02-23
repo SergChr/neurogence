@@ -88,6 +88,17 @@ export default class Host {
     return flops > (constants.COMP_TRANSCENDENCE_COEF * this.FLOPS);
   }
 
+  public arePortsClosed(): boolean {
+    let areClosed = true;
+    for (const port of this.ports.values()) {
+      if (port === PortStates.Opened) {
+        areClosed = true;
+        break;
+      }
+    }
+    return areClosed;
+  }
+
   setPassword(p: string) {
     this.password = p;
   }

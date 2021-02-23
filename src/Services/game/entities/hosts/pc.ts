@@ -1,4 +1,4 @@
-import BasicHost, { CPU } from './basic';
+import BasicHost, { CPU, PortStates } from './basic';
 import { File } from '../file';
 import { HostTypes } from './enums';
 
@@ -11,6 +11,7 @@ interface ConstructorArgs {
   passwordSuggestions?: string[];
   password?: string;
   isDiaglyph?: boolean;
+  ports?: Map<number, PortStates>;
 }
 
 const UNKNOWN = 'unknown';
@@ -34,6 +35,7 @@ export default class PC extends BasicHost {
       cpu: p.cpu,
       passwordSuggestions: p.passwordSuggestions,
       password: p.password,
+      ports: p.ports,
     });
     this.securityPatch = p.securityPatch;
     this.fs.files = p.files || [];

@@ -20,7 +20,7 @@ export interface LogEntry {
 
 interface GameUpgrades extends Set<Upgrades> {};
 interface Store extends Record<string, any> {};
-type UpdateLocalhost = Partial<Localhost> & { override: Record<string, any> }; 
+type UpdateLocalhost = Partial<Localhost> & { override?: Record<string, any> }; 
 
 export interface LogStore extends Store {
   log: LogEntry[];

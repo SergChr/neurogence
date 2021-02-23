@@ -5,6 +5,7 @@ import { gameStore, logStore } from '../../../../Store';
 import { SkillNames } from '../../entities/hosts/localhost';
 import { LogEntryTypes } from '../../../../Store/interfaces';
 import { Upgrades } from '../../entities/hosts/enums';
+import { PortStates } from '../../entities/hosts/basic';
 
 const year = new Date().getFullYear();
 const goals = `Excerpt of the ${c.COMPANY} company goals:

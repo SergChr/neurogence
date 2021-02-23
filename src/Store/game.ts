@@ -87,6 +87,12 @@ const useStore = create<GameStore>(
       if (payload.connected !== undefined) {
         hosts[hostIndex].connected = payload.connected;
       }
+      if (payload.ports) {
+        hosts[hostIndex].ports = payload.ports;
+      }
+      if (payload.isUserLogEmpty != null) {
+        hosts[hostIndex].isUserLogEmpty = payload.isUserLogEmpty;
+      }
       set({ hosts });
     },
 

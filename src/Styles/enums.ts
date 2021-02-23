@@ -16,6 +16,7 @@ export enum Colors {
 	Orange = '#C47631',
 	Red = '#d13f13',
 	Black = '#080808',
+	PrimaryBlack = '#041b2b',
 }
 
 export enum Metrics {
