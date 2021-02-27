@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "AIMobileGame-tvOS.app"
-               BlueprintName = "AIMobileGame-tvOS"
-               ReferencedContainer = "container:AIMobileGame.xcodeproj">
+               BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+               BuildableName = "Neurogence.app"
+               BlueprintName = "Neurogence"
+               ReferencedContainer = "container:Neurogence.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "AIMobileGame-tvOSTests.xctest"
-               BlueprintName = "AIMobileGame-tvOSTests"
-               ReferencedContainer = "container:AIMobileGame.xcodeproj">
+               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
+               BuildableName = "NeurogenceTests.xctest"
+               BlueprintName = "NeurogenceTests"
+               ReferencedContainer = "container:Neurogence.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -54,10 +54,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "AIMobileGame-tvOS.app"
-            BlueprintName = "AIMobileGame-tvOS"
-            ReferencedContainer = "container:AIMobileGame.xcodeproj">
+            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+            BuildableName = "Neurogence.app"
+            BlueprintName = "Neurogence"
+            ReferencedContainer = "container:Neurogence.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -71,10 +71,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "AIMobileGame-tvOS.app"
-            BlueprintName = "AIMobileGame-tvOS"
-            ReferencedContainer = "container:AIMobileGame.xcodeproj">
+            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+            BuildableName = "Neurogence.app"
+            BlueprintName = "Neurogence"
+            ReferencedContainer = "container:Neurogence.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

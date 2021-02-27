@@ -63,7 +63,7 @@ export default [
     'Once absorbed, then',
     false,
     false,
-    Groups.LoggedIn,
+    Groups.Login,
   ),
   script(
     Types.DeleteUserLog,
@@ -81,12 +81,12 @@ export default [
   //   false,
   //   Groups.LoggedIn,
   // ),
-  script(
-    Types.VerifyDiaglyphHost,
-    'Verify if current host is a Diaglyph host',
-    'If Diaglyph, then',
-    false,
-    false,
-    Groups.OutsideHost,
-  ),
+  // script(
+  //   Types.VerifyDiaglyphHost,
+  //   'Verify if current host is a Diaglyph host',
+  //   'If Diaglyph, then',
+  //   false,
+  //   false,
+  //   Groups.OutsideHost,
+  // ),
 ];

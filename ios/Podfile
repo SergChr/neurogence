@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'AIMobileGame' do
+target 'Neurogence' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
@@ -11,7 +11,7 @@ target 'AIMobileGame' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
-  target 'AIMobileGameTests' do
+  target 'NeurogenceTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -26,10 +26,10 @@ target 'AIMobileGame' do
   end
 end
 
-target 'AIMobileGame-tvOS' do
-  # Pods for AIMobileGame-tvOS
+target 'Neurogence-tvOS' do
+  # Pods for Neurogence-tvOS
 
-  target 'AIMobileGame-tvOSTests' do
+  target 'Neurogence-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
