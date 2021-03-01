@@ -23,6 +23,6 @@ export default async () => {
   await sleep(100);
   game.addHost(smtp1);
 
-  await sleep(150);
-  game.addHost(A420);
+  // await sleep(150);
+  // game.addHost(A420);
 }

@@ -52,7 +52,7 @@ export default class MailServerCursorController {
           case false: {
             const opts = [CURSOR.connect];
             const localhost = game.getLocalhost();
-            if (this.host.canBeEnslavedViaSecurityProblem(localhost.exploitVersion)) {
+            if (MailServer.canBeEnslavedViaSecurityProblem(this.host, localhost.exploitVersion)) {
               opts.push(CURSOR.enslaveViaSecurity);
             }
     

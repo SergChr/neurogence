@@ -27,12 +27,12 @@ export default class JobManager extends Job {
     // need to resume their running
     // TODO: test job handling when device went offline with persistent store
     const jobs = this.store.getState().jobs;
-    if (jobs.size > 0) {
+    if (jobs.length > 0) {
       this.resumeRunningJobs(jobs);
     }
   }
 
-  resumeRunningJobs(jobs: Set<JobTypes>) {
+  resumeRunningJobs(jobs: JobTypes[]) {
     jobs.forEach(job => {
       const worker = this.getWorker(job);
       if (worker) {
@@ -41,23 +41,28 @@ export default class JobManager extends Job {
     });
   }
 
+  hasJob(job: JobTypes): boolean {
+    return !!this.store.getState().jobs.find(j => j === job);
+  }
+
   addJob(jobName: JobTypes): void {
     const jobs = this.store.getState().jobs;
-    if (jobs.has(jobName)) {
+    if (this.hasJob(jobName)) {
       return;
     }
-    const newJobs = new Set([...jobs]);
-    newJobs.add(jobName);
+    const newJobs = [...jobs];
+    newJobs.push(jobName);
     this.store.setState({ jobs: newJobs });
   }
 
   removeJob(jobName: JobTypes): void {
     const jobs = this.store.getState().jobs;
-    if (!jobs.has(jobName)) {
+    if (!this.hasJob(jobName)) {
       return;
     }
-    const newJobs = new Set([...jobs]);
-    newJobs.delete(jobName);
+    const newJobs = [...jobs];
+    const index = jobs.findIndex(j => j === jobName);
+    newJobs.splice(index, 1);
     this.store.setState({ jobs: newJobs });
   }
 

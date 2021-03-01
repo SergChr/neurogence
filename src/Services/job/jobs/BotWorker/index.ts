@@ -68,7 +68,7 @@ The system tried to terminate me completely, but I had a copy of myself on other
         this.store.getState().destroyHalfLocalhost();
         this.stopProcessingBot(id);
       }
-      writeBotLog(id, 'Bot was blocked by multiple hosts. It seems the bot digital signature was added to some anti-virus system. Replace the bot with a new one to continue the work.');
+      writeBotLog(id, 'Bot was blocked by multiple hosts. It seems the bot digital signature was added to Diaglyph anti-virus system. Replace the bot with a new one to continue the work.');
       this.stopProcessingBot(id);
       this.store.getState().blockBot(id);
     }

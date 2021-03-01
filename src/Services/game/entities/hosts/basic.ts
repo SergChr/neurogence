@@ -27,7 +27,7 @@ type Constructor = {
   passwordSuggestions?: string[];
   password?: string;
   OS?: OS;
-  ports?: Map<number, PortStates>;
+  ports?: Record<string, PortStates>;
 }
 
 interface Filesystem {
@@ -45,14 +45,14 @@ export default class Host {
     this.password = p.password || ' ';
     this.passwordSuggestions = p.passwordSuggestions || [];
     this.OS = p.OS || OS.CentOS;
-    this.ports = p.ports || new Map();
+    this.ports = p.ports || {};
     this.isUserLogEmpty = false;
   }
 
   public readonly name: string;
   public readonly type: HostTypes;
   public cpu: CPU;
-  public ports: Map<number, PortStates>;
+  public ports: Record<string, PortStates>;
   public readonly fs: Filesystem = {
     files: [],
   };
@@ -68,29 +68,25 @@ export default class Host {
   // The greater the number, the harder to enslave the host.
   public securityPatch: number = 0;
 
-  public get FLOPS() {
-    return this.cpu.cores * this.cpu.frequency * this.cpu.ops;
+  static FLOPS(h: Host) {
+    return h.cpu.cores * h.cpu.frequency * h.cpu.ops;
   }
 
-  public get TFLOPS() {
-    return (this.cpu.cores * this.cpu.frequency * this.cpu.ops) / 1000000000000;
+  static TFLOPS(h: Host) {
+    return this.FLOPS(h) / 1000000000000;
   }
 
-  public addFile(file: File) {
-    this.fs.files.push(file);
+  static canBeEnslavedViaSecurityProblem(h: Host, exploitVersion: number) {
+    return exploitVersion > h.securityPatch;
   }
 
-  public canBeEnslavedViaSecurityProblem(exploitVersion: number) {
-    return exploitVersion > this.securityPatch;
+  static canBeEnslavedViaComputingTranscendence(h: Host, flops: number) {
+    return flops > (constants.COMP_TRANSCENDENCE_COEF * this.FLOPS(h));
   }
 
-  public canBeEnslavedViaComputingTranscendence(flops: number) {
-    return flops > (constants.COMP_TRANSCENDENCE_COEF * this.FLOPS);
-  }
-
-  public arePortsClosed(): boolean {
+  static arePortsClosed(h: Host): boolean {
     let areClosed = true;
-    for (const port of this.ports.values()) {
+    for (const port of Object.values(h.ports)) {
       if (port === PortStates.Opened) {
         areClosed = true;
         break;
@@ -99,18 +95,15 @@ export default class Host {
     return areClosed;
   }
 
-  setPassword(p: string) {
-    this.password = p;
-  }
-
-  enslave() {
-    this.enslaved = true;
-  }
-
-  addCPUPower({ cores, frequency, ops }: CPU) {
-    this.cpu.cores += cores;
-    this.cpu.frequency += frequency;
-    this.cpu.ops += ops;
+  static addCPUPower(host: Host, { cores, frequency, ops }: CPU) {
+    host.cpu.cores += cores;
+    if (host.cpu.frequency < frequency) {
+      host.cpu.frequency = frequency;
+    }
+    if (host.cpu.ops < ops) {
+      host.cpu.ops = ops;
+    }
+    return host.cpu;
   }
 }
 
@@ -120,13 +113,11 @@ export const generateHost = (): Host => {
     type: getWeightedRand(c.HOST_TYPE_PREVALENCE) as HostTypes,
     OS: getWeightedRand(c.OS_PREVALENCE) as OS,
     cpu: {
-      cores: chance.integer({ min: 1, max: 4 }),
-      frequency: chance.integer({ min: 1000000000, max: 12000000000 }),
-      ops: chance.integer({ min: 2, max: 8 }),
+      cores: chance.integer({ min: 1, max: 3 }),
+      frequency: chance.integer({ min: 25000000, max: 350000000 }),
+      ops: chance.integer({ min: 90, max: 210 }),
     },
     password: '1'.repeat(chance.integer({ min: 1, max: 14 })),
-    ports: new Map([
-      [4790, PortStates.Opened],
-    ]),
+    ports: { 4790: PortStates.Opened },
   });
 }

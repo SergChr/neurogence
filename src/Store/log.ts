@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { persist } from 'zustand/middleware';
+import { configurePersist } from 'zustand-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
@@ -9,8 +9,15 @@ import {
 
 const MAX_LOG_ITEMS = 20;
 
-// TODO: add persist()
-const useStore = create<LogStore>(
+const { persist } = configurePersist({
+  storage: AsyncStorage,
+  rootKey: 'root', // optional, default value is `root`
+});
+
+const useStore = create<LogStore>(persist(
+  {
+    key: 'log',
+  },
   (set, get) => ({
     log: [],
     reset: () => set({ log: [] }),
@@ -20,26 +27,21 @@ const useStore = create<LogStore>(
       set({ log: [...items.slice(items.length - MAX_LOG_ITEMS), newEntry] });
     },
 
-    botLog: new Map(),
+    botLog: {},
     addBotLog(botId, text) {
       const logs = get().botLog;
-      let targetLog = logs.get(botId);
+      let targetLog = logs[botId];
       if (!targetLog) {
-        logs.set(botId, [text]);
+        logs[botId] = [text];
         return set({ botLog: logs });
       }
       targetLog.push(text);
       if (targetLog.length > 30) {
         targetLog = targetLog.slice(targetLog.length - 30);
       }
-      logs.set(botId, targetLog);
+      logs[botId] = targetLog;
       set({ botLog: logs });
     },
-  }),
-  // {
-  //   name: 'LogStore', // can be any name
-  //   storage: AsyncStorage,
-  // }
-);
+  })));
 
 export default useStore;

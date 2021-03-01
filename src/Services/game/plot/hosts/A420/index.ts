@@ -14,7 +14,7 @@ export default new PC({
   },
   securityPatch: 7,
   password: pwd,
-  passwordSuggestions: ['123'],
+  passwordSuggestions: [],
   files: [
     new File({
       name: 'Diary.General.Part1',

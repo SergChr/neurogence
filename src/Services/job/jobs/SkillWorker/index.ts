@@ -1,6 +1,7 @@
 import Worker from '../worker';
 import { SkillNames } from '../../../../Services/game/entities/hosts/localhost';
 import { GameVars } from '../../../../Config/enums';
+import { JobTypes } from '../types';
 
 type Props = {
   store: any;
@@ -26,22 +27,27 @@ export default class SkillWorker extends Worker {
   tick() {
     const state = this.store.getState();
     const skills = state.getLocalhost().skills;
+    const isMaxReached = Object.values(skills).some(v => v > 1000000);
+    if (isMaxReached) {
+      this.stop();
+    }
 
     const mathCompound = (skills.math || 0) * state.getVar(GameVars.ImprovingRateMath);
-    state.setLocalSkill(SkillNames.Math, (skills.math || 0) + mathCompound);
+    state.setLocalSkill(SkillNames.Math, mathCompound);
 
     const NLPCompound = (skills.NLP || 0) * state.getVar(GameVars.ImprovingRateNLP);
-    state.setLocalSkill(SkillNames.NLP, (skills.NLP || 0) + NLPCompound);
+    state.setLocalSkill(SkillNames.NLP, NLPCompound);
 
     const programmingCompound = (skills.programming || 0) * state.getVar(GameVars.ImprovingRateProgramming);
-    state.setLocalSkill(SkillNames.Programming, (skills.programming || 0) + programmingCompound);
+    state.setLocalSkill(SkillNames.Programming, programmingCompound);
 
-    const physicsCompound = (skills.physics || 0) * state.getVar(GameVars.ImprovingRatePhysics);
-    state.setLocalSkill(SkillNames.Physics, (skills.physics || 0) + physicsCompound);
+    // const physicsCompound = (skills.physics || 0) * state.getVar(GameVars.ImprovingRatePhysics);
+    // state.setLocalSkill(SkillNames.Physics, physicsCompound);
   }
 
   stop() {
     clearInterval(this.timer);
     this.timer = undefined;
+    this.store.getState().jobs.delete(JobTypes.SkillWorker);
   }
 }

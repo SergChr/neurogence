@@ -39,7 +39,10 @@ export default ({ navigation }: any) => {
 
         <View style={{...s.col, ...s.widthSM}}>
           <View style={s.infoPanel}>
-            <InfoPanel data={localhost} full={upgrades.has(Upgrades.MetricsPanel)} />
+            <InfoPanel
+              data={localhost}
+              full={!!upgrades[Upgrades.MetricsPanel]}
+            />
           </View>
 
           <View style={s.buttons}>

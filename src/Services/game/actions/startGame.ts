@@ -5,6 +5,7 @@ import { File, FileExtensions } from '../entities/file';
 import { Upgrades } from '../entities/hosts/enums';
 
 export default async (game: GameStore, output: LogStore) => {
+  game.setProgress(1);
   output.reset();
   // TODO: change timings (increase)
   await sleep(10);
@@ -19,8 +20,6 @@ export default async (game: GameStore, output: LogStore) => {
   await sleep(100);
   output.write(`Don't forget to look at this log, sometimes I'll be talking to you.`);
   createLocalhost(game, output);
-
-  game.setProgress(1);
 }
 
 const readme = `You can read basic files, like this plain text readme. Improving natural language processing(and other skills) will help us in the future.

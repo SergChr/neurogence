@@ -11,11 +11,11 @@ const makeEmail = (to: string, content: string, comment?: string, onRead?: Funct
 export default new MailServer({
   name: 'SMTP_1',
   cpu: {
-    cores: 2,
-    frequency: 200000000000,
-    ops: 4,
+    cores: 1,
+    frequency: 46000000,
+    ops: 115,
   },
-  securityPatch: 8,
+  securityPatch: 5,
   password: pwd,
   passwordSuggestions: [
     'JamesDitrichJunior', 'CatherineLi_3310', 'AmeliaAndJamesForever', 'Olivia2010', 'CDC_JQB_STU201017', 'Zeit', 'admin',

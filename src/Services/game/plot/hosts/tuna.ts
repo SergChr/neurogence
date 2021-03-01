@@ -41,8 +41,8 @@ export default new PC({
   name: 'Tuna',
   cpu: {
     cores: 1,
-    frequency: 7500000000,
-    ops: 4,
+    frequency: 35000000,
+    ops: 103,
   },
   passwordSuggestions: ['123', 'admin'],
   password: '123',
@@ -76,7 +76,7 @@ export default new PC({
       values: { [SkillNames.Programming]: 0.0001 },
       onRead() {
         const game = gameStore.getState();
-        if (game.upgrades.has(Upgrades.MetricsPanel)) {
+        if (game.upgrades[Upgrades.MetricsPanel]) {
           return;
         }
         game.updateLocalhost({

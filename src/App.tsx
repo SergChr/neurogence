@@ -13,7 +13,7 @@ import HowToPlayScreen from './Screens/About/components/HowToPlay';
 import Game from './Services/game';
 import Alert from './Components/Alert';
 
-Game.run();
+setTimeout(() => Game.run(), 1000);
 
 const Stack = createStackNavigator();
 

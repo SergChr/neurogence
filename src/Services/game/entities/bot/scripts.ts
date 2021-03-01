@@ -61,7 +61,7 @@ export default [
     Types.ForceAbsorb,
     'Take control over a host forcefully (if you have enough computing power)',
     'Once absorbed, then',
-    false,
+    true,
     false,
     Groups.Login,
   ),

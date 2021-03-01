@@ -18,7 +18,6 @@ export interface LogEntry {
   type: LogEntryTypes;
 }
 
-interface GameUpgrades extends Set<Upgrades> {};
 interface Store extends Record<string, any> {};
 type UpdateLocalhost = Partial<Localhost> & { override?: Record<string, any> }; 
 
@@ -26,7 +25,7 @@ export interface LogStore extends Store {
   log: LogEntry[];
   write: (text: string, type?: LogEntryTypes) => void;
   reset: () => void;
-  botLog: Map<string, string[]>;
+  botLog: Record<string, string[]>;
   addBotLog(id: string, msg: string): void;
 }
 
@@ -43,18 +42,18 @@ export interface GameStore extends Store {
 
   updateHost(name: string, payload: Partial<BasicHost>): void;
 
-  upgrades: GameUpgrades;
+  upgrades: Partial<Record<Upgrades, boolean>>;
   setUpgrade(s: Upgrades): void;
 
   bots: BotData[];
   updateBot(payload: BotData, toRemove?: boolean): void;
 
-  blockedBots: Map<string, {blockedAttempts: number}>;
+  blockedBots: Record<string, {blockedAttempts: number}>;
   blockBot(id: string): void;
 
-  jobs: Set<JobTypes>;
+  jobs: JobTypes[];
 
-  variables: Map<string, any>;
+  variables: Record<GameVars, any>;
   setVar(key: GameVars, value: any): void;
   getVar(key: GameVars): any;
 }

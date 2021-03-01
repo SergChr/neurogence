@@ -35,11 +35,11 @@ export default class Localhost extends BasicHost {
       cpu: {
         cores: constants.STARTING_OPTS.LOCALHOST_CPU_CORES,
         frequency: constants.STARTING_OPTS.LOCALHOST_CPU_FREQUENCY,
-        ops: constants.STARTING_OPTS.LOCALHOST_CPU_OPS * 20,
+        ops: constants.STARTING_OPTS.LOCALHOST_CPU_OPS,
       },
       files,
     });
-    this.exploitVersion = 10;
+    this.exploitVersion = constants.STARTING_OPTS.LOCALHOST_EXPLOIT_VERSION;
     this.upgrades = [];
   }
 
@@ -53,16 +53,14 @@ export default class Localhost extends BasicHost {
     cpu: 1,
   };
 
-  public setSkill(skill: SkillNames, accValue: number) {
-    const value = this.skills[skill]! + accValue;
-    this.skills[skill] = value;
+  static setSkill(h: Localhost, skill: SkillNames, accValue: number) {
+    const value = h.skills[skill]! + accValue;
+    h.skills[skill] = value;
+    return h.skills;
   }
 
-  public getSkill(name: SkillNames) {
-    return this.skills[name]!;
-  }
-
-  addUpgrade(upgrade: Upgrade) {
-    this.upgrades.push(upgrade);
+  static makeUpgrades(host: Localhost, upgrades: Upgrade[]) {
+    host.upgrades.push(...upgrades);
+    return host.upgrades;
   }
 }

@@ -70,18 +70,28 @@ const Metric = ({ icon, text, value }: MetricProps) => (
   </View>
 );
 
-const format = (n: number) => Math.round(n * 100000) / 100000;
+const format = (n: number = 0) => {
+  if (n < 1) {
+    return Math.round(n * 10000) / 10000;
+  } else if (n < 1001) {
+    return Math.round(n * 10) / 10;
+  } else if (n < 1000000) {
+    return `${Math.trunc(n) / 1000}k`;
+  }
+  return Math.trunc(n).toExponential();
+};
 
 export default ({ data: host, full }: Props) => {
   if (!host) {
     return null;
   }
+
   return (
     <View style={s.container}>
       <Metric
         icon={require('../../assets/images/speed.png')}
         text='TFLOPS'
-        value={host.TFLOPS}
+        value={format(Localhost.TFLOPS(host))}
       />
 
       <Metric
@@ -97,19 +107,19 @@ export default ({ data: host, full }: Props) => {
           <Metric
             icon={require('../../assets/images/math.png')}
             text='Math'
-            value={format(host.getSkill(SkillNames.Math))}
+            value={format(host.skills[SkillNames.Math])}
           />
 
           <Metric
             icon={require('../../assets/images/language.png')}
             text='NLP'
-            value={format(host.getSkill(SkillNames.NLP))}
+            value={format(host.skills[SkillNames.NLP])}
           />
 
           <Metric
             icon={require('../../assets/images/programming.png')}
             text='Programming'
-            value={format(host.getSkill(SkillNames.Programming))}
+            value={format(host.skills[SkillNames.Programming])}
           />
         </View>
       }

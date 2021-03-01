@@ -27,11 +27,11 @@ const pwd = 'TheGameOfThrones_!';
 export default new PC({
   name: 'Heasley PC',
   cpu: {
-    cores: 2,
-    frequency: 600000000000,
-    ops: 5,
+    cores: 1,
+    frequency: 41000000,
+    ops: 107,
   },
-  securityPatch: 7,
+  securityPatch: 2,
   owner: 'Philip Heasley',
   password: pwd,
   passwordSuggestions: ['SomeoneLikeMe', 'I hate 2010', pwd, 'the_game_is_played', 'seebeyond^*$(#', 'Hfriu*&#didR$OI*'],

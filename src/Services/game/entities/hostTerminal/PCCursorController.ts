@@ -13,6 +13,7 @@ const CURSOR = {
   menu: 'Menu',
   notConnectedMenu: 'Menu',
   connect: 'Connect via SSH',
+  forceAbsorb: 'Force absorb',
   password: 'Password?',
   enslaveViaSecurity: 'Enslave via exploit',
   files: 'Files',
@@ -39,7 +40,7 @@ export default class PCCursorController {
 
   getMenu() {
     const menu = [CURSOR.files];
-    if (!this.host.arePortsClosed()) {
+    if (!PC.arePortsClosed(this.host)) {
       menu.push(CURSOR.closePorts);
     }
     if (!this.host.isUserLogEmpty) {
@@ -59,7 +60,7 @@ export default class PCCursorController {
   }
 
   handleUnusualActivity() {
-    let hasLogsOrPortsOpened = !this.host.isUserLogEmpty || !this.host.arePortsClosed();
+    let hasLogsOrPortsOpened = !this.host.isUserLogEmpty || !PC.arePortsClosed(this.host);
     const shouldHandle = hasLogsOrPortsOpened && !this.host.enslaved;
     if (shouldHandle && this.actionsCount === UNUSUAL_ACTIVITY_COUNT - 4) {
       showTerminalMessage(
@@ -94,15 +95,18 @@ export default class PCCursorController {
       case CURSOR.menu: {
         switch (this.host.connected) {
           case false: {
-            const opts = [CURSOR.connect];
+            const menu = [CURSOR.connect];
             const localhost = game.getLocalhost();
-            if (this.host.canBeEnslavedViaSecurityProblem(localhost.exploitVersion)) {
-              opts.push(CURSOR.enslaveViaSecurity);
+            if (PC.canBeEnslavedViaSecurityProblem(this.host, localhost.exploitVersion)) {
+              menu.push(CURSOR.enslaveViaSecurity);
+            }
+            if (PC.canBeEnslavedViaComputingTranscendence(this.host, PC.FLOPS(localhost))) {
+              menu.push(CURSOR.forceAbsorb);
             }
     
             return {
               name: CURSOR.notConnectedMenu,
-              items: opts,
+              items: menu,
             };
           }
           default: {
@@ -174,6 +178,15 @@ export default class PCCursorController {
         game.updateLocalhost({ cpu: this.host.cpu });
         return {
           name: CURSOR.enslaveViaSecurity,
+          text: `${this.host.name} is under your control now. You got its computing power.`,
+          items: [],
+        }
+      }
+      case CURSOR.forceAbsorb: {
+        game.updateHost(this.host.name, { enslaved: true });
+        game.updateLocalhost({ cpu: this.host.cpu });
+        return {
+          name: CURSOR.forceAbsorb,
           text: `${this.host.name} is under your control now. You got its computing power.`,
           items: [],
         }

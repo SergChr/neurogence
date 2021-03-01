@@ -1,14 +1,23 @@
 import create from 'zustand';
-import { persist } from 'zustand/middleware';
+import { configurePersist } from 'zustand-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   GameStore,
 } from './interfaces';
 import Localhost from '../Services/game/entities/hosts/localhost';
+import Host from '../Services/game/entities/hosts/basic';
 import { GameVars } from '../Config/enums';
 
-const useStore = create<GameStore>(
+const { persist } = configurePersist({
+  storage: AsyncStorage,
+  rootKey: 'root',
+});
+
+const useStore = create<GameStore>(persist(
+  {
+    key: 'game',
+  },
   (set, get) => ({
     progress: {
       value: 0,
@@ -35,12 +44,10 @@ const useStore = create<GameStore>(
       const hostIndex = this.getLocalhostIndex(hosts);
       const host = <Localhost>hosts[hostIndex];
       if (payload.upgrades) {
-        payload.upgrades.forEach(upgrade => {
-          host.addUpgrade(upgrade);
-        });
+        host.upgrades = Localhost.makeUpgrades(host, payload.upgrades);
       }
       if (payload.cpu) {
-        host.addCPUPower(payload.cpu);
+        host.cpu = Host.addCPUPower(host, payload.cpu);
       }
       if (payload.levels) {
         Object.entries(payload.levels).forEach(([key, value]) => {
@@ -72,17 +79,18 @@ const useStore = create<GameStore>(
     setLocalSkill(skill, value) {
       const hosts = [...get().hosts];
       const i = this.getLocalhostIndex(hosts);
-      (<Localhost>hosts[i]).setSkill(skill, value);
+      const host = <Localhost>hosts[i];
+      (<Localhost>hosts[i]).skills = Localhost.setSkill(host, skill, value);
       set({ hosts });
     },
     getLocalhost() {
-      return <Localhost>get().hosts.find((h) => h.name === 'localhost')!;
+      return <Localhost>get().hosts.find((h: Host) => h.name === 'localhost')!;
     },
     updateHost(name, payload) {
       const hosts = [...get().hosts];
       const hostIndex = hosts.findIndex((h) => h.name === name);
       if (payload.enslaved) {
-        hosts[hostIndex].enslave();
+        hosts[hostIndex].enslaved = true;
       }
       if (payload.connected !== undefined) {
         hosts[hostIndex].connected = payload.connected;
@@ -96,11 +104,11 @@ const useStore = create<GameStore>(
       set({ hosts });
     },
 
-    upgrades: new Set(),
+    upgrades: {},
     setUpgrade(upgrade) {
-      const newSet = get().upgrades;
-      newSet.add(upgrade);
-      set({ upgrades: newSet });
+      const upgrades = get().upgrades;
+      upgrades[upgrade] = true;
+      set({ upgrades });
     },
 
     bots: [],
@@ -119,39 +127,34 @@ const useStore = create<GameStore>(
       set({ bots });
     },
 
-    blockedBots: new Map(),
+    blockedBots: {},
     blockBot(id) {
       const blockedBots = get().blockedBots;
-      const blockedBot = blockedBots.get(id);
-      blockedBots.set(id, { blockedAttempts: blockedBot ? blockedBot.blockedAttempts + 1 : 1 });
+      const blockedBot = blockedBots[id];
+      blockedBots[id] = { blockedAttempts: blockedBot ? blockedBot.blockedAttempts + 1 : 1 };
       set({ blockedBots });
     },
 
-    jobs: new Set(),
+    jobs: [],
 
-    variables: new Map([
-      [GameVars.BruteforcePwdLimitTime, 30],
-      [GameVars.MaxBots, 3],
-      [GameVars.MaxBotInstances, 30],
-      [GameVars.MaxBotScripts, 6],
-      [GameVars.ImprovingRateMath, 0.05],
-      [GameVars.ImprovingRateNLP, 0.05],
-      [GameVars.ImprovingRateProgramming, 0.05],
-      [GameVars.ImprovingRatePhysics, 0.05],
-    ]),
+    variables: {
+      [GameVars.BruteforcePwdLimitTime]: 30,
+      [GameVars.MaxBots]: 3,
+      [GameVars.MaxBotInstances]: 30,
+      [GameVars.MaxBotScripts]: 6,
+      [GameVars.ImprovingRateMath]: 0.08,
+      [GameVars.ImprovingRateNLP]: 0.02,
+      [GameVars.ImprovingRateProgramming]: 0.074,
+      [GameVars.ImprovingRatePhysics]: 0.05,
+    },
     setVar(key, value) {
       const vars = get().variables;
-      vars.set(key, value);
+      vars[key] = value;
       set({ variables: vars });
     },
     getVar(key) {
-      return get().variables.get(key);
+      return get().variables[key];
     },
-}),
-  // {
-  //   name: 'GameStore',
-  //   storage: AsyncStorage,
-  // }
-);
+})));
 
 export default useStore;

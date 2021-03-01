@@ -28,14 +28,14 @@ type Args = ScriptExecProps & { bot: any };
 
 const isConnected = (h: Host) => h.connected === true;
 const isAntiBotSystemEnabled = (h: Host) => {
-  const n = 0.19;//Math.random();
+  const n = Math.random();
   if (n > 0.2 && n < 0.6) {
     return false;
   }
 
   let arePortsOpen = false;
-  for (const [port] of h.ports) {
-    if (h.ports.get(port) == PortStates.Opened) {
+  for (const k of Object.keys(h.ports)) {
+    if (h.ports[k] == PortStates.Opened) {
       arePortsOpen = true;
       break;
     }
@@ -97,7 +97,7 @@ Perhaps you should terminate the bot to eliminate future problems.`);
   }
   writeBotLog(bot.id, 'Bruteforce passwords started');
   const pwdLen = host.password.length;
-  const timeToBruteforce = pwdLen / (localhost.TFLOPS / 2); // seconds
+  const timeToBruteforce = pwdLen / (Host.TFLOPS(host) * 10); // seconds
   if (timeToBruteforce > vars.get(GameVars.BruteforcePwdLimitTime)) {
     writeBotLog(bot.id, `Bruteforcing a password takes longer than ${vars.get(GameVars.BruteforcePwdLimitTime)} seconds, aborting`);
     return response(false);
@@ -109,8 +109,7 @@ Perhaps you should terminate the bot to eliminate future problems.`);
 }
 
 export const loginViaExploit = (p: Args) => {
-  // TODO: uncomment
-  if (1/*p.host.securityPatch < p.localhost.exploitVersion*/) {
+  if (p.host.securityPatch < p.localhost.exploitVersion) {
     writeBotLog(p.bot.id, 'Logged in via exploit');
     p.host.connected = true;
     return response(true, p.host);
@@ -121,10 +120,10 @@ export const loginViaExploit = (p: Args) => {
 }
 
 export const forceAbsorb = (p: Args) => {
-  if (p.host.canBeEnslavedViaComputingTranscendence(p.localhost.FLOPS)) {
+  if (Host.canBeEnslavedViaComputingTranscendence(p.host, Host.FLOPS(p.localhost))) {
     writeBotLog(p.bot.id, 'Absorbed host forcefully');
     p.host.connected = true;
-    p.host.enslave();
+    p.host.enslaved = true;
     return response(true, p.host);
   }
 
@@ -137,8 +136,8 @@ export const closePorts = (p: Args) => {
     writeBotLog(p.bot.id, 'Failed to close ports: the bot isn\'t logged in to the host');
     return response(false);
   }
-  for (const [port] of p.host.ports) {
-    p.host.ports.set(port, PortStates.Closed);
+  for (const k of Object.keys(p.host.ports)) {
+    p.host.ports[k] = PortStates.Closed;
   }
 
   writeBotLog(p.bot.id, 'All network ports were closed');
@@ -160,7 +159,7 @@ export const absorb = (p: Args) => {
     writeBotLog(p.bot.id, 'Failed to absorb: the bot isn\'t logged in to the host');
     return response(false);
   }
-  p.host.enslave();
+  p.host.enslaved = true;
   writeBotLog(p.bot.id, 'The host has been absorbed');
   return response(true, p.host);
 }

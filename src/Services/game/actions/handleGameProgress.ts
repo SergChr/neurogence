@@ -5,7 +5,7 @@ import JobManager from '../../../Services/job/JobManager';
 import { JobTypes } from '../../../Services/job/jobs/types';
 import c from '../../../Config/constants';
 import { GameVars } from '../../../Config/enums';
-import { SkillNames } from '../entities/hosts/localhost';
+import Localhost, { SkillNames } from '../entities/hosts/localhost';
 
 const log = logStore.getState();
 
@@ -27,16 +27,24 @@ const addUpgradeToLocalhost = (
 export default (jobManager: JobManager) => {
   const state = gameStore.getState();
   const { value: progress, handled } = state.progress;
+  const isMaxSkillsReached = Object.values(state.getLocalhost().skills).some(v => v > 1000000);
+  if (progress > 5 && !isMaxSkillsReached) {
+    handleLocalhostImprovements(state);
+  }
   if (handled) {
     return;
   }
   switch (progress) {
-    case 5: {
+    case 1: {
       addUpgradeToLocalhost(
         Upgrades.IdlePowerToEnhanceSkills,
         'Employ idle computing power to enhance skills',
         () => {
           jobManager.addJob(JobTypes.SkillWorker);
+          if (!state.upgrades[Upgrades.MetricsPanel]) {
+            state.setUpgrade(Upgrades.MetricsPanel);
+          }
+          state.setProgress(6);
           return 'The skills now will be improving automatically';
         },
       );
@@ -44,8 +52,6 @@ export default (jobManager: JobManager) => {
       break;
     }
   };
-
-  handleLocalhostImprovements(state);
 }
 
 const initialFLOPS = c.STARTING_OPTS.LOCALHOST_CPU_CORES * c.STARTING_OPTS.LOCALHOST_CPU_FREQUENCY * c.STARTING_OPTS.LOCALHOST_CPU_OPS;
@@ -61,14 +67,14 @@ const getVarNameByProp = (p: string) => {
 function handleLocalhostImprovements(state: GameStore) {
   const host = state.getLocalhost();
   const { exploitVersion: e, levels } = host;
-  const flops = host.FLOPS;
+  const flops = Localhost.FLOPS(host);
   // TODO: adjust coefs
   const coefs: Record<string, number> = {
-    math: 2.6,
-    programming: 2.8,
-    NLP: 2.7,
+    math: 6.5,
+    programming: 5,
+    NLP: 20,
   };
-  const cpuCoef = 2;
+  const cpuCoef = 4;
 
   // Skills improving: FLOPS needed
   const hasUnusedSkillUpgrades = host.upgrades.some(u => u.id === Upgrades.EnhanceSkill);
@@ -87,7 +93,7 @@ function handleLocalhostImprovements(state: GameStore) {
         `Increase enhancement speed of ${skill} skill`,
         () => {
           const prop = getVarNameByProp(skill)!;
-          state.setVar(prop, state.getVar(prop) + 0.005); // TODO: constant? 0.005
+          state.setVar(prop, state.getVar(prop) + 0.0005); // TODO: constant? 0.005
         },
       );
     }
@@ -106,13 +112,13 @@ function handleLocalhostImprovements(state: GameStore) {
     });
     addUpgradeToLocalhost(
       Upgrades.EnhanceCPU,
-      `Enhance CPU operations per cycle & frequency by x1.25`,
+      `Enhance CPU operations per cycle & frequency by x1.2`,
       () => {
         state.updateLocalhost({
           cpu: {
             cores: host.cpu.cores,
-            frequency: host.cpu.frequency * 1.25,
-            ops: host.cpu.ops * 1.25,
+            frequency: host.cpu.frequency * 1.2,
+            ops: host.cpu.ops * 1.2,
           }
         });
       },
@@ -120,10 +126,11 @@ function handleLocalhostImprovements(state: GameStore) {
   }
 
   // Exploit version improving: programming needed
-  if (!hasUnusedSkillUpgrades && programming > nextProgrammingSkillValue) {
+  const shouldIncreaseExploitVersion = programming > c.STARTING_OPTS.SKILLS.PROGRAMMING * Math.pow(coefs.programming, e - 1);
+  if (shouldIncreaseExploitVersion) {
     state.updateLocalhost({
       exploitVersion: e + 1,
     });
-    log.write(`Exploit software version was upgraded to ${e + 1}`, LogEntryTypes.Trace);
+    // log.write(`Exploit software version was upgraded to ${e + 1}`, LogEntryTypes.Trace);
   }
 }
