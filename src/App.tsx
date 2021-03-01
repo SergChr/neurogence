@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { PersistGate } from 'zustand-persist';
 
 import MainScreen from './Screens/Main';
 import HostScreen from './Screens/Host';
@@ -12,8 +13,7 @@ import AboutScreen from './Screens/About';
 import HowToPlayScreen from './Screens/About/components/HowToPlay';
 import Game from './Services/game';
 import Alert from './Components/Alert';
-
-setTimeout(() => Game.run(), 1000);
+import Loading from './Components/Loading';
 
 const Stack = createStackNavigator();
 
@@ -61,4 +61,13 @@ const App = () => {
   );
 };
 
-export default App;
+const Root = () => (
+  <PersistGate
+    loading={<Loading />}
+    onBeforeLift={() => setTimeout(() => Game.run(), 100)}
+  >
+    <App />
+  </PersistGate>
+);
+
+export default Root;
