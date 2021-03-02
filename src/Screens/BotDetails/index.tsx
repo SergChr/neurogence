@@ -43,7 +43,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
       this.setState({
         bot: targetBot!,
         saved: true,
-        scriptsLimit: store.variables.get(GameVars.MaxBotScripts),
+        scriptsLimit: store.variables[GameVars.MaxBotScripts],
       });
     } else {
       const bot = new Bot();

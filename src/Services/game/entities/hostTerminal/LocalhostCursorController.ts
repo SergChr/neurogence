@@ -3,6 +3,8 @@ import chunk from 'lodash.chunk';
 import Localhost, { SkillNames } from '../hosts/localhost';
 import { gameStore } from '../../../../Store';
 import { Cursor } from './interfaces';
+import actionsMap from '../../actions/actionsMap';
+import upgradesMap from '../../actions/upgradeActionsMap';
 
 const CURSOR = {
   menu: 'Menu',
@@ -33,7 +35,7 @@ export default class LocalhostCursorController {
         if (cursor[1]) {
           const fileName = cursor[1].toLowerCase();
           const file = allFiles.find((f) => f.name.toLowerCase() + f.extension === fileName)!;
-          file?.onRead && file.onRead();
+          file?.onRead && actionsMap[file.onRead]();
           Object.entries(file!.values).forEach(([key, value]) => {
             console.log('Improving skill', key, value);
             gameStore.getState().setLocalSkill(key as SkillNames, value);
@@ -67,7 +69,8 @@ export default class LocalhostCursorController {
           const upgradeName = cursor[1].toLowerCase();
           const i = this.host.upgrades.findIndex(({ id }) => id.toLowerCase() === upgradeName);
           const target = upgrades[i];
-          const result = target.make();
+          const payloadForAction = target.payload;
+          const result = upgradesMap[target.id]?.(payloadForAction);
           // Delete the upgrade
           this.host.upgrades.splice(i, 1);
           gameStore.getState().updateLocalhost({ override: { upgrades: this.host.upgrades } });

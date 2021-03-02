@@ -1,10 +1,7 @@
 import { GameStore, LogEntryTypes } from '../../../Store/interfaces';
 import { gameStore, logStore } from '../../../Store';
 import { Upgrades } from '../entities/hosts/enums';
-import JobManager from '../../../Services/job/JobManager';
-import { JobTypes } from '../../../Services/job/jobs/types';
 import c from '../../../Config/constants';
-import { GameVars } from '../../../Config/enums';
 import Localhost, { SkillNames } from '../entities/hosts/localhost';
 
 const log = logStore.getState();
@@ -12,19 +9,19 @@ const log = logStore.getState();
 const addUpgradeToLocalhost = (
   u: Upgrades,
   description: string,
-  callback: () => string | void,
+  payload?: any,
 ) => {
   gameStore.getState().updateLocalhost({
     upgrades: [{
       id: u,
       description,
-      make: callback,
+      payload,
     }],
   });
   log.write('A new upgrade is available.', LogEntryTypes.Trace);
 }
 
-export default (jobManager: JobManager) => {
+export default () => {
   const state = gameStore.getState();
   const { value: progress, handled } = state.progress;
   const isMaxSkillsReached = Object.values(state.getLocalhost().skills).some(v => v > 1000000);
@@ -39,14 +36,6 @@ export default (jobManager: JobManager) => {
       addUpgradeToLocalhost(
         Upgrades.IdlePowerToEnhanceSkills,
         'Employ idle computing power to enhance skills',
-        () => {
-          jobManager.addJob(JobTypes.SkillWorker);
-          if (!state.upgrades[Upgrades.MetricsPanel]) {
-            state.setUpgrade(Upgrades.MetricsPanel);
-          }
-          state.setProgress(6);
-          return 'The skills now will be improving automatically';
-        },
       );
       state.setProgress(progress, true);
       break;
@@ -55,14 +44,6 @@ export default (jobManager: JobManager) => {
 }
 
 const initialFLOPS = c.STARTING_OPTS.LOCALHOST_CPU_CORES * c.STARTING_OPTS.LOCALHOST_CPU_FREQUENCY * c.STARTING_OPTS.LOCALHOST_CPU_OPS;
-
-const getVarNameByProp = (p: string) => {
-  switch (p) {
-    case 'math': return GameVars.ImprovingRateMath;
-    case 'programming': return GameVars.ImprovingRateProgramming;
-    case 'NLP': return GameVars.ImprovingRateNLP;
-  }
-}
 
 function handleLocalhostImprovements(state: GameStore) {
   const host = state.getLocalhost();
@@ -91,16 +72,13 @@ function handleLocalhostImprovements(state: GameStore) {
       addUpgradeToLocalhost(
         Upgrades.EnhanceSkill,
         `Increase enhancement speed of ${skill} skill`,
-        () => {
-          const prop = getVarNameByProp(skill)!;
-          state.setVar(prop, state.getVar(prop) + 0.0005); // TODO: constant? 0.005
-        },
+        { skill },
       );
     }
   });
 
   // FLOPS improving: math & programming needed
-  const [math, programming] = [host.getSkill(SkillNames.Math), host.getSkill(SkillNames.Programming)];
+  const [math, programming] = [host.skills[SkillNames.Math] || 0, host.skills[SkillNames.Programming] || 0];
   const nextMathSkillValue = c.STARTING_OPTS.SKILLS.MATH * Math.pow(cpuCoef, levels.cpu);
   const nextProgrammingSkillValue = c.STARTING_OPTS.SKILLS.PROGRAMMING * Math.pow(cpuCoef, levels.cpu);
   const hasUnusedUpgrades = host.upgrades.some(u => u.id === Upgrades.EnhanceCPU);

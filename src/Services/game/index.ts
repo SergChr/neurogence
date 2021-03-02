@@ -25,7 +25,7 @@ class Game {
   }
 
   poll() {
-    handleGameProgress(jobManager);
+    handleGameProgress();
   }
 }
 

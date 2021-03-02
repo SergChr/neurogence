@@ -1,3 +1,4 @@
+import { GameVars } from 'Config/enums';
 import Host from '../hosts/basic';
 import Localhost from '../hosts/localhost';
 import Bot from './index';
@@ -51,5 +52,5 @@ export type ScriptsExecResult = {
 export type ScriptExecProps = {
   host: Host;
   localhost: Localhost;
-  vars: Map<string, any>;
+  vars: Record<GameVars, any>;
 };

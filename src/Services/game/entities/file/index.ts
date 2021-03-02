@@ -1,3 +1,4 @@
+import { Actions } from '../../actions/actionsMap';
 import { Skills } from '../hosts/localhost';
 
 export enum FileExtensions {
@@ -36,5 +37,5 @@ export class File {
   isRead: boolean; // is the file already read?
   size: number; // (KiB)
   extension: FileExtensions;
-  onRead?: Function;
+  onRead?: Actions;
 }

@@ -62,16 +62,16 @@ export default ({ navigation }: Props) => {
               enslaved={i.metrics.absorbedHosts}
               onPick={() => onPickBot(i.id)}
               onRelease={() => releaseBot(i)}
-              logs={botLogs.get(i.id)}
+              logs={botLogs[i.id]}
               removeOne={() => removeOneInstanceOfBot(i)}
-              canRelease={i.metrics.quantity < gameVars.get(GameVars.MaxBotInstances)}
+              canRelease={i.metrics.quantity < gameVars[GameVars.MaxBotInstances]}
               canRemove={i.metrics.quantity > 0}
             />
           ))}
         </FlatList>
 
         <Button
-          disabled={bots.length > gameVars.get(GameVars.MaxBots)}
+          disabled={bots.length > gameVars[GameVars.MaxBots]}
           onPress={() => onPickBot()}
           type={ButtonTypes.Primary}
           text='Create a bot'

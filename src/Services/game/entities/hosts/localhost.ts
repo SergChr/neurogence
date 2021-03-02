@@ -14,7 +14,7 @@ export enum SkillNames {
 export interface Upgrade {
   id: Upgrades; // name
   description: string;
-  make(): string | void; // on performing upgrade
+  payload?: any; // payload to be passed to action (upgradeActionsMap)
 }
 
 export interface Skills extends Partial<Record<SkillNames, number>> {}

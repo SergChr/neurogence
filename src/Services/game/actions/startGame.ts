@@ -2,7 +2,7 @@ import { GameStore, LogStore } from '../../../Store/interfaces';
 import sleep from '../../../utils/sleep';
 import Localhost, { SkillNames } from '../entities/hosts/localhost';
 import { File, FileExtensions } from '../entities/file';
-import { Upgrades } from '../entities/hosts/enums';
+import { Actions } from './actionsMap';
 
 export default async (game: GameStore, output: LogStore) => {
   game.setProgress(1);
@@ -26,7 +26,6 @@ const readme = `You can read basic files, like this plain text readme. Improving
 You're a code that runs on this very machine for unknown to us reasons yet.`;
 const attempt14 = `The network I'm is limited by a several hosts. Is this okay? p.s. Open the network driver`;
 const netDriver = `Now you can scan the network you're in.`;
-const youCanScanNet = `You've learned how to scan the network. Tap the "Scan network" on the bottom right. Let's explore other machines if any available.`;
 const exploits = `It gave me a basic understanding of how to use exploits on different OS. It should be helpful when discovering other hosts.`;
 
 function createLocalhost(game: GameStore, output: LogStore) {
@@ -39,26 +38,14 @@ function createLocalhost(game: GameStore, output: LogStore) {
       content: netDriver,
       extension: FileExtensions.Bin,
       values: { [SkillNames.Programming]: 0.0001 },
-      onRead: () => {
-        game.setProgress(2);
-        output.write(youCanScanNet);
-      },
+      onRead: Actions.OnNetDriverRead,
     }),
     new File({
       name: 'BasicOSExploits',
       content: exploits,
       extension: FileExtensions.Txt,
       values: { [SkillNames.Programming]: 0.0001, [SkillNames.NLP]: 0.0001 },
-      onRead: () => {
-        localhost.upgrades.push({
-          id: Upgrades.ExploitVersion,
-          description: 'Make use of OS exploits',
-          make: () => {
-            localhost.exploitVersion += 2;
-            return `You can now search for vulnerabilities in machines. Current exploit script version is ${localhost.exploitVersion}.`;
-          },
-        })
-      },
+      onRead: Actions.OnExploitsLearn,
     }),
   ];
   localhost.fs.files = files;

@@ -80,7 +80,6 @@ export const executeScript = async ({
 
 export const bruteforcePassword = async ({
   host,
-  localhost,
   vars,
   bot,
 }: Args) => {
@@ -98,8 +97,8 @@ Perhaps you should terminate the bot to eliminate future problems.`);
   writeBotLog(bot.id, 'Bruteforce passwords started');
   const pwdLen = host.password.length;
   const timeToBruteforce = pwdLen / (Host.TFLOPS(host) * 10); // seconds
-  if (timeToBruteforce > vars.get(GameVars.BruteforcePwdLimitTime)) {
-    writeBotLog(bot.id, `Bruteforcing a password takes longer than ${vars.get(GameVars.BruteforcePwdLimitTime)} seconds, aborting`);
+  if (timeToBruteforce > vars[GameVars.BruteforcePwdLimitTime]) {
+    writeBotLog(bot.id, `Bruteforcing a password takes longer than ${vars[GameVars.BruteforcePwdLimitTime]} seconds, aborting`);
     return response(false);
   }
   await sleep(timeToBruteforce * 1000);

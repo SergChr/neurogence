@@ -60,7 +60,7 @@ export default class BotWorker extends Worker {
 
   async processBotRoutine(id: string) {
     const blockedBots = this.store.getState().blockedBots;
-    const blocked = blockedBots.get(id);
+    const blocked = blockedBots[id];
     if (blocked) {
       if (blocked.blockedAttempts >= c.MAX_BOT_BLOCK_ATTEMPTS) {
         logStore.getState().write(`Diaglyph system has traced me via that bot which left a digital signature on some hosts.

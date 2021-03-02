@@ -8,6 +8,7 @@ import { Cursor, CursorItem, MessageTypes } from './interfaces';
 import { showTerminalMessage } from '../../../../utils/notifications';
 import { LogEntryTypes } from '../../../../Store/interfaces';
 import sleep from '../../../../utils/sleep';
+import actionsMap from '../../actions/actionsMap';
 
 const CURSOR = {
   menu: 'Menu',
@@ -155,7 +156,7 @@ export default class PCCursorController {
         if (cursor[1]) {
           const fileName = cursor[1].toLowerCase();
           const file = allFiles.find((f) => f.name.toLowerCase() + f.extension === fileName);
-          file?.onRead && file.onRead();
+          file?.onRead && actionsMap[file.onRead]?.();
           Object.entries(file!.values).forEach(([key, value]) => {
             gameStore.getState().setLocalSkill(key as SkillNames, value);
           });
@@ -193,8 +194,8 @@ export default class PCCursorController {
       }
       case CURSOR.closePorts: {
         const ports = this.host.ports;
-        for (const [port] of ports) {
-          ports.set(port, PortStates.Closed);
+        for (const portNumber of Object.keys(ports)) {
+          ports[portNumber] = PortStates.Closed;
         }
         game.updateHost(this.host.name, { ports });
         return {

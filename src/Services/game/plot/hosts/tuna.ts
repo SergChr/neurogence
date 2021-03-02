@@ -1,11 +1,8 @@
 import PC from '../../entities/hosts/pc';
 import { File, FileExtensions } from '../../entities/file';
 import c from '../../../../Config/constants';
-import { gameStore, logStore } from '../../../../Store';
 import { SkillNames } from '../../entities/hosts/localhost';
-import { LogEntryTypes } from '../../../../Store/interfaces';
-import { Upgrades } from '../../entities/hosts/enums';
-import { PortStates } from '../../entities/hosts/basic';
+import { Actions } from '../../actions/actionsMap';
 
 const year = new Date().getFullYear();
 const goals = `Excerpt of the ${c.COMPANY} company goals:
@@ -32,10 +29,8 @@ const report2 = `The Lima experiment is doing marvelously. We selected the best 
 
 Its ability to self-learn fascinate us, though it gives our network security engineers more issues to think about. We're planning to hire 230% more security experts in the next quarter.
 The expenditure on our infrastructure increased by $102k.`;
-const afterRead = `So a company runs experiments on creating AGIs. I'm a part of the Lima experiment given I'm still running and can read those reports.`;
 const metricsInterface = `// Metrics installed.
 // See the "Upgrades" section to enable this upgrade.`;
-const afterMetricsUpgrade = `Metrics panel upgrade is available.`;
 
 export default new PC({
   name: 'Tuna',
@@ -65,33 +60,14 @@ export default new PC({
       content: report2,
       extension: FileExtensions.Txt,
       values: { [SkillNames.NLP]: 0.0001 },
-      onRead() {
-        logStore.getState().write(afterRead);
-      }
+      onRead: Actions.OnReadLimaReport,
     }),
     new File({
       name: `lima_improve_metrics_panel`,
       content: metricsInterface,
       extension: FileExtensions.C,
       values: { [SkillNames.Programming]: 0.0001 },
-      onRead() {
-        const game = gameStore.getState();
-        if (game.upgrades[Upgrades.MetricsPanel]) {
-          return;
-        }
-        game.updateLocalhost({
-          upgrades: [{
-            id: Upgrades.MetricsPanel,
-            description: 'Improve the metrics panel',
-            make() {
-              game.setUpgrade(Upgrades.MetricsPanel);
-              game.setLocalSkill(SkillNames.Programming, 0.0001);
-              return 'Enabled. You can now see the machine\'s skills.'
-            },
-          }],
-        });
-        logStore.getState().write(afterMetricsUpgrade, LogEntryTypes.Trace);
-      }
+      onRead: Actions.OnReadImproveMetricsPanel,
     }),
   ]
 });

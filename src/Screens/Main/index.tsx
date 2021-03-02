@@ -18,6 +18,7 @@ export default ({ navigation }: any) => {
   const gameProgress = gameStore(s => s.progress.value);
   const upgrades = gameStore(s => s.upgrades);
   const localhost = gameStore(s => s.getLocalhost());
+  console.log({gameProgress})
 
   return (
     <View style={{...s.container, ...commonStyle.screen}}>
