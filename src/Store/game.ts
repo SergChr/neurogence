@@ -138,6 +138,7 @@ const useStore = create<GameStore>(persist(
     jobs: [],
 
     variables: {
+      // TODO: adjust vars
       [GameVars.BruteforcePwdLimitTime]: 30,
       [GameVars.MaxBots]: 3,
       [GameVars.MaxBotInstances]: 30,

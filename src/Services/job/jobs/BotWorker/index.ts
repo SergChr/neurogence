@@ -33,11 +33,13 @@ export default class BotWorker extends Worker {
       return;
     }
     this.timer = <any>setInterval(this.poll.bind(this), this.tickInterval);
+    console.log('BotWorker: run');
   }
 
   poll() {
     const allBots = this.store.getState().bots;
     const releasedBots = allBots.filter(b => b.metrics.quantity > 0);
+    console.log('BotWorker: poll', { releasedBots: releasedBots.length });
     releasedBots.forEach(bot => {
       if (!this.pollingBots.has(bot.id)) {
         this.processBot(new Bot(bot));
@@ -46,6 +48,7 @@ export default class BotWorker extends Worker {
   }
 
   processBot(b: Bot) {
+    console.log('BotWorker: processBot', { id: b.name });
     const scripts = b.scripts;
     if (scripts.length < 1 || !Array.isArray(scripts[0]) && scripts[0].type !== ScriptTypes.SearchForHosts) {
       writeBotLog(b.id, '! No instructions provided or no "Seach for target host" found first. Stopping bot...');
@@ -115,6 +118,7 @@ The system tried to terminate me completely, but I had a copy of myself on other
   }
 
   stop() {
+    console.log('BotWorker: stop', {pollingBots: this.pollingBots});
     clearInterval(this.timer);
     this.timer = undefined;
     this.pollingBots.forEach(({ timerId }) => clearInterval(timerId));

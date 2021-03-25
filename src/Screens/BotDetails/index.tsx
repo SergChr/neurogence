@@ -178,6 +178,7 @@ export default class HostScreen extends React.PureComponent<Props, State> {
               type={ButtonTypes.Primary}
               text='Save'
               onPress={this.save}
+              style={{marginBottom: 8}}
             />
 
             {saved &&

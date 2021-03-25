@@ -18,7 +18,6 @@ export default ({ navigation }: any) => {
   const gameProgress = gameStore(s => s.progress.value);
   const upgrades = gameStore(s => s.upgrades);
   const localhost = gameStore(s => s.getLocalhost());
-  console.log({gameProgress})
 
   return (
     <View style={{...s.container, ...commonStyle.screen}}>
@@ -49,7 +48,7 @@ export default ({ navigation }: any) => {
           <View style={s.buttons}>
             {gameProgress >= 2 &&
               <Button
-                disabled={gameProgress !== 2}
+                disabled={hosts.length > 1}
                 type={ButtonTypes.Primary}
                 text="Scan network"
                 onPress={scanNetwork}

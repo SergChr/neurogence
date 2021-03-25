@@ -11,7 +11,7 @@ interface ConstructorArgs {
   passwordSuggestions?: string[];
   password?: string;
   isDiaglyph?: boolean;
-  ports?: Map<number, PortStates>;
+  ports?: Record<string, PortStates>;
 }
 
 const UNKNOWN = 'unknown';

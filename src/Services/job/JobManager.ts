@@ -91,11 +91,11 @@ export default class JobManager extends Job {
     }
   }
 
-  onJobsChange(newValue: Set<JobTypes>, prev: Set<JobTypes>): void {
-    console.log('Jobs change fired!', newValue, prev);
+  onJobsChange(newValue: JobTypes[], prev: JobTypes[]): void {
+    console.log('Jobs change fired!', {newValue, prev});
 
     // Job added
-    if (newValue.size > prev.size) {
+    if (newValue.length > prev.length) {
       const last = [...newValue].pop();
       console.log('Job added:', last)
       const worker = this.getWorker(last);
@@ -105,8 +105,8 @@ export default class JobManager extends Job {
     }
 
     // Job removed
-    if (newValue.size < prev.size) {
-      const removed = new Set([...prev].filter(x => !newValue.has(x)));
+    if (newValue.length < prev.length) {
+      const removed = new Set([...prev].filter(x => !newValue.includes(x)));
       console.log('Job removed:', removed);
       removed.forEach(job => {
         const worker = this.getWorker(job);
