@@ -103,6 +103,7 @@ The system tried to terminate me completely, but I had a copy of myself on other
       });
 
       if (result.host.enslaved) {
+        result.bot.metrics.absorbedHosts += 1;
         store.updateLocalhost({
           cpu: result.host.cpu,
         });

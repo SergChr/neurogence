@@ -89,12 +89,6 @@ export default class Bot {
             intermediary.push(false);
             continue;
           }
-          if (updHost) {
-            if (updHost.enslaved) {
-              this.metrics.absorbedHosts += 1;
-            }
-            host = updHost;
-          }
           if (updLocalhost) {
             localhost = updLocalhost;
           }
@@ -115,12 +109,6 @@ export default class Bot {
         });
         if (isOk) {
           intermediary.push(true);
-          if (updHost) {
-            if (updHost.enslaved) {
-              this.metrics.absorbedHosts += 1;
-            }
-            host = updHost;
-          }
           if (updLocalhost) {
             localhost = updLocalhost;
           }

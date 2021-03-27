@@ -118,7 +118,6 @@ export const loginViaExploit = (p: Args) => {
   return response(false);
 }
 
-// TODO: fix
 export const forceAbsorb = (p: Args) => {
   if (Host.canBeEnslavedViaComputingTranscendence(p.host, Host.FLOPS(p.localhost))) {
     writeBotLog(p.bot.id, 'Absorbed host forcefully');
@@ -158,6 +157,9 @@ export const absorb = (p: Args) => {
   if (!isConnected(p.host)) {
     writeBotLog(p.bot.id, 'Failed to absorb: the bot isn\'t logged into the host');
     return response(false);
+  }
+  if (p.host.enslaved) {
+    return response(true, p.host);
   }
   p.host.enslaved = true;
   writeBotLog(p.bot.id, 'The host has been absorbed');
