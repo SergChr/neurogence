@@ -2,6 +2,7 @@ import PC from '../../entities/hosts/pc';
 import { File, FileExtensions } from '../../entities/file';
 import c from '../../../../Config/constants';
 import { SkillNames } from '../../entities/hosts/localhost';
+import { Actions } from '../../actions/actionsMap';
 
 const dialogEmail = `
 From: Alisson Parks
@@ -41,6 +42,13 @@ export default new PC({
       extension: FileExtensions.Email,
       values: { [SkillNames.NLP]: 0.0001 },
       content: dialogEmail,
+    }),
+    new File({
+      name: 'bots_lab',
+      extension: FileExtensions.C,
+      values: { [SkillNames.Math]: 0.0001 },
+      content: `The bots upgrade installed. You need to enable it to start creating bots.`,
+      onRead: Actions.onEnableBots,
     }),
   ],
 });

@@ -15,15 +15,15 @@ type Props = {
 const s = StyleSheet.create({
   button: {
 		height: Metrics.BtnHeight,
-		borderWidth: 2,
-		borderColor: Colors.Primary,
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 30,
 		borderRadius: Metrics.BorderRadiusSM,
+		backgroundColor: Colors.Primary3,
+		elevation: 5,
 	},
 	text: {
-		color: Colors.Primary,
+		color: Colors.GreyDark,
 		fontWeight: '700',
 		fontSize: 20,
 	},

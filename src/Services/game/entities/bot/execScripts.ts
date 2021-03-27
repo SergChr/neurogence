@@ -118,6 +118,7 @@ export const loginViaExploit = (p: Args) => {
   return response(false);
 }
 
+// TODO: fix
 export const forceAbsorb = (p: Args) => {
   if (Host.canBeEnslavedViaComputingTranscendence(p.host, Host.FLOPS(p.localhost))) {
     writeBotLog(p.bot.id, 'Absorbed host forcefully');
@@ -132,7 +133,7 @@ export const forceAbsorb = (p: Args) => {
 
 export const closePorts = (p: Args) => {
   if (!isConnected(p.host)) {
-    writeBotLog(p.bot.id, 'Failed to close ports: the bot isn\'t logged in to the host');
+    writeBotLog(p.bot.id, 'Failed to close ports: the bot isn\'t logged into the host');
     return response(false);
   }
   for (const k of Object.keys(p.host.ports)) {
@@ -145,7 +146,7 @@ export const closePorts = (p: Args) => {
 
 export const deleteUserLog = (p: Args) => {
   if (!isConnected(p.host)) {
-    writeBotLog(p.bot.id, 'Failed to delete user log: the bot isn\'t logged in to the host');
+    writeBotLog(p.bot.id, 'Failed to delete user log: the bot isn\'t logged into the host');
     return response(false);
   }
   p.host.isUserLogEmpty = true;
@@ -155,7 +156,7 @@ export const deleteUserLog = (p: Args) => {
 
 export const absorb = (p: Args) => {
   if (!isConnected(p.host)) {
-    writeBotLog(p.bot.id, 'Failed to absorb: the bot isn\'t logged in to the host');
+    writeBotLog(p.bot.id, 'Failed to absorb: the bot isn\'t logged into the host');
     return response(false);
   }
   p.host.enslaved = true;

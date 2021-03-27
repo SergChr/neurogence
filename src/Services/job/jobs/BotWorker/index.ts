@@ -2,7 +2,7 @@ import Worker from '../worker';
 import Bot from '../../../game/entities/bot';
 import { ScriptTypes } from '../../../game/entities/bot/interface';
 import c from '../../../../Config/constants';
-import { generateHost } from '../../../game/entities/hosts/basic';
+import { generateHost } from '../../../game/entities/hosts/pc';
 import logStore from '../../../../Store/log';
 import { LogEntryTypes } from '../../../../Store/interfaces';
 
@@ -41,6 +41,7 @@ export default class BotWorker extends Worker {
     const releasedBots = allBots.filter(b => b.metrics.quantity > 0);
     console.log('BotWorker: poll', { releasedBots: releasedBots.length });
     releasedBots.forEach(bot => {
+      console.log('BotWorker: poll: info', this.pollingBots, {botId: bot.id})
       if (!this.pollingBots.has(bot.id)) {
         this.processBot(new Bot(bot));
       }
@@ -51,7 +52,7 @@ export default class BotWorker extends Worker {
     console.log('BotWorker: processBot', { id: b.name });
     const scripts = b.scripts;
     if (scripts.length < 1 || !Array.isArray(scripts[0]) && scripts[0].type !== ScriptTypes.SearchForHosts) {
-      writeBotLog(b.id, '! No instructions provided or no "Seach for target host" found first. Stopping bot...');
+      writeBotLog(b.id, '[!] No instructions provided or no "Seach for target host" found first. Stopping bot...');
       this.stopProcessingBot(b.id);
       return this.store
         .getState()
@@ -100,9 +101,12 @@ The system tried to terminate me completely, but I had a copy of myself on other
         localhost,
         vars: store.variables,
       });
-      // TODO: refactor updateHost fn.
-      // it can only take specific params
-      // store.updateLocalhost(result.localhost);
+
+      if (result.host.enslaved) {
+        store.updateLocalhost({
+          cpu: result.host.cpu,
+        });
+      }
       store.updateBot(result.bot);
     }
 
@@ -118,9 +122,12 @@ The system tried to terminate me completely, but I had a copy of myself on other
   }
 
   stop() {
-    console.log('BotWorker: stop', {pollingBots: this.pollingBots});
+    console.log('BotWorker: stop', { pollingBots: this.pollingBots });
     clearInterval(this.timer);
     this.timer = undefined;
-    this.pollingBots.forEach(({ timerId }) => clearInterval(timerId));
+    this.pollingBots.forEach((bot, id) => {
+      clearInterval(bot.timerId);
+      this.stopProcessingBot(id);
+    });
   }
 }

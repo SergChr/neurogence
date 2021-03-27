@@ -1,12 +1,6 @@
-import Chance from 'chance';
-
 import constants from '../../../../Config/constants';
 import { File } from '../file';
 import { HostTypes, OS } from './enums';
-import getWeightedRand from '../../../../utils/getWeightedRand';
-import c from '../../../../Config/constants';
-
-const chance = new Chance();
 
 export interface CPU {
   cores: number;
@@ -105,19 +99,4 @@ export default class Host {
     }
     return host.cpu;
   }
-}
-
-export const generateHost = (): Host => {
-  return new Host({
-    name: 'Unknown',
-    type: getWeightedRand(c.HOST_TYPE_PREVALENCE) as HostTypes,
-    OS: getWeightedRand(c.OS_PREVALENCE) as OS,
-    cpu: {
-      cores: chance.integer({ min: 1, max: 3 }),
-      frequency: chance.integer({ min: 25000000, max: 350000000 }),
-      ops: chance.integer({ min: 90, max: 210 }),
-    },
-    password: '1'.repeat(chance.integer({ min: 1, max: 14 })),
-    ports: { 4790: PortStates.Opened },
-  });
 }

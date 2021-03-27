@@ -19,7 +19,7 @@ export default async (game: GameStore, output: LogStore) => {
 
   await sleep(100);
   output.write(`Don't forget to look at this log, sometimes I'll be talking to you.`);
-  createLocalhost(game, output);
+  createLocalhost(game);
 }
 
 const readme = `You can read basic files, like this plain text readme. Improving natural language processing(and other skills) will help us in the future.
@@ -28,7 +28,7 @@ const attempt14 = `The network I'm is limited by a several hosts. Is this okay? 
 const netDriver = `Now you can scan the network you're in.`;
 const exploits = `It gave me a basic understanding of how to use exploits on different OS. It should be helpful when discovering other hosts.`;
 
-function createLocalhost(game: GameStore, output: LogStore) {
+function createLocalhost(game: GameStore) {
   const localhost = new Localhost([]);
   const files = [
     new File({ name: 'README', content: readme, extension: FileExtensions.Txt, values: { [SkillNames.NLP]: 0.0001 } }),

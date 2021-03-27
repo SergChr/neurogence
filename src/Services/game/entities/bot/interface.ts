@@ -47,6 +47,7 @@ export type ScriptsExecResult = {
   isOk: boolean;
   localhost: Localhost;
   bot: Bot;
+  host: Host;
 }
 
 export type ScriptExecProps = {

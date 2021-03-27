@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 
 import { Colors } from '../../Styles/enums';
+import gameStore from '../../Store/game';
+import { Upgrades } from '../../Services/game/entities/hosts/enums';
 
 type Props = {
   botsAvailable?: boolean;
@@ -39,7 +41,6 @@ const Img = ({ src }: any) =>
   <Image style={s.icon} source={src} />;
 
 export default ({
-  botsAvailable,
   navigation,
 }: Props) => {
   const MenuItem = ({ to, icon }: any) => {
@@ -57,6 +58,7 @@ export default ({
       </TouchableOpacity>
     );
   }
+  const botsAvailable = gameStore(s => s.upgrades)[Upgrades.EnableBots];
 
 	return (
     <View style={s.main}>

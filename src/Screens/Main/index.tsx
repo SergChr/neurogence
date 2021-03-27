@@ -23,7 +23,6 @@ export default ({ navigation }: any) => {
     <View style={{...s.container, ...commonStyle.screen}}>
       <Sidebar
         navigation={navigation}
-        botsAvailable
       />
 
       <View style={s.innerContainer}>

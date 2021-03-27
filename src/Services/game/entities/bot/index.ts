@@ -135,6 +135,7 @@ export default class Bot {
       isOk,
       localhost,
       bot: this,
+      host,
     };
   }
 }

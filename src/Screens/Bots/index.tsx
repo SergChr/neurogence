@@ -44,7 +44,6 @@ export default ({ navigation }: Props) => {
     <View style={{...commonStyle.screen, ...s.container}}>
       <Sidebar
         navigation={navigation}
-        botsAvailable
       />
 
       <View style={s.innerContainer}>

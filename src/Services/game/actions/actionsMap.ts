@@ -11,6 +11,7 @@ export enum Actions {
   OnExploitsLearn = 'OnExploitsLearn',
   OnReadLimaReport = 'OnReadLimaReport',
   OnReadImproveMetricsPanel = 'OnReadMetricsImprove',
+  onEnableBots = 'onEnableBots',
 }
 
 export default {
@@ -33,6 +34,7 @@ export default {
     if (game().upgrades[Upgrades.MetricsPanel]) {
       return;
     }
+
     game().updateLocalhost({
       upgrades: [{
         id: Upgrades.MetricsPanel,
@@ -40,5 +42,19 @@ export default {
       }],
     });
     log().write(`Metrics panel upgrade is available.`, LogEntryTypes.Trace);
+  },
+
+  [Actions.onEnableBots]: () => {
+    if (game().upgrades[Upgrades.EnableBots]) {
+      return;
+    }
+
+    game().updateLocalhost({
+      upgrades: [{
+        id: Upgrades.EnableBots,
+        description: 'Enable bots',
+      }],
+    });
+    log().write(`Bots lab upgrade is available.`, LogEntryTypes.Trace);
   },
 };

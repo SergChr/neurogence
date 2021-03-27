@@ -60,7 +60,11 @@ export default class Localhost extends BasicHost {
   }
 
   static makeUpgrades(host: Localhost, upgrades: Upgrade[]) {
-    host.upgrades.push(...upgrades);
+    upgrades.forEach((upgrade) => {
+      if (!host.upgrades.find(u => u.id === upgrade.id)) {
+        host.upgrades.push(upgrade);
+      }
+    });
     return host.upgrades;
   }
 }

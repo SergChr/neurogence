@@ -1,7 +1,6 @@
 import Worker from '../worker';
 import { SkillNames } from '../../../../Services/game/entities/hosts/localhost';
 import { GameVars } from '../../../../Config/enums';
-import { JobTypes } from '../types';
 
 type Props = {
   store: any;
@@ -46,8 +45,8 @@ export default class SkillWorker extends Worker {
   }
 
   stop() {
+    console.log('SkillWorker: stop');
     clearInterval(this.timer);
     this.timer = undefined;
-    this.store.getState().jobs.delete(JobTypes.SkillWorker);
   }
 }

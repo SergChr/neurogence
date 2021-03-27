@@ -3,6 +3,7 @@ import { OS, HostTypes } from '../Services/game/entities/hosts/enums';
 export default {
   // by how much more the localhost should have computing power
   // to absorb the other host
+  // TODO
   COMP_TRANSCENDENCE_COEF: 5,
 
   STARTING_OPTS: {
@@ -29,11 +30,11 @@ export default {
   BOT_POLLING_INTERVAL: 2000,
   SKILLS_IMPROVING_INTERVAL: 10000, // TODO: 20 000
   OS_PREVALENCE: {
-    [OS.Windows]: 0.16,
+    [OS.Windows]: 0.18,
     [OS.MacOS]: 0.04,
     [OS.Ubuntu]: 0.1,
     [OS.Fedora]: 0.13,
-    [OS.CentOS]: 0.18,
+    [OS.CentOS]: 0.16,
     [OS.ChromeOS]: 0.06,
     [OS.FreeBSD]: 0.13,
     [OS.Debian]: 0.13,

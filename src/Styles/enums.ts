@@ -6,6 +6,7 @@ export enum Colors {
 	Primary2 = '#04638a',
 	PrimaryDark1 = '#062236',
 	PrimaryDark2 = '#084c75',
+	Primary3 = '#063145',
 
 	Secondary = '#003F5C', // sidebar background; icons color: #00BFD8, size: 64x64 is good
 	SecondaryDark = '#00344d',
