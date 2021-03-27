@@ -1,4 +1,4 @@
-package com.aimobilegame;
+package com.neurogence.game;
 
 import com.facebook.react.ReactActivity;
 

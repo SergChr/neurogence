@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "251576188357",
+    "project_id": "neurogence-19cff",
+    "storage_bucket": "neurogence-19cff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251576188357:android:fefe807b063d2a52ee9fac",
+        "android_client_info": {
+          "package_name": "com.neurogence.game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "251576188357-vhjqoj6e8ue9jdath6o9sa39l9ad2ael.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgEpmmxHdJ0ThOUlJar7sBSmlblIyDWeg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251576188357-vhjqoj6e8ue9jdath6o9sa39l9ad2ael.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

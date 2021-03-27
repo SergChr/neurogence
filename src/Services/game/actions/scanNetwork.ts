@@ -14,13 +14,13 @@ export default async () => {
   game.setProgress(3);
 
   // TODO: increase timings
-  await sleep(100);
+  await sleep(4000);
   game.addHost(Tuna);
 
-  await sleep(100);
+  await sleep(20000);
   game.addHost(TheWeakPhillip);
 
-  await sleep(100);
+  await sleep(30000);
   game.addHost(smtp1);
 
   // await sleep(150);

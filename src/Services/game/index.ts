@@ -6,7 +6,6 @@ import JobManager from '../job/JobManager';
 
 const jobManager = new JobManager(gameStore);
 
-// TODO: test background jobs
 class Game {
   public run() {
     const game = gameStore.getState();

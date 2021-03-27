@@ -36,7 +36,7 @@ export default async () => {
   const local = state.getLocalhost();
 
   // TODO: adjust
-  if (progress < 50 && Localhost.TFLOPS(local) > 1100000000) {
+  if (progress < 50 && Localhost.TFLOPS(local) > 100) {
     state.setProgress(50);
     const finishText = `
     
