@@ -101,6 +101,11 @@ const useStore = create<GameStore>(persist(
       if (payload.isUserLogEmpty != null) {
         hosts[hostIndex].isUserLogEmpty = payload.isUserLogEmpty;
       }
+      if (payload.override) {
+        Object.entries(payload.override).forEach(([key, value]) => {
+          (hosts[hostIndex] as any)[key] = value;
+        });
+      }
       set({ hosts });
     },
 

@@ -40,7 +40,7 @@ export interface GameStore extends Store {
   setLocalSkill(skill: SkillNames, value: number): void;
   getLocalhost(): Localhost;
 
-  updateHost(name: string, payload: Partial<BasicHost>): void;
+  updateHost(name: string, payload: Partial<BasicHost> & { override?: Record<string, any> }): void;
 
   upgrades: Partial<Record<Upgrades, boolean>>;
   setUpgrade(s: Upgrades): void;

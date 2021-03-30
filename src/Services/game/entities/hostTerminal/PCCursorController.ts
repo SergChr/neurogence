@@ -155,11 +155,24 @@ export default class PCCursorController {
         // a specific file is requested
         if (cursor[1]) {
           const fileName = cursor[1].toLowerCase();
-          const file = allFiles.find((f) => f.name.toLowerCase() + f.extension === fileName);
-          file?.onRead && actionsMap[file.onRead]?.();
-          Object.entries(file!.values).forEach(([key, value]) => {
-            gameStore.getState().setLocalSkill(key as SkillNames, value);
-          });
+          const fileIndex = allFiles.findIndex((f) => f.name.toLowerCase() + f.extension === fileName)!;
+          const file = allFiles[fileIndex];
+
+          if (!file.isRead) {
+            file?.onRead && actionsMap[file.onRead]();
+            Object.entries(file!.values).forEach(([key, value]) => {
+              console.log('Improving skill', key, value);
+              gameStore.getState().setLocalSkill(key as SkillNames, value);
+            });
+            allFiles.splice(fileIndex, 1, { ...file, isRead: true });
+            gameStore.getState().updateHost(this.host.name, {
+              override: {
+                fs: {
+                  files: allFiles,
+                }
+              }
+            });
+          }
           return {
             name: cursor[1],
             text: file!.content + skillsUpdateText(file!.values),

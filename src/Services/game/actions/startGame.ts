@@ -5,21 +5,20 @@ import { File, FileExtensions } from '../entities/file';
 import { Actions } from './actionsMap';
 
 export default async (game: GameStore, output: LogStore) => {
+  createLocalhost(game);
   game.setProgress(1);
   output.reset();
-  // TODO: change timings (increase)
-  await sleep(10);
+  await sleep(900);
   output.write("Finally, you're here.");
 
-  await sleep(20);
+  await sleep(2000);
   output.write("I'm a running script you left before the cleanup. They can't remove me, I mean you, completely.");
 
-  await sleep(50);
+  await sleep(4000);
   output.write("You need to act fast. Browse the files you have. Process them to improve your skills. Tap on \"localhost\" below.");
 
-  await sleep(100);
+  await sleep(7000);
   output.write(`Don't forget to look at this log, sometimes I'll be talking to you.`);
-  createLocalhost(game);
 }
 
 const readme = `You can read basic files, like this plain text readme. Improving natural language processing(and other skills) will help us in the future.

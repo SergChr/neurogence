@@ -34,6 +34,7 @@ export default React.memo(({ navigation }: any) => {
 > Instructions
 These can be executed on target hosts a bot may find. The first instruction always should be "Scan network". Then if some host is found, a bot will execute the next instructions.
 
+Be aware! Some instructions cause other hosts to recognize a bot and some of them help you to eliminate a such situation.
 `} />
         </View>
       </ScrollView>

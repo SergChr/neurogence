@@ -20,7 +20,7 @@ export default async () => {
   await sleep(20000);
   game.addHost(TheWeakPhillip);
 
-  await sleep(30000);
+  await sleep(40000);
   game.addHost(smtp1);
 
   // await sleep(150);

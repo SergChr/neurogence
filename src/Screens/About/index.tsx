@@ -21,13 +21,13 @@ export default ({ navigation }: Props) => {
       <View style={s.innerContainer}>
         <View style={s.aboutSection}>
           <Text style={s.aboutText}>
-            I hope you enjoy playing this game. If you have any feedback, I'd be grateful if you tell me.
+            I hope you enjoy playing this mini-game. If you have any feedback, I'd be grateful if you tell me.
             It helps improving the game and deliver better experience to you.
           </Text>
 
           <Text style={s.aboutText}>
             {`\n`}
-            I'm Zlyuch, write me something at zlyuch@gmail.com
+            Write me something to orbiorange.games@gmail.com
           </Text>
         </View>
 
