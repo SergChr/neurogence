@@ -90,7 +90,7 @@ export default class Host {
   }
 
   static addCPUPower(host: Host, { cores, frequency, ops }: CPU) {
-    host.cpu.cores += cores;
+    host.cpu.cores += cores || 0;
     if (host.cpu.frequency < frequency) {
       host.cpu.frequency = frequency;
     }

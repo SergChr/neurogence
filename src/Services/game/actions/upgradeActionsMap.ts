@@ -46,6 +46,16 @@ const upgrades: UpgradesMap = {
     game().setUpgrade(Upgrades.EnableBots);
     return 'You can create bots to explore more machines to absorb.';
   },
+
+  [Upgrades.EnhanceCPU]: (p: Payload) => {
+    if (p) {
+      game().updateLocalhost({
+        override: {
+          cpu: p.cpu,
+        }
+      });
+    }
+  },
 }
 
 export default upgrades;

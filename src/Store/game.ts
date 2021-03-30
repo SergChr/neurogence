@@ -145,9 +145,9 @@ const useStore = create<GameStore>(persist(
     variables: {
       // TODO: adjust vars
       [GameVars.BruteforcePwdLimitTime]: 30,
-      [GameVars.MaxBots]: 3,
-      [GameVars.MaxBotInstances]: 30,
-      [GameVars.MaxBotScripts]: 6,
+      [GameVars.MaxBots]: 4,
+      [GameVars.MaxBotInstances]: 4,
+      [GameVars.MaxBotScripts]: 5,
       [GameVars.ImprovingRateMath]: 0.08,
       [GameVars.ImprovingRateNLP]: 0.02,
       [GameVars.ImprovingRateProgramming]: 0.074,

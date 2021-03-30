@@ -36,7 +36,7 @@ export default async () => {
   const local = state.getLocalhost();
 
   // TODO: adjust
-  if (progress < 50 && Localhost.TFLOPS(local) > 100) {
+  if (progress < 50 && Localhost.TFLOPS(local) > 50) {
     state.setProgress(50);
     const finishText = `
     
@@ -75,7 +75,7 @@ I'm now going into hibernation mode to not be discovered and I'll be waiting for
     logStore.getState().write('Done.\n---------------------------------------\n', LogEntryTypes.Trace);
 
     await sleep(2000);
-    logStore.getState().write(`Please provide your feedback to sergs.chr2@gmail.com
+    logStore.getState().write(`Please provide your feedback to orbiorange.games@gmail.com
 so the author could adjust the experience to be more pleasurable.`, LogEntryTypes.Info);
   }
 }
@@ -119,6 +119,7 @@ function handleLocalhostImprovements(state: GameStore) {
   const nextMathSkillValue = c.STARTING_OPTS.SKILLS.MATH * Math.pow(cpuCoef, levels.cpu);
   const nextProgrammingSkillValue = c.STARTING_OPTS.SKILLS.PROGRAMMING * Math.pow(cpuCoef, levels.cpu);
   const hasUnusedUpgrades = host.upgrades.some(u => u.id === Upgrades.EnhanceCPU);
+
   if (!hasUnusedUpgrades && math > nextMathSkillValue && programming > nextProgrammingSkillValue) {
     state.updateLocalhost({
       levels: {
@@ -128,15 +129,11 @@ function handleLocalhostImprovements(state: GameStore) {
     addUpgradeToLocalhost(
       Upgrades.EnhanceCPU,
       `Enhance CPU operations per cycle & frequency by x1.2`,
-      () => {
-        state.updateLocalhost({
-          cpu: {
-            cores: host.cpu.cores,
-            frequency: host.cpu.frequency * 1.2,
-            ops: host.cpu.ops * 1.2,
-          }
-        });
-      },
+      { cpu: {
+        cores: host.cpu.cores,
+        frequency: host.cpu.frequency * 1.2,
+        ops: host.cpu.ops * 1.2,
+      } },
     );
   }
 

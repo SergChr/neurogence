@@ -15,7 +15,7 @@ export default new MailServer({
     frequency: 46000000,
     ops: 115,
   },
-  securityPatch: 5,
+  securityPatch: 6,
   password: pwd,
   passwordSuggestions: [
     'JamesDitrichJunior', 'CatherineLi_3310', 'AmeliaAndJamesForever', 'Olivia2010', 'CDC_JQB_STU201017', 'Zeit', 'admin',

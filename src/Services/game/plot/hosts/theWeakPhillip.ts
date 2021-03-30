@@ -32,7 +32,7 @@ export default new PC({
     frequency: 41000000,
     ops: 107,
   },
-  securityPatch: 2,
+  securityPatch: 4,
   owner: 'Philip Heasley',
   password: pwd,
   passwordSuggestions: ['SomeoneLikeMe', 'I hate 2010', pwd, 'the_game_is_played', 'seebeyond^*$(#', 'Hfriu*&#didR$OI*'],

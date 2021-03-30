@@ -11,7 +11,8 @@ import {
 } from './interface';
 import { GameVars } from "../../../../Config/enums";
 
-const writeBotLog = (id: string, text: string) => logStore.getState().addBotLog(id, text);
+const getTime = () => new Date().toLocaleTimeString();
+const writeBotLog = (id: string, text: string) => logStore.getState().addBotLog(id, `[${getTime()}] ${text}`);
 const blockBot = (id: string) => gameStore.getState().blockBot(id);
 
 const response = (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 
 import commonStyle from '../../Styles/common';;
@@ -18,6 +18,7 @@ export default ({ navigation }: any) => {
   const gameProgress = gameStore(s => s.progress.value);
   const upgrades = gameStore(s => s.upgrades);
   const localhost = gameStore(s => s.getLocalhost());
+  const [isScanning, setScanning] = useState(false);
 
   return (
     <View style={{...s.container, ...commonStyle.screen}}>
@@ -47,10 +48,13 @@ export default ({ navigation }: any) => {
           <View style={s.buttons}>
             {gameProgress >= 2 &&
               <Button
-                disabled={hosts.length > 1}
+                disabled={isScanning || hosts.length > 1}
                 type={ButtonTypes.Primary}
                 text="Scan network"
-                onPress={scanNetwork}
+                onPress={() => {
+                  scanNetwork();
+                  setScanning(true);
+                }}
               />
             }
           </View>

@@ -25,7 +25,6 @@ export default class JobManager extends Job {
 
     // Check if any job existed in state before (when the app went offline)
     // need to resume their running
-    // TODO: test job handling when device went offline with persistent store
     const jobs = this.store.getState().jobs;
     if (jobs.length > 0) {
       this.resumeRunningJobs(jobs);

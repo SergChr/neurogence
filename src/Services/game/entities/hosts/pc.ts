@@ -68,6 +68,6 @@ export const generateHost = (): PC => {
     },
     password: '1'.repeat(chance.integer({ min: 1, max: 14 })),
     ports: { 4790: PortStates.Opened },
-    securityPatch: chance.integer({ min: 0, max: 18 }),
+    securityPatch: chance.integer({ min: 1, max: 15 }),
   });
 }
